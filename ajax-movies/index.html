@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ajax's Movie Universe</title>
+  <style>
+    :root {
+      --bg: #0d1117; --bg2: #161b22; --card: #1c2128;
+      --gold: #ffd700; --red: #ff4757; --purple: #8b5cf6;
+      --green: #2ed573; --cyan: #17c0eb; --text: #f0f0f0;
+      --dim: #8b949e; --border: #30363d;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; min-height: 100vh; overflow-x: hidden; }
+    #stars { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+    .hero { position: relative; z-index: 1; text-align: center; padding: 2.5rem 1rem 1rem; background: linear-gradient(180deg, #1a1f35 0%, transparent 100%); }
+    .hero h1 { font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 800; background: linear-gradient(135deg, var(--gold) 0%, var(--red) 50%, var(--purple) 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; animation: glow 3s ease-in-out infinite alternate; }
+    @keyframes glow { from { filter: brightness(1); } to { filter: brightness(1.3); } }
+    .hero .sub { color: var(--dim); font-size: 1.1rem; margin: 0.3rem 0 1.2rem; }
+    .stats { display: flex; justify-content: center; gap: 2rem; margin-bottom: 1.2rem; flex-wrap: wrap; }
+    .stat .n { font-size: 2rem; font-weight: 800; color: var(--gold); }
+    .stat .l { font-size: 0.7rem; color: var(--dim); text-transform: uppercase; letter-spacing: 1px; }
+    .search-box { max-width: 500px; margin: 0 auto 0.5rem; position: relative; }
+    .search-box input { width: 100%; padding: 0.7rem 1rem 0.7rem 2.5rem; border: 2px solid var(--border); border-radius: 12px; background: var(--bg2); color: var(--text); font-size: 1rem; outline: none; transition: border-color 0.3s; }
+    .search-box input:focus { border-color: var(--gold); }
+    .search-box .ico { position: absolute; left: 0.8rem; top: 50%; transform: translateY(-50%); pointer-events: none; }
+    .tabs { display: flex; justify-content: center; gap: 0.4rem; padding: 0.8rem; position: sticky; top: 0; z-index: 10; background: var(--bg); border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+    .tab { padding: 0.5rem 1rem; border: 2px solid var(--border); border-radius: 25px; background: transparent; color: var(--dim); font-size: 0.85rem; cursor: pointer; transition: all 0.3s; white-space: nowrap; }
+    .tab:hover { border-color: #b8960f; color: var(--text); }
+    .tab.active { background: var(--gold); color: #000; border-color: var(--gold); font-weight: 600; }
+    .picker { display: none; margin: 1rem auto; padding: 0.7rem 1.8rem; background: linear-gradient(135deg, var(--purple), var(--red)); border: none; border-radius: 25px; color: #fff; font-size: 1rem; font-weight: 600; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; position: relative; z-index: 1; }
+    .picker:hover { transform: scale(1.05); box-shadow: 0 4px 20px rgba(139,92,246,0.4); }
+    .picker.shake { animation: shake 0.5s; }
+    @keyframes shake { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-8px)} 40%{transform:translateX(8px)} 60%{transform:translateX(-4px)} 80%{transform:translateX(4px)} }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 1.5rem; padding: 1.5rem; max-width: 1400px; margin: 0 auto; position: relative; z-index: 1; }
+    .card { background: var(--card); border-radius: 12px; overflow: hidden; cursor: pointer; transition: transform 0.3s, box-shadow 0.3s; position: relative; }
+    .card:hover { transform: translateY(-8px) scale(1.02); box-shadow: 0 16px 40px rgba(0,0,0,0.5); }
+    .card.watched { border: 2px solid var(--green); }
+    .poster { width: 100%; height: 260px; object-fit: cover; object-position: top; display: block; background: var(--bg2); }
+    .ph { width: 100%; height: 260px; display: flex; align-items: center; justify-content: center; font-size: 4rem; }
+    .genre-action { background: linear-gradient(135deg, #ff6b6b, #ee5a24); }
+    .genre-fantasy { background: linear-gradient(135deg, #6c5ce7, #a29bfe); }
+    .genre-scifi { background: linear-gradient(135deg, #0984e3, #00cec9); }
+    .genre-adventure { background: linear-gradient(135deg, #00b894, #55efc4); }
+    .genre-crime { background: linear-gradient(135deg, #2d3436, #636e72); }
+    .genre-drama { background: linear-gradient(135deg, #6c5ce7, #2d3436); }
+    .genre-martial { background: linear-gradient(135deg, #d63031, #e17055); }
+    .genre-animation { background: linear-gradient(135deg, #e84393, #fd79a8); }
+    .cinfo { padding: 0.7rem; }
+    .mt { font-size: 0.85rem; font-weight: 600; line-height: 1.3; margin-bottom: 0.3rem; }
+    .mr { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.3rem; }
+    .yr { font-size: 0.7rem; color: var(--dim); }
+    .gb { font-size: 0.6rem; padding: 0.15rem 0.4rem; border-radius: 8px; background: var(--bg2); color: var(--dim); text-transform: uppercase; letter-spacing: 0.5px; }
+    .fb { font-size: 0.6rem; padding: 0.15rem 0.4rem; border-radius: 8px; background: var(--purple); color: #fff; margin-top: 0.2rem; display: inline-block; }
+    .wb { position: absolute; top: 8px; right: 8px; background: var(--green); color: #000; width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; font-weight: bold; box-shadow: 0 2px 8px rgba(46,213,115,0.4); z-index: 2; }
+    .rating { display: flex; gap: 1px; }
+    .star { font-size: 0.9rem; cursor: pointer; transition: transform 0.15s; user-select: none; }
+    .star:hover { transform: scale(1.3); }
+    .star.on { color: var(--gold); }
+    .star.off { color: var(--border); }
+    .mo { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index: 100; display: none; align-items: center; justify-content: center; padding: 1rem; }
+    .mo.open { display: flex; }
+    .modal { background: var(--bg2); border-radius: 16px; max-width: 600px; width: 100%; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.6); }
+    .modal .mp { width: 100%; max-height: 350px; object-fit: cover; object-position: top; border-radius: 16px 16px 0 0; }
+    .modal .mbody { padding: 1.5rem; }
+    .modal .mbody h2 { font-size: 1.5rem; margin-bottom: 0.3rem; }
+    .desc { color: var(--dim); line-height: 1.6; margin: 0.8rem 0; font-size: 0.95rem; }
+    .note-box { background: rgba(139,92,246,0.15); border: 1px solid var(--purple); border-radius: 8px; padding: 0.6rem 1rem; margin: 0.5rem 0; font-size: 0.85rem; color: var(--purple); }
+    .modal-acts { display: flex; gap: 0.8rem; margin-top: 1rem; flex-wrap: wrap; }
+    .modal-acts button { padding: 0.6rem 1.2rem; border-radius: 8px; border: none; cursor: pointer; font-weight: 600; transition: transform 0.2s; font-size: 0.9rem; }
+    .modal-acts button:hover { transform: scale(1.05); }
+    .btn-w { background: var(--green); color: #000; }
+    .btn-c { background: var(--border); color: var(--text); }
+    #confetti { position: fixed; inset: 0; z-index: 200; pointer-events: none; }
+    .toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--green); color: #000; padding: 0.7rem 1.5rem; border-radius: 12px; font-weight: 600; z-index: 300; transition: transform 0.3s; box-shadow: 0 4px 20px rgba(46,213,115,0.3); font-size: 0.95rem; white-space: nowrap; }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+    .empty { text-align: center; padding: 4rem 1rem; color: var(--dim); position: relative; z-index: 1; display: none; }
+    .empty .big { font-size: 4rem; margin-bottom: 1rem; }
+    .achieve { position: fixed; top: 50%; left: 50%; transform: translate(-50%,-50%) scale(0); background: linear-gradient(135deg, #1a1f35, #2d1b69); border: 2px solid var(--gold); border-radius: 20px; padding: 2rem 3rem; text-align: center; z-index: 250; transition: transform 0.5s cubic-bezier(0.34,1.56,0.64,1); box-shadow: 0 0 60px rgba(255,215,0,0.3); }
+    .achieve.pop { transform: translate(-50%,-50%) scale(1); }
+    .achieve .trophy { font-size: 4rem; margin-bottom: 0.5rem; }
+    .achieve .atitle { font-size: 1.3rem; color: var(--gold); font-weight: 700; }
+    .achieve .asub { color: var(--dim); font-size: 0.9rem; margin-top: 0.3rem; }
+    @media (max-width: 768px) {
+      .grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 1rem; padding: 1rem; }
+      .poster, .ph { height: 200px; }
+      .stats { gap: 1rem; }
+      .stat .n { font-size: 1.5rem; }
+      .tabs { gap: 0.3rem; padding: 0.5rem; }
+      .tab { padding: 0.4rem 0.7rem; font-size: 0.75rem; }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="stars"></canvas>
+  <canvas id="confetti"></canvas>
+  <div class="toast" id="toast"></div>
+  <div class="achieve" id="achieve">
+    <div class="trophy" id="ach-icon"></div>
+    <div class="atitle" id="ach-title"></div>
+    <div class="asub" id="ach-sub"></div>
+  </div>
+
+  <header class="hero">
+    <h1>Ajax's Movie Universe</h1>
+    <p class="sub">Oι αγαπημένες ταινίες και σειρές μου</p>
+    <div class="stats" id="stats"></div>
+    <div class="search-box">
+      <span class="ico">&#x1F50D;</span>
+      <input type="text" id="search" placeholder="Search movies &amp; series...">
+    </div>
+  </header>
+
+  <nav class="tabs" id="tabs-nav">
+    <button class="tab active" data-tab="favorites">Αγαπημένες</button>
+    <button class="tab" data-tab="toWatch">Θέλω να δω</button>
+    <button class="tab" data-tab="seriesWatched">Σειρές (Είδα)</button>
+    <button class="tab" data-tab="seriesToWatch">Σειρές (Θέλω)</button>
+    <button class="tab" data-tab="forLater">Για αργότερα</button>
+  </nav>
+
+  <button class="picker" id="picker">Movie Night! Pick a random one</button>
+  <div class="grid" id="grid"></div>
+  <div class="empty" id="empty"><div class="big">&#x1F50D;</div><p>Nothing found...</p></div>
+
+  <!-- Movie detail modal -->
+  <div class="mo" id="mo">
+    <div class="modal">
+      <img class="mp" id="mp" alt="">
+      <div class="mbody">
+        <h2 id="m-title"></h2>
+        <div class="mr"><span id="m-year" class="yr"></span><span id="m-genre" class="gb"></span></div>
+        <div class="rating" id="m-rating"></div>
+        <p class="desc" id="m-desc">Loading...</p>
+        <div id="m-notes"></div>
+        <div class="modal-acts">
+          <button class="btn-w" id="m-watch">I watched this!</button>
+          <button class="btn-c" id="m-close">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+/* ============================================================
+   MOVIE DATA — Ajax's complete collection
+   ============================================================ */
+const DATA = {
+  favorites: [
+    { id:'karate-kid', title:'Karate Kid', year:'1984', genre:'martial', emoji:'\u{1F94B}', franchise:'Trilogy (1, 2, 3)', wiki:'The_Karate_Kid' },
+    { id:'lotr-fellowship', title:'Lord of the Rings: Fellowship of the Ring', year:'2001', genre:'fantasy', emoji:'\u{1F48D}', franchise:'LOTR Trilogy', wiki:'The_Lord_of_the_Rings:_The_Fellowship_of_the_Ring' },
+    { id:'lotr-two-towers', title:'Lord of the Rings: The Two Towers', year:'2002', genre:'fantasy', emoji:'\u{1F5FC}', franchise:'LOTR Trilogy', wiki:'The_Lord_of_the_Rings:_The_Two_Towers' },
+    { id:'lotr-rotk', title:'Lord of the Rings: Return of the King', year:'2003', genre:'fantasy', emoji:'\u{1F451}', franchise:'LOTR Trilogy', wiki:'The_Lord_of_the_Rings:_The_Return_of_the_King' },
+    { id:'hobbit-1', title:'The Hobbit: An Unexpected Journey', year:'2012', genre:'fantasy', emoji:'\u{1F9D9}', franchise:'Hobbit Trilogy', wiki:'The_Hobbit:_An_Unexpected_Journey' },
+    { id:'hobbit-2', title:'The Hobbit: Desolation of Smaug', year:'2013', genre:'fantasy', emoji:'\u{1F409}', franchise:'Hobbit Trilogy', wiki:'The_Hobbit:_The_Desolation_of_Smaug' },
+    { id:'hobbit-3', title:'The Hobbit: Battle of Five Armies', year:'2014', genre:'fantasy', emoji:'\u2694\uFE0F', franchise:'Hobbit Trilogy', wiki:'The_Hobbit:_The_Battle_of_the_Five_Armies' },
+    { id:'hp', title:"Harry Potter and the Philosopher's Stone", year:'2001', genre:'fantasy', emoji:'\u26A1', franchise:'HP Saga (8 films)', wiki:"Harry_Potter_and_the_Philosopher%27s_Stone_(film)" },
+    { id:'star-wars', title:'Star Wars: A New Hope', year:'1977', genre:'scifi', emoji:'\u2B50', franchise:'Star Wars Saga', wiki:'Star_Wars_(film)' },
+    { id:'catch-me', title:'Catch Me If You Can', year:'2002', genre:'crime', emoji:'\u2708\uFE0F', wiki:'Catch_Me_If_You_Can' },
+    { id:'conan', title:'Conan the Barbarian', year:'1982', genre:'adventure', emoji:'\u2694\uFE0F', wiki:'Conan_the_Barbarian_(1982_film)' },
+    { id:'krull', title:'Krull', year:'1983', genre:'fantasy', emoji:'\u{1F300}', wiki:'Krull_(film)' },
+    { id:'goonies', title:'The Goonies', year:'1985', genre:'adventure', emoji:'\u{1F3F4}\u200D\u2620\uFE0F', wiki:'The_Goonies' },
+    { id:'top-gun', title:'Top Gun', year:'1986', genre:'action', emoji:'\u2708\uFE0F', wiki:'Top_Gun' },
+    { id:'lords-dogtown', title:'Lords of Dogtown', year:'2005', genre:'drama', emoji:'\u{1F6F9}', wiki:'Lords_of_Dogtown' },
+    { id:'terminator', title:'The Terminator', year:'1984', genre:'scifi', emoji:'\u{1F916}', wiki:'The_Terminator' }
+  ],
+  toWatch: [
+    { id:'narnia', title:'Chronicles of Narnia', year:'2005', genre:'fantasy', emoji:'\u{1F981}', wiki:'The_Chronicles_of_Narnia:_The_Lion,_the_Witch_and_the_Wardrobe' },
+    { id:'httyd', title:'How to Train Your Dragon', year:'2010', genre:'animation', emoji:'\u{1F409}', wiki:'How_to_Train_Your_Dragon_(film)' },
+    { id:'percy-jackson', title:'Percy Jackson', year:'2010', genre:'fantasy', emoji:'\u26A1', wiki:'Percy_Jackson_%26_the_Olympians:_The_Lightning_Thief' },
+    { id:'avatar', title:'Avatar', year:'2009', genre:'scifi', emoji:'\u{1F33F}', wiki:'Avatar_(2009_film)' },
+    { id:'dnd', title:'D&D: Honor Among Thieves', year:'2023', genre:'fantasy', emoji:'\u{1F3B2}', wiki:'Dungeons_%26_Dragons:_Honor_Among_Thieves' },
+    { id:'gladiator', title:'Gladiator', year:'2000', genre:'action', emoji:'\u2694\uFE0F', wiki:'Gladiator_(2000_film)' },
+    { id:'willow', title:'Willow', year:'1988', genre:'fantasy', emoji:'\u{1F9D9}', wiki:'Willow_(film)' },
+    { id:'dragonheart', title:'Dragonheart', year:'1996', genre:'fantasy', emoji:'\u{1F409}', wiki:'Dragonheart' },
+    { id:'stardust', title:'Stardust', year:'2007', genre:'fantasy', emoji:'\u2B50', wiki:'Stardust_(2007_film)' },
+    { id:'mummy', title:'The Mummy', year:'1999', genre:'adventure', emoji:'\u{1F3DB}\uFE0F', wiki:'The_Mummy_(1999_film)' },
+    { id:'indiana-jones', title:'Indiana Jones', year:'1981', genre:'adventure', emoji:'\u{1F920}', franchise:'4 films', wiki:'Raiders_of_the_Lost_Ark' },
+    { id:'thor', title:'Thor', year:'2011', genre:'action', emoji:'\u26A1', wiki:'Thor_(film)' },
+    { id:'thor-ragnarok', title:'Thor: Ragnarok', year:'2017', genre:'action', emoji:'\u26A1', wiki:'Thor:_Ragnarok' },
+    { id:'doctor-strange', title:'Doctor Strange', year:'2016', genre:'scifi', emoji:'\u{1F300}', wiki:'Doctor_Strange_(2016_film)' },
+    { id:'gotg', title:'Guardians of the Galaxy', year:'2014', genre:'scifi', emoji:'\u{1F680}', wiki:'Guardians_of_the_Galaxy_(film)' },
+    { id:'neverending', title:'The Neverending Story', year:'1984', genre:'fantasy', emoji:'\u{1F4D6}', wiki:'The_NeverEnding_Story_(film)' },
+    { id:'jumanji', title:'Jumanji: Welcome to the Jungle', year:'2017', genre:'adventure', emoji:'\u{1F3AE}', wiki:'Jumanji:_Welcome_to_the_Jungle' },
+    { id:'pirates', title:'Pirates of the Caribbean', year:'2003', genre:'adventure', emoji:'\u{1F3F4}\u200D\u2620\uFE0F', franchise:'5 films', wiki:'Pirates_of_the_Caribbean:_The_Curse_of_the_Black_Pearl' },
+    { id:'zorro', title:'The Mask of Zorro', year:'1998', genre:'adventure', emoji:'\u2694\uFE0F', wiki:'The_Mask_of_Zorro' },
+    { id:'eragon', title:'Eragon', year:'2006', genre:'fantasy', emoji:'\u{1F409}', wiki:'Eragon_(film)' },
+    { id:'princess-bride', title:'The Princess Bride', year:'1987', genre:'fantasy', emoji:'\u{1F478}', wiki:'The_Princess_Bride_(film)' },
+    { id:'atlantis', title:'Atlantis: The Lost Empire', year:'2001', genre:'animation', emoji:'\u{1F30A}', wiki:'Atlantis:_The_Lost_Empire' },
+    { id:'treasure-planet', title:'Treasure Planet', year:'2002', genre:'animation', emoji:'\u{1F680}', wiki:'Treasure_Planet' },
+    { id:'king-arthur', title:'King Arthur: Legend of the Sword', year:'2017', genre:'fantasy', emoji:'\u2694\uFE0F', wiki:'King_Arthur:_Legend_of_the_Sword' },
+    { id:'clash-titans', title:'Clash of the Titans', year:'2010', genre:'fantasy', emoji:'\u26A1', wiki:'Clash_of_the_Titans_(2010_film)' },
+    { id:'dune', title:'Dune', year:'2021', genre:'scifi', emoji:'\u{1F3DC}\uFE0F', wiki:'Dune_(2021_film)' },
+    { id:'maze-runner', title:'Maze Runner', year:'2014', genre:'scifi', emoji:'\u{1F3C3}', franchise:'3 films', wiki:'The_Maze_Runner_(film)' }
+  ],
+  seriesWatched: [
+    { id:'cobra-kai', title:'Cobra Kai', year:'2018\u20132025', genre:'martial', emoji:'\u{1F94B}', wiki:'Cobra_Kai' }
+  ],
+  seriesToWatch: [
+    { id:'clone-wars', title:'Star Wars: The Clone Wars', year:'2008\u20132020', genre:'scifi', emoji:'\u2694\uFE0F', wiki:'Star_Wars:_The_Clone_Wars_(2008_TV_series)' },
+    { id:'rebels', title:'Star Wars Rebels', year:'2014\u20132018', genre:'scifi', emoji:'\u2B50', wiki:'Star_Wars_Rebels' },
+    { id:'mandalorian', title:'The Mandalorian', year:'2019\u2013', genre:'scifi', emoji:'\u{1FA96}', wiki:'The_Mandalorian' },
+    { id:'ahsoka', title:'Ahsoka', year:'2023', genre:'scifi', emoji:'\u2694\uFE0F', wiki:'Ahsoka_(TV_series)' },
+    { id:'rings-power', title:'Rings of Power', year:'2022\u2013', genre:'fantasy', emoji:'\u{1F48D}', wiki:'The_Lord_of_the_Rings:_The_Rings_of_Power' },
+    { id:'shogun', title:'Shogun', year:'2024', genre:'drama', emoji:'\u2694\uFE0F', wiki:'Sh%C5%8Dgun_(2024_miniseries)' },
+    { id:'last-kingdom', title:'The Last Kingdom', year:'2015\u20132022', genre:'action', emoji:'\u{1F6E1}\uFE0F', wiki:'The_Last_Kingdom_(TV_series)' },
+    { id:'reacher', title:'Reacher', year:'2022\u2013', genre:'action', emoji:'\u{1F4AA}', wiki:'Reacher_(TV_series)' },
+    { id:'stranger-things', title:'Stranger Things', year:'2016\u20132025', genre:'scifi', emoji:'\u{1F526}', wiki:'Stranger_Things' },
+    { id:'merlin', title:'Merlin', year:'2008\u20132012', genre:'fantasy', emoji:'\u{1F9D9}', wiki:'Merlin_(2008_TV_series)' },
+    { id:'outer-banks', title:'Outer Banks', year:'2020\u2013', genre:'adventure', emoji:'\u{1F3D6}\uFE0F', wiki:'Outer_Banks_(TV_series)' },
+    { id:'young-justice', title:'Young Justice', year:'2010\u20132022', genre:'animation', emoji:'\u{1F9B8}', wiki:'Young_Justice_(TV_series)' },
+    { id:'gravity-falls', title:'Gravity Falls', year:'2012\u20132016', genre:'animation', emoji:'\u{1F332}', wiki:'Gravity_Falls' }
+  ],
+  forLater: [
+    { id:'got', title:'Game of Thrones', year:'2011\u20132019', genre:'fantasy', emoji:'\u{1F409}', wiki:'Game_of_Thrones', note:'\u{1F512} For when I grow up!' }
+  ]
+};
+
+/* ============================================================
+   STATE — persisted in localStorage
+   ============================================================ */
+const S = {
+  ratings: JSON.parse(localStorage.getItem('ajax-r') || '{}'),
+  watched: JSON.parse(localStorage.getItem('ajax-w') || '{}'),
+  posters: JSON.parse(localStorage.getItem('ajax-p') || '{}'),
+  save() {
+    localStorage.setItem('ajax-r', JSON.stringify(this.ratings));
+    localStorage.setItem('ajax-w', JSON.stringify(this.watched));
+    localStorage.setItem('ajax-p', JSON.stringify(this.posters));
+  }
+};
+
+/* Pre-mark favorites + watched series on first visit */
+if (!localStorage.getItem('ajax-init')) {
+  DATA.favorites.forEach(function(m) { S.watched[m.id] = true; });
+  DATA.seriesWatched.forEach(function(m) { S.watched[m.id] = true; });
+  S.save();
+  localStorage.setItem('ajax-init', '1');
+}
+
+let curTab = 'favorites';
+let searchQuery = '';
+
+/* ============================================================
+   DOM HELPER — creates elements safely (no innerHTML)
+   ============================================================ */
+function el(tag, cls, text) {
+  const e = document.createElement(tag);
+  if (cls) e.className = cls;
+  if (text !== undefined) e.textContent = text;
+  return e;
+}
+
+/* ============================================================
+   ACHIEVEMENTS
+   ============================================================ */
+const ACHIEVEMENTS = [
+  { id:'first-rate', check: function() { return Object.keys(S.ratings).length >= 1; }, icon:'\u2B50', title:'First Rating!', sub:'You rated your first movie' },
+  { id:'five-w', check: function() { return Object.values(S.watched).filter(Boolean).length >= 5; }, icon:'\u{1F3AC}', title:'Movie Fan!', sub:'Watched 5+' },
+  { id:'ten-w', check: function() { return Object.values(S.watched).filter(Boolean).length >= 10; }, icon:'\u{1F3C6}', title:'Movie Master!', sub:'Watched 10+' },
+  { id:'all-rated', check: function() { return Object.keys(S.ratings).length >= 10; }, icon:'\u{1F31F}', title:'Super Critic!', sub:'Rated 10 movies' },
+  { id:'twenty-w', check: function() { return Object.values(S.watched).filter(Boolean).length >= 20; }, icon:'\u{1F525}', title:'Legend!', sub:'20+ watched!' }
+];
+var unlocked = JSON.parse(localStorage.getItem('ajax-ach') || '[]');
+
+function checkAchievements() {
+  ACHIEVEMENTS.forEach(function(a) {
+    if (unlocked.indexOf(a.id) === -1 && a.check()) {
+      unlocked.push(a.id);
+      localStorage.setItem('ajax-ach', JSON.stringify(unlocked));
+      showAchievement(a.icon, a.title, a.sub);
+    }
+  });
+}
+
+function showAchievement(icon, title, sub) {
+  document.getElementById('ach-icon').textContent = icon;
+  document.getElementById('ach-title').textContent = title;
+  document.getElementById('ach-sub').textContent = sub;
+  var ae = document.getElementById('achieve');
+  ae.classList.add('pop');
+  setTimeout(function() { ae.classList.remove('pop'); }, 3500);
+}
+
+/* ============================================================
+   TAB SWITCHING
+   ============================================================ */
+document.querySelectorAll('.tab').forEach(function(t) {
+  t.addEventListener('click', function() {
+    document.querySelector('.tab.active').classList.remove('active');
+    t.classList.add('active');
+    curTab = t.dataset.tab;
+    render();
+  });
+});
+
+/* ============================================================
+   SEARCH
+   ============================================================ */
+document.getElementById('search').addEventListener('input', function(e) {
+  searchQuery = e.target.value.toLowerCase();
+  render();
+});
+
+/* ============================================================
+   BUILD A STAR RATING ROW (DOM nodes, no innerHTML)
+   ============================================================ */
+function buildStars(container, movieId) {
+  while (container.firstChild) container.removeChild(container.firstChild);
+  var r = S.ratings[movieId] || 0;
+  for (var i = 1; i <= 5; i++) {
+    var span = document.createElement('span');
+    span.className = 'star ' + (i <= r ? 'on' : 'off');
+    span.textContent = '\u2605';
+    (function(val) {
+      span.addEventListener('click', function(e) {
+        e.stopPropagation();
+        rate(movieId, val);
+      });
+    })(i);
+    container.appendChild(span);
+  }
+}
+
+/* ============================================================
+   BUILD A SINGLE MOVIE CARD (DOM nodes, no innerHTML)
+   ============================================================ */
+function buildCard(m) {
+  var card = el('div', 'card' + (S.watched[m.id] ? ' watched' : ''));
+  card.addEventListener('click', function() { openModal(m.id); });
+
+  /* Watched badge */
+  if (S.watched[m.id]) {
+    var badge = el('div', 'wb', '\u2713');
+    card.appendChild(badge);
+  }
+
+  /* Poster or gradient placeholder */
+  if (S.posters[m.id]) {
+    var img = document.createElement('img');
+    img.className = 'poster';
+    img.src = S.posters[m.id];
+    img.alt = m.title;
+    img.loading = 'lazy';
+    card.appendChild(img);
+  } else {
+    var ph = el('div', 'ph genre-' + m.genre, m.emoji);
+    card.appendChild(ph);
+  }
+
+  /* Info section */
+  var info = el('div', 'cinfo');
+
+  var title = el('div', 'mt', m.title);
+  info.appendChild(title);
+
+  var metaRow = el('div', 'mr');
+  metaRow.appendChild(el('span', 'yr', m.year));
+  metaRow.appendChild(el('span', 'gb', m.genre));
+  info.appendChild(metaRow);
+
+  var ratingDiv = el('div', 'rating');
+  buildStars(ratingDiv, m.id);
+  info.appendChild(ratingDiv);
+
+  if (m.franchise) {
+    info.appendChild(el('span', 'fb', m.franchise));
+  }
+
+  card.appendChild(info);
+  return card;
+}
+
+/* ============================================================
+   BUILD A STAT BLOCK (DOM nodes)
+   ============================================================ */
+function buildStat(number, label) {
+  var div = el('div', 'stat');
+  div.appendChild(el('div', 'n', String(number)));
+  div.appendChild(el('div', 'l', label));
+  return div;
+}
+
+/* ============================================================
+   RENDER — rebuild the grid with DOM methods
+   ============================================================ */
+function render() {
+  var grid = document.getElementById('grid');
+  var movies = DATA[curTab] || [];
+  var filtered = movies.filter(function(m) {
+    return m.title.toLowerCase().indexOf(searchQuery) !== -1 ||
+           (m.genre && m.genre.toLowerCase().indexOf(searchQuery) !== -1);
+  });
+
+  /* Show/hide empty state */
+  document.getElementById('empty').style.display = filtered.length ? 'none' : 'block';
+
+  /* Show picker only on "to watch" tabs */
+  document.getElementById('picker').style.display =
+    (curTab === 'toWatch' || curTab === 'seriesToWatch') ? 'block' : 'none';
+
+  /* Build card nodes and replace grid children */
+  var fragment = document.createDocumentFragment();
+  filtered.forEach(function(m) {
+    fragment.appendChild(buildCard(m));
+  });
+  grid.replaceChildren(fragment);
+
+  /* Update stats */
+  updateStats();
+}
+
+/* ============================================================
+   UPDATE STATS BAR
+   ============================================================ */
+function updateStats() {
+  var all = Object.values(DATA).flat();
+  var w = all.filter(function(m) { return S.watched[m.id]; }).length;
+  var r = Object.keys(S.ratings).length;
+  var statsEl = document.getElementById('stats');
+  statsEl.replaceChildren(
+    buildStat(w, 'Watched'),
+    buildStat(all.length - w, 'Remaining'),
+    buildStat(r, 'Rated'),
+    buildStat(all.length, 'Total')
+  );
+}
+
+/* ============================================================
+   RATING
+   ============================================================ */
+function rate(id, val) {
+  S.ratings[id] = val;
+  S.save();
+  render();
+  showToast('\u2605'.repeat(val) + '\u2606'.repeat(5 - val));
+  checkAchievements();
+}
+
+/* ============================================================
+   TOGGLE WATCHED
+   ============================================================ */
+function toggleWatch(id) {
+  S.watched[id] = !S.watched[id];
+  S.save();
+  if (S.watched[id]) {
+    boom();
+    showToast('Bravo! Another one done!');
+  }
+  render();
+  checkAchievements();
+}
+
+/* ============================================================
+   MODAL
+   ============================================================ */
+function openModal(id) {
+  var all = Object.values(DATA).flat();
+  var m = all.find(function(x) { return x.id === id; });
+  if (!m) return;
+
+  document.getElementById('m-title').textContent = m.title;
+  document.getElementById('m-year').textContent = m.year;
+  document.getElementById('m-genre').textContent = m.genre;
+
+  var ratingDiv = document.getElementById('m-rating');
+  buildStars(ratingDiv, id);
+
+  /* Poster */
+  var posterEl = document.getElementById('mp');
+  if (S.posters[id]) {
+    posterEl.src = S.posters[id];
+    posterEl.style.display = 'block';
+  } else {
+    posterEl.style.display = 'none';
+  }
+
+  /* Notes (franchise, special note) */
+  var notesEl = document.getElementById('m-notes');
+  notesEl.replaceChildren();
+  if (m.franchise) {
+    var nb1 = el('div', 'note-box', m.franchise);
+    notesEl.appendChild(nb1);
+  }
+  if (m.note) {
+    var nb2 = el('div', 'note-box', m.note);
+    notesEl.appendChild(nb2);
+  }
+
+  /* Fetch Wikipedia description */
+  var descEl = document.getElementById('m-desc');
+  descEl.textContent = 'Loading description...';
+  if (m.wiki) {
+    fetch('https://en.wikipedia.org/api/rest_v1/page/summary/' + m.wiki)
+      .then(function(r) { return r.json(); })
+      .then(function(d) { descEl.textContent = d.extract || 'No description found.'; })
+      .catch(function() { descEl.textContent = 'Could not load description.'; });
+  } else {
+    descEl.textContent = '';
+  }
+
+  /* Watch button */
+  var wb = document.getElementById('m-watch');
+  wb.textContent = S.watched[id] ? 'Mark as Unwatched' : 'I watched this!';
+  wb.onclick = function() { toggleWatch(id); closeModal(); };
+
+  document.getElementById('mo').classList.add('open');
+}
+
+function closeModal() {
+  document.getElementById('mo').classList.remove('open');
+}
+
+document.getElementById('m-close').addEventListener('click', closeModal);
+document.getElementById('mo').addEventListener('click', function(e) {
+  if (e.target.id === 'mo') closeModal();
+});
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeModal();
+});
+
+/* ============================================================
+   MOVIE NIGHT PICKER
+   ============================================================ */
+document.getElementById('picker').addEventListener('click', function() {
+  var btn = this;
+  btn.classList.add('shake');
+  setTimeout(function() { btn.classList.remove('shake'); }, 500);
+
+  var pool = (DATA[curTab] || []).filter(function(m) { return !S.watched[m.id]; });
+  if (!pool.length) { showToast('You watched them ALL!'); return; }
+  var pick = pool[Math.floor(Math.random() * pool.length)];
+  setTimeout(function() {
+    openModal(pick.id);
+    showToast('Tonight: ' + pick.title + '!');
+  }, 500);
+});
+
+/* ============================================================
+   TOAST NOTIFICATION
+   ============================================================ */
+function showToast(msg) {
+  var t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(function() { t.classList.remove('show'); }, 3000);
+}
+
+/* ============================================================
+   CONFETTI EXPLOSION
+   ============================================================ */
+function boom() {
+  var c = document.getElementById('confetti');
+  var ctx = c.getContext('2d');
+  c.width = innerWidth;
+  c.height = innerHeight;
+  var colors = ['#ffd700','#ff4757','#2ed573','#3742fa','#e84393','#00cec9'];
+  var P = [];
+  for (var i = 0; i < 120; i++) {
+    P.push({
+      x: innerWidth / 2, y: innerHeight / 2,
+      vx: (Math.random() - 0.5) * 16, vy: (Math.random() - 1) * 14,
+      s: Math.random() * 8 + 3,
+      c: colors[Math.floor(Math.random() * 6)],
+      r: Math.random() * 360, rs: (Math.random() - 0.5) * 12,
+      life: 1
+    });
+  }
+  (function go() {
+    ctx.clearRect(0, 0, c.width, c.height);
+    var alive = false;
+    P.forEach(function(p) {
+      if (p.life <= 0) return;
+      alive = true;
+      p.x += p.vx; p.y += p.vy; p.vy += 0.25;
+      p.r += p.rs; p.life -= 0.012;
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.r * Math.PI / 180);
+      ctx.globalAlpha = Math.max(0, p.life);
+      ctx.fillStyle = p.c;
+      ctx.fillRect(-p.s / 2, -p.s / 2, p.s, p.s);
+      ctx.restore();
+    });
+    if (alive) requestAnimationFrame(go);
+    else ctx.clearRect(0, 0, c.width, c.height);
+  })();
+}
+
+/* ============================================================
+   STARFIELD BACKGROUND
+   ============================================================ */
+(function() {
+  var c = document.getElementById('stars');
+  var ctx = c.getContext('2d');
+  function resize() { c.width = innerWidth; c.height = innerHeight; }
+  resize();
+  addEventListener('resize', resize);
+  var pts = [];
+  for (var i = 0; i < 150; i++) {
+    pts.push({
+      x: Math.random() * innerWidth, y: Math.random() * innerHeight,
+      s: Math.random() * 1.5 + 0.5, sp: Math.random() * 0.3 + 0.05,
+      b: Math.random()
+    });
+  }
+  (function go() {
+    ctx.clearRect(0, 0, c.width, c.height);
+    pts.forEach(function(p) {
+      p.b += (Math.random() - 0.5) * 0.04;
+      if (p.b < 0.15) p.b = 0.15;
+      if (p.b > 1) p.b = 1;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.s, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(255,255,255,' + (p.b * 0.6) + ')';
+      ctx.fill();
+      p.y += p.sp;
+      if (p.y > c.height) { p.y = 0; p.x = Math.random() * c.width; }
+    });
+    requestAnimationFrame(go);
+  })();
+})();
+
+/* ============================================================
+   WIKIPEDIA POSTER FETCHING — batched & cached
+   ============================================================ */
+function fetchPoster(m) {
+  if (S.posters[m.id] || !m.wiki) return Promise.resolve();
+  return fetch('https://en.wikipedia.org/api/rest_v1/page/summary/' + m.wiki)
+    .then(function(r) { return r.ok ? r.json() : null; })
+    .then(function(d) {
+      if (!d) return;
+      var url = d.thumbnail ? d.thumbnail.source : null;
+      if (url) {
+        /* Request higher-res version from Wikimedia CDN */
+        S.posters[m.id] = url.replace(/\/\d+px-/, '/400px-');
+        S.save();
+      }
+    })
+    .catch(function() { /* gradient fallback is fine */ });
+}
+
+function fetchAllPosters() {
+  var all = Object.values(DATA).flat();
+  var i = 0;
+  function nextBatch() {
+    if (i >= all.length) return;
+    var batch = all.slice(i, i + 4);
+    i += 4;
+    Promise.all(batch.map(fetchPoster)).then(function() {
+      render();
+      if (i < all.length) setTimeout(nextBatch, 250);
+    });
+  }
+  nextBatch();
+}
+
+/* ============================================================
+   INIT
+   ============================================================ */
+render();
+fetchAllPosters();
+</script>
+</body>
+</html>
