@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<!-- HOSTING: To share this gallery:
+     1. Copy photos to a web-accessible directory
+     2. Find-replace "photos/" with your base URL
+     3. Set PASS_HASH to SHA-256 of your password, or leave "" for public
+     4. To generate hash: echo -n "yourpassword" | shasum -a 256 | cut -d' ' -f1
+-->
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Galaxidi Easter Week 2026</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#1a1a2e;color:#e0e0e0;font-family:'Segoe UI',system-ui,sans-serif;overflow-x:hidden}
+
+/* Password Gate */
+.gate{position:fixed;top:0;left:0;width:100%;height:100%;background:#1a1a2e;z-index:200;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.gate.hidden{display:none}
+.gate h1{font-size:1.6em;letter-spacing:.2em;color:#c0a0d0;margin-bottom:8px}
+.gate p{color:#7070a0;font-size:.95em;margin-bottom:30px}
+.gate-box{display:flex;gap:10px}
+.gate input{background:#16213e;border:1px solid #2a2a4e;color:#e0e0e0;padding:12px 20px;border-radius:8px;font-size:1em;width:260px;outline:none;transition:border .2s}
+.gate input:focus{border-color:#c0a0d0}
+.gate button{background:#0f3460;color:#e0e0e0;border:none;padding:12px 24px;border-radius:8px;font-size:1em;cursor:pointer;transition:background .2s}
+.gate button:hover{background:#1a4a8a}
+.gate .err{color:#e06060;margin-top:15px;font-size:.9em;min-height:1.2em}
+
+/* Header */
+.hdr{text-align:center;padding:40px 20px;background:linear-gradient(135deg,#16213e,#0f3460)}
+.hdr h1{font-size:2em;letter-spacing:.3em;color:#e0e0e0;margin-bottom:10px}
+.hdr .d{font-size:1.2em;color:#a0a0c0}.hdr .l{font-size:1em;color:#7070a0;margin-top:5px}
+.hdr .cx{font-size:1.1em;color:#c0a0d0;margin-top:15px;font-style:italic}
+.st{text-align:center;padding:20px;color:#7070a0;font-size:.9em}
+
+/* Nav bar */
+.nb{position:sticky;top:0;z-index:50;background:#12122aee;padding:10px 20px;display:flex;justify-content:center;gap:10px;flex-wrap:wrap;border-bottom:1px solid #2a2a4e;backdrop-filter:blur(8px)}
+.nb a{color:#a0a0c0;text-decoration:none;padding:6px 14px;border-radius:20px;font-size:.85em;transition:all .2s}
+.nb a:hover{background:#0f3460;color:#e0e0e0}
+
+/* Grid */
+.g{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px;padding:15px 30px;max-width:1800px;margin:0 auto}
+.photo-card{background:#16213e;border-radius:12px;overflow:hidden;transition:transform .2s;cursor:pointer;position:relative}
+.photo-card:hover{transform:scale(1.02)}
+.photo-card img{width:100%;height:260px;object-fit:cover;object-position:top;display:block}
+.m{padding:10px 15px}.t{color:#a0a0c0;font-size:.85em}
+
+/* Download overlay on cards */
+.dl-grid{position:absolute;bottom:50px;right:10px;background:rgba(15,52,96,.85);border-radius:8px;padding:6px 8px;opacity:0;transition:opacity .2s;cursor:pointer;z-index:10}
+.photo-card:hover .dl-grid{opacity:1}
+.dl-grid:hover{background:rgba(26,74,138,.95)}
+
+/* Day headers */
+.dh{text-align:center;padding:25px 20px 8px}
+.dh h2{font-size:1.4em;color:#c0a0d0;margin-bottom:4px}
+.dh .s{color:#7070a0;font-size:.9em}.dh .c{color:#505080;font-size:.8em;margin-top:3px}
+.dv{border:none;border-top:1px solid #2a2a4e;margin:8px 60px}
+
+/* Lightbox */
+.lb{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.97);z-index:100;justify-content:center;align-items:center;flex-direction:column}
+.lb.a{display:flex}
+.lb-img-wrap{position:relative;width:95%;height:85%;display:flex;justify-content:center;align-items:center;overflow:hidden;cursor:zoom-in}
+.lb-img-wrap.zoomed{cursor:zoom-out}
+.lb-img-wrap img{max-width:100%;max-height:100%;object-fit:contain;transition:transform .15s ease-out;transform-origin:center center;user-select:none;-webkit-user-drag:none}
+.lb .x{position:absolute;top:15px;right:25px;font-size:2em;color:#fff;cursor:pointer;z-index:101;opacity:.7;transition:opacity .2s}
+.lb .x:hover{opacity:1}
+.lb .n{position:absolute;top:50%;font-size:3em;color:#fff;cursor:pointer;user-select:none;z-index:101;padding:20px;opacity:.5;transition:opacity .2s}
+.lb .n:hover{opacity:1}
+.lb .p{left:10px}.lb .nx{right:10px}
+.lb .ct{color:#a0a0c0;font-size:.9em;margin-top:8px;text-align:center}
+.lb .lb-label{color:#7070a0;font-size:.85em;margin-top:2px}
+
+/* Lightbox toolbar */
+.lb-toolbar{position:absolute;top:15px;left:25px;display:flex;gap:12px;z-index:101}
+.lb-btn{background:rgba(255,255,255,.12);border:none;color:#fff;padding:10px 16px;border-radius:10px;cursor:pointer;font-size:.95em;display:flex;align-items:center;gap:8px;transition:background .2s;text-decoration:none;opacity:.85}
+.lb-btn:hover{background:rgba(255,255,255,.25);opacity:1}
+.lb-btn svg{width:20px;height:20px}
+.lb-btn.dl-main{background:rgba(192,160,208,.2);border:1px solid rgba(192,160,208,.3)}
+.lb-btn.dl-main:hover{background:rgba(192,160,208,.35)}
+
+/* Zoom indicator */
+.zoom-ind{position:absolute;bottom:15px;right:25px;background:rgba(0,0,0,.6);color:#c0a0d0;padding:6px 14px;border-radius:20px;font-size:.85em;z-index:101;opacity:0;transition:opacity .3s}
+.zoom-ind.show{opacity:1}
+
+@media(max-width:700px){
+  .g{grid-template-columns:1fr;padding:10px}
+  .photo-card img{height:220px}
+  .lb .n{font-size:2em;padding:10px}
+  .gate input{width:200px}
+}
+</style></head><body>
+
+<!-- Password Gate -->
+<div class="gate hidden" id="gate">
+  <h1>P R I V A T E &nbsp; G A L L E R Y</h1>
+  <p>Galaxidi Easter 2026</p>
+  <div class="gate-box">
+    <input type="password" id="gate-pw" placeholder="Password" autocomplete="off">
+    <button onclick="checkPass()">Enter</button>
+  </div>
+  <div class="err" id="gate-err"></div>
+</div>
+
+
+<div class="hdr"><h1>N T E M I S '  J O U R N A L</h1>
+<div class="d">Galaxidi Easter Week — 7-13 April 2026</div>
+<div class="l">📍 Galaxidi, Fokida</div>
+<div class="cx">☦️ Holy Week · 🐣 Πάσχα · 🎂 Clio's 7th Birthday</div></div>
+<div class="st">265 photos · 7 days · One beautiful week</div>
+<nav class="nb">
+<a href="#d-2026-04-07">Apr 7 🚗</a><a href="#d-2026-04-08">Apr 8 🌊</a>
+<a href="#d-2026-04-09">Apr 9 ⛪</a><a href="#d-2026-04-10">Apr 10 ✝️</a>
+<a href="#d-2026-04-11">Apr 11 🕯️</a><a href="#d-2026-04-12">Apr 12 🐣</a>
+<a href="#d-2026-04-13">Apr 13 🎂</a></nav>
+
+<div class="dh" id="d-2026-04-07"><h2>🚗 Road Trip: Delphi → Itea → Galaxidi</h2><div class="s">Monday 7 April 2026</div><div class="s">Arrival day</div><div class="c">58 photos</div></div>
+<div class="g"><div class="photo-card"><img src="photos/2026-04-07/20260407_131349.jpg" loading="lazy"><div class="m"><div class="t">13:13</div></div></div><div class="photo-card"><img src="photos/2026-04-07/20260407_131350.jpg" loading="lazy"><div class="m"><div class="t">13:13</div></div></div><div class="photo-card"><img src="photos/2026-04-07/20260407_131351.jpg" loading="lazy"><div class="m"><div class="t">13:13</div></div></div><div class="photo-card"><img src="photos/2026-04-07/20260407_150245.jpg" loading="lazy"><div class="m"><div class="t">15:02</div></div></div><div class="photo-card"><img src="photos/2026-04-07/20260407_163509.jpg" loading="lazy"><div class="m"><div class="t">16:35</div></div></div><div class="photo-card"><img src="photos/2026-04-07/20260407_163510.jpg" loading="lazy"><div class="m"><div class="t">16:35</div></div></div><div class="photo-card"><img src="photos/2026-04-07/20260407_163511.jpg" loading="lazy"><div class="m"><div class="t">16:35</div></div></div><div class="photo-card"><img src="photos/2026-04-07/20260407_170009(0).jpg" loading="lazy"><div class="m"><div class="t">17:00</div></div></div><div class="photo-card"><img src="photos/2026-04-07/20260407_170009.jpg" loading="lazy"><div class="m"><div class="t">17:00</div></div></div><div class="photo-card"><img src="photos/2026-04-07/20260407_170301.jpg" loading="lazy"><div class="m"><div class="t">17:03</div></div></div><div class="photo-card"><img src="photos/2026-04-07/20260407_170304.jpg" loading="lazy"><div class="m"><div class="t">17:03</div></div></div><div class="photo-card"><img src="photos/2026-04-07/20260407_170309.jpg" loading="lazy"><div class="m"><div class="t">17:03</div></div></div><div class="photo-card"><img src="photos/2026-04-07/20260407_170811.jpg" loading="lazy"><div class="m"><div class="t">17:08</div></div></div><div class="photo-card"><img src="photos/2026-04-07/20260407_173313.jpg" loading="lazy"><div class="m"><div class="t">17:33</div></div></div><div class="photo-card"><img src="photos/2026-04-07/20260407_173315.jpg" loading="lazy"><div class="m"><div class="t">17:33</div></div></div><div class="photo-card"><img src="photos/2026-04-07/20260407_174045(0).jpg" loading="lazy"><div class="m"><div class="t">17:40</div></div></div><div class="photo-card"><img src="photos/2026-04-07/20260407_174045.jpg" loading="lazy"><div class="m"><div class="t">17:40</div></div></div><div class="photo-card"><img src="photos/2026-04-07/20260407_201553.jpg" loading="lazy"><div class="m"><div class="t">20:15</div></div></div><div class="photo-card"><img src="photos/2026-04-07/20260407_215226.jpg" loading="lazy"><div class="m"><div class="t">21:52</div></div></div><div class="photo-card"><img src="photos/2026-04-07/20260407_215227.jpg" loading="lazy"><div class="m"><div class="t">21:52</div></div></div><div class="photo-card"><img src="photos/2026-04-07/20260407_232255.jpg" loading="lazy"><div class="m"><div class="t">23:22</div></div></div></div><hr class="dv">
+<div class="dh" id="d-2026-04-08"><h2>🌊 First Full Day in Galaxidi</h2><div class="s">Tuesday 8 April 2026</div><div class="s">Settling in</div><div class="c">25 photos</div></div>
+<div class="g"><div class="photo-card"><img src="photos/2026-04-08/20260408_080548.jpg" loading="lazy"><div class="m"><div class="t">08:05</div></div></div><div class="photo-card"><img src="photos/2026-04-08/20260408_080551.jpg" loading="lazy"><div class="m"><div class="t">08:05</div></div></div><div class="photo-card"><img src="photos/2026-04-08/20260408_080555.jpg" loading="lazy"><div class="m"><div class="t">08:05</div></div></div><div class="photo-card"><img src="photos/2026-04-08/20260408_080558.jpg" loading="lazy"><div class="m"><div class="t">08:05</div></div></div><div class="photo-card"><img src="photos/2026-04-08/20260408_094345.jpg" loading="lazy"><div class="m"><div class="t">09:43</div></div></div><div class="photo-card"><img src="photos/2026-04-08/20260408_100820.jpg" loading="lazy"><div class="m"><div class="t">10:08</div></div></div><div class="photo-card"><img src="photos/2026-04-08/20260408_122751(0).jpg" loading="lazy"><div class="m"><div class="t">12:27</div></div></div><div class="photo-card"><img src="photos/2026-04-08/20260408_122751.jpg" loading="lazy"><div class="m"><div class="t">12:27</div></div></div><div class="photo-card"><img src="photos/2026-04-08/20260408_124842.jpg" loading="lazy"><div class="m"><div class="t">12:48</div></div></div><div class="photo-card"><img src="photos/2026-04-08/20260408_132845.jpg" loading="lazy"><div class="m"><div class="t">13:28</div></div></div><div class="photo-card"><img src="photos/2026-04-08/20260408_132849.jpg" loading="lazy"><div class="m"><div class="t">13:28</div></div></div><div class="photo-card"><img src="photos/2026-04-08/20260408_145556.jpg" loading="lazy"><div class="m"><div class="t">14:55</div></div></div><div class="photo-card"><img src="photos/2026-04-08/20260408_145942(0).jpg" loading="lazy"><div class="m"><div class="t">14:59</div></div></div><div class="photo-card"><img src="photos/2026-04-08/20260408_145942.jpg" loading="lazy"><div class="m"><div class="t">14:59</div></div></div><div class="photo-card"><img src="photos/2026-04-08/20260408_145954.jpg" loading="lazy"><div class="m"><div class="t">14:59</div></div></div><div class="photo-card"><img src="photos/2026-04-08/20260408_145957.jpg" loading="lazy"><div class="m"><div class="t">14:59</div></div></div><div class="photo-card"><img src="photos/2026-04-08/20260408_150038.jpg" loading="lazy"><div class="m"><div class="t">15:00</div></div></div><div class="photo-card"><img src="photos/2026-04-08/20260408_150039.jpg" loading="lazy"><div class="m"><div class="t">15:00</div></div></div><div class="photo-card"><img src="photos/2026-04-08/20260408_151301.jpg" loading="lazy"><div class="m"><div class="t">15:13</div></div></div><div class="photo-card"><img src="photos/2026-04-08/20260408_151303.jpg" loading="lazy"><div class="m"><div class="t">15:13</div></div></div><div class="photo-card"><img src="photos/2026-04-08/20260408_151305.jpg" loading="lazy"><div class="m"><div class="t">15:13</div></div></div><div class="photo-card"><img src="photos/2026-04-08/20260408_151308.jpg" loading="lazy"><div class="m"><div class="t">15:13</div></div></div><div class="photo-card"><img src="photos/2026-04-08/20260408_152204.jpg" loading="lazy"><div class="m"><div class="t">15:22</div></div></div><div class="photo-card"><img src="photos/2026-04-08/20260408_152206.jpg" loading="lazy"><div class="m"><div class="t">15:22</div></div></div><div class="photo-card"><img src="photos/2026-04-08/20260408_152207.jpg" loading="lazy"><div class="m"><div class="t">15:22</div></div></div></div><hr class="dv">
+<div class="dh" id="d-2026-04-09"><h2>⛪ Holy Wednesday</h2><div class="s">Wednesday 9 April 2026</div><div class="s">Μεγάλη Τετάρτη</div><div class="c">22 photos</div></div>
+<div class="g"><div class="photo-card"><img src="photos/2026-04-09/20260409_123739.jpg" loading="lazy"><div class="m"><div class="t">12:37</div></div></div><div class="photo-card"><img src="photos/2026-04-09/20260409_123742.jpg" loading="lazy"><div class="m"><div class="t">12:37</div></div></div><div class="photo-card"><img src="photos/2026-04-09/20260409_131843.jpg" loading="lazy"><div class="m"><div class="t">13:18</div></div></div><div class="photo-card"><img src="photos/2026-04-09/20260409_161601.jpg" loading="lazy"><div class="m"><div class="t">16:16</div></div></div><div class="photo-card"><img src="photos/2026-04-09/20260409_183455.jpg" loading="lazy"><div class="m"><div class="t">18:34</div></div></div><div class="photo-card"><img src="photos/2026-04-09/20260409_191035.jpg" loading="lazy"><div class="m"><div class="t">19:10</div></div></div><div class="photo-card"><img src="photos/2026-04-09/20260409_201139.jpg" loading="lazy"><div class="m"><div class="t">20:11</div></div></div><div class="photo-card"><img src="photos/2026-04-09/20260409_201141.jpg" loading="lazy"><div class="m"><div class="t">20:11</div></div></div><div class="photo-card"><img src="photos/2026-04-09/20260409_204205.jpg" loading="lazy"><div class="m"><div class="t">20:42</div></div></div><div class="photo-card"><img src="photos/2026-04-09/20260409_204206.jpg" loading="lazy"><div class="m"><div class="t">20:42</div></div></div><div class="photo-card"><img src="photos/2026-04-09/20260409_212431.jpg" loading="lazy"><div class="m"><div class="t">21:24</div></div></div><div class="photo-card"><img src="photos/2026-04-09/20260409_212433.jpg" loading="lazy"><div class="m"><div class="t">21:24</div></div></div><div class="photo-card"><img src="photos/2026-04-09/20260409_215246.jpg" loading="lazy"><div class="m"><div class="t">21:52</div></div></div><div class="photo-card"><img src="photos/2026-04-09/20260409_215252(0).jpg" loading="lazy"><div class="m"><div class="t">21:52</div></div></div><div class="photo-card"><img src="photos/2026-04-09/20260409_215252.jpg" loading="lazy"><div class="m"><div class="t">21:52</div></div></div><div class="photo-card"><img src="photos/2026-04-09/20260409_222615.jpg" loading="lazy"><div class="m"><div class="t">22:26</div></div></div><div class="photo-card"><img src="photos/2026-04-09/20260409_222619(0).jpg" loading="lazy"><div class="m"><div class="t">22:26</div></div></div><div class="photo-card"><img src="photos/2026-04-09/20260409_222619.jpg" loading="lazy"><div class="m"><div class="t">22:26</div></div></div><div class="photo-card"><img src="photos/2026-04-09/20260409_231358.jpg" loading="lazy"><div class="m"><div class="t">23:13</div></div></div><div class="photo-card"><img src="photos/2026-04-09/20260409_231400.jpg" loading="lazy"><div class="m"><div class="t">23:14</div></div></div><div class="photo-card"><img src="photos/2026-04-09/20260409_231404.jpg" loading="lazy"><div class="m"><div class="t">23:14</div></div></div><div class="photo-card"><img src="photos/2026-04-09/20260409_231408.jpg" loading="lazy"><div class="m"><div class="t">23:14</div></div></div></div><hr class="dv">
+<div class="dh" id="d-2026-04-10"><h2>✝️ Good Friday</h2><div class="s">Thursday 10 April 2026</div><div class="s">Μεγάλη Παρασκευή — church, Aristodimos</div><div class="c">31 photos</div></div>
+<div class="g"><div class="photo-card"><img src="photos/2026-04-10/20260410_103359.jpg" loading="lazy"><div class="m"><div class="t">10:33</div></div></div><div class="photo-card"><img src="photos/2026-04-10/20260410_103955.jpg" loading="lazy"><div class="m"><div class="t">10:39</div></div></div><div class="photo-card"><img src="photos/2026-04-10/20260410_104012.jpg" loading="lazy"><div class="m"><div class="t">10:40</div></div></div><div class="photo-card"><img src="photos/2026-04-10/20260410_121127.jpg" loading="lazy"><div class="m"><div class="t">12:11</div></div></div><div class="photo-card"><img src="photos/2026-04-10/20260410_121133.jpg" loading="lazy"><div class="m"><div class="t">12:11</div></div></div><div class="photo-card"><img src="photos/2026-04-10/20260410_121134.jpg" loading="lazy"><div class="m"><div class="t">12:11</div></div></div><div class="photo-card"><img src="photos/2026-04-10/20260410_121137.jpg" loading="lazy"><div class="m"><div class="t">12:11</div></div></div><div class="photo-card"><img src="photos/2026-04-10/20260410_131308.jpg" loading="lazy"><div class="m"><div class="t">13:13</div></div></div><div class="photo-card"><img src="photos/2026-04-10/20260410_131309(0).jpg" loading="lazy"><div class="m"><div class="t">13:13</div></div></div><div class="photo-card"><img src="photos/2026-04-10/20260410_131309.jpg" loading="lazy"><div class="m"><div class="t">13:13</div></div></div><div class="photo-card"><img src="photos/2026-04-10/20260410_131313.jpg" loading="lazy"><div class="m"><div class="t">13:13</div></div></div><div class="photo-card"><img src="photos/2026-04-10/20260410_152642.jpg" loading="lazy"><div class="m"><div class="t">15:26</div></div></div><div class="photo-card"><img src="photos/2026-04-10/20260410_160618.jpg" loading="lazy"><div class="m"><div class="t">16:06</div></div></div><div class="photo-card"><img src="photos/2026-04-10/20260410_163629.jpg" loading="lazy"><div class="m"><div class="t">16:36</div></div></div><div class="photo-card"><img src="photos/2026-04-10/20260410_173140.jpg" loading="lazy"><div class="m"><div class="t">17:31</div></div></div><div class="photo-card"><img src="photos/2026-04-10/20260410_173147.jpg" loading="lazy"><div class="m"><div class="t">17:31</div></div></div><div class="photo-card"><img src="photos/2026-04-10/20260410_201743.jpg" loading="lazy"><div class="m"><div class="t">20:17</div></div></div><div class="photo-card"><img src="photos/2026-04-10/20260410_204701.jpg" loading="lazy"><div class="m"><div class="t">20:47</div></div></div><div class="photo-card"><img src="photos/2026-04-10/20260410_204702.jpg" loading="lazy"><div class="m"><div class="t">20:47</div></div></div><div class="photo-card"><img src="photos/2026-04-10/20260410_210412.jpg" loading="lazy"><div class="m"><div class="t">21:04</div></div></div><div class="photo-card"><img src="photos/2026-04-10/20260410_210414.jpg" loading="lazy"><div class="m"><div class="t">21:04</div></div></div><div class="photo-card"><img src="photos/2026-04-10/20260410_213108.jpg" loading="lazy"><div class="m"><div class="t">21:31</div></div></div><div class="photo-card"><img src="photos/2026-04-10/20260410_213111.jpg" loading="lazy"><div class="m"><div class="t">21:31</div></div></div><div class="photo-card"><img src="photos/2026-04-10/20260410_230132.jpg" loading="lazy"><div class="m"><div class="t">23:01</div></div></div><div class="photo-card"><img src="photos/2026-04-10/20260410_232757.jpg" loading="lazy"><div class="m"><div class="t">23:27</div></div></div><div class="photo-card"><img src="photos/2026-04-10/20260410_232759.jpg" loading="lazy"><div class="m"><div class="t">23:27</div></div></div><div class="photo-card"><img src="photos/2026-04-10/20260410_232801.jpg" loading="lazy"><div class="m"><div class="t">23:28</div></div></div><div class="photo-card"><img src="photos/2026-04-10/20260410_232805.jpg" loading="lazy"><div class="m"><div class="t">23:28</div></div></div><div class="photo-card"><img src="photos/2026-04-10/20260410_234530.jpg" loading="lazy"><div class="m"><div class="t">23:45</div></div></div><div class="photo-card"><img src="photos/2026-04-10/20260410_234533.jpg" loading="lazy"><div class="m"><div class="t">23:45</div></div></div><div class="photo-card"><img src="photos/2026-04-10/20260410_234536.jpg" loading="lazy"><div class="m"><div class="t">23:45</div></div></div></div><hr class="dv">
+<div class="dh" id="d-2026-04-11"><h2>🕯️ Holy Saturday</h2><div class="s">Friday 11 April 2026</div><div class="s">Epitaphios, Anastasi, lamb 14kg</div><div class="c">28 photos</div></div>
+<div class="g"><div class="photo-card"><img src="photos/2026-04-11/20260411_000039.jpg" loading="lazy"><div class="m"><div class="t">00:00</div></div></div><div class="photo-card"><img src="photos/2026-04-11/20260411_092346.jpg" loading="lazy"><div class="m"><div class="t">09:23</div></div></div><div class="photo-card"><img src="photos/2026-04-11/20260411_092348.jpg" loading="lazy"><div class="m"><div class="t">09:23</div></div></div><div class="photo-card"><img src="photos/2026-04-11/20260411_115409.jpg" loading="lazy"><div class="m"><div class="t">11:54</div></div></div><div class="photo-card"><img src="photos/2026-04-11/20260411_115415.jpg" loading="lazy"><div class="m"><div class="t">11:54</div></div></div><div class="photo-card"><img src="photos/2026-04-11/20260411_115700.jpg" loading="lazy"><div class="m"><div class="t">11:57</div></div></div><div class="photo-card"><img src="photos/2026-04-11/20260411_115712.jpg" loading="lazy"><div class="m"><div class="t">11:57</div></div></div><div class="photo-card"><img src="photos/2026-04-11/20260411_115801.jpg" loading="lazy"><div class="m"><div class="t">11:58</div></div></div><div class="photo-card"><img src="photos/2026-04-11/20260411_120604.jpg" loading="lazy"><div class="m"><div class="t">12:06</div></div></div><div class="photo-card"><img src="photos/2026-04-11/20260411_144600.jpg" loading="lazy"><div class="m"><div class="t">14:46</div></div></div><div class="photo-card"><img src="photos/2026-04-11/20260411_144605.jpg" loading="lazy"><div class="m"><div class="t">14:46</div></div></div><div class="photo-card"><img src="photos/2026-04-11/20260411_144607.jpg" loading="lazy"><div class="m"><div class="t">14:46</div></div></div><div class="photo-card"><img src="photos/2026-04-11/20260411_144608.jpg" loading="lazy"><div class="m"><div class="t">14:46</div></div></div><div class="photo-card"><img src="photos/2026-04-11/20260411_162401.jpg" loading="lazy"><div class="m"><div class="t">16:24</div></div></div><div class="photo-card"><img src="photos/2026-04-11/20260411_180743.jpg" loading="lazy"><div class="m"><div class="t">18:07</div></div></div><div class="photo-card"><img src="photos/2026-04-11/20260411_180744.jpg" loading="lazy"><div class="m"><div class="t">18:07</div></div></div><div class="photo-card"><img src="photos/2026-04-11/20260411_180745.jpg" loading="lazy"><div class="m"><div class="t">18:07</div></div></div><div class="photo-card"><img src="photos/2026-04-11/20260411_180923.jpg" loading="lazy"><div class="m"><div class="t">18:09</div></div></div><div class="photo-card"><img src="photos/2026-04-11/20260411_185409.jpg" loading="lazy"><div class="m"><div class="t">18:54</div></div></div><div class="photo-card"><img src="photos/2026-04-11/20260411_185411.jpg" loading="lazy"><div class="m"><div class="t">18:54</div></div></div><div class="photo-card"><img src="photos/2026-04-11/20260411_185414.jpg" loading="lazy"><div class="m"><div class="t">18:54</div></div></div><div class="photo-card"><img src="photos/2026-04-11/20260411_185422.jpg" loading="lazy"><div class="m"><div class="t">18:54</div></div></div><div class="photo-card"><img src="photos/2026-04-11/20260411_185423.jpg" loading="lazy"><div class="m"><div class="t">18:54</div></div></div><div class="photo-card"><img src="photos/2026-04-11/20260411_185425.jpg" loading="lazy"><div class="m"><div class="t">18:54</div></div></div><div class="photo-card"><img src="photos/2026-04-11/20260411_233146.jpg" loading="lazy"><div class="m"><div class="t">23:31</div></div></div><div class="photo-card"><img src="photos/2026-04-11/20260411_233147.jpg" loading="lazy"><div class="m"><div class="t">23:31</div></div></div><div class="photo-card"><img src="photos/2026-04-11/20260411_233148.jpg" loading="lazy"><div class="m"><div class="t">23:31</div></div></div><div class="photo-card"><img src="photos/2026-04-11/20260411_233149.jpg" loading="lazy"><div class="m"><div class="t">23:31</div></div></div></div><hr class="dv">
+<div class="dh" id="d-2026-04-12"><h2>🐣 ΠΑΣΧΑ!</h2><div class="s">Saturday 12 April 2026</div><div class="s">Χριστός Ανέστη!</div><div class="c">50 photos</div></div>
+<div class="g"><div class="photo-card"><img src="photos/2026-04-12/20260412_000525.jpg" loading="lazy"><div class="m"><div class="t">00:05</div></div></div><div class="photo-card"><img src="photos/2026-04-12/20260412_000527.jpg" loading="lazy"><div class="m"><div class="t">00:05</div></div></div><div class="photo-card"><img src="photos/2026-04-12/20260412_000528.jpg" loading="lazy"><div class="m"><div class="t">00:05</div></div></div><div class="photo-card"><img src="photos/2026-04-12/20260412_001914(0).jpg" loading="lazy"><div class="m"><div class="t">00:19</div></div></div><div class="photo-card"><img src="photos/2026-04-12/20260412_001914.jpg" loading="lazy"><div class="m"><div class="t">00:19</div></div></div><div class="photo-card"><img src="photos/2026-04-12/20260412_002920.jpg" loading="lazy"><div class="m"><div class="t">00:29</div></div></div><div class="photo-card"><img src="photos/2026-04-12/20260412_002926.jpg" loading="lazy"><div class="m"><div class="t">00:29</div></div></div><div class="photo-card"><img src="photos/2026-04-12/20260412_002938.jpg" loading="lazy"><div class="m"><div class="t">00:29</div></div></div><div class="photo-card"><img src="photos/2026-04-12/20260412_002940.jpg" loading="lazy"><div class="m"><div class="t">00:29</div></div></div><div class="photo-card"><img src="photos/2026-04-12/20260412_002941.jpg" loading="lazy"><div class="m"><div class="t">00:29</div></div></div><div class="photo-card"><img src="photos/2026-04-12/20260412_002946.jpg" loading="lazy"><div class="m"><div class="t">00:29</div></div></div><div class="photo-card"><img src="photos/2026-04-12/20260412_002947.jpg" loading="lazy"><div class="m"><div class="t">00:29</div></div></div><div class="photo-card"><img src="photos/2026-04-12/20260412_003705.jpg" loading="lazy"><div class="m"><div class="t">00:37</div></div></div><div class="photo-card"><img src="photos/2026-04-12/20260412_003707.jpg" loading="lazy"><div class="m"><div class="t">00:37</div></div></div><div class="photo-card"><img src="photos/2026-04-12/20260412_003709.jpg" loading="lazy"><div class="m"><div class="t">00:37</div></div></div><div class="photo-card"><img src="photos/2026-04-12/20260412_003714.jpg" loading="lazy"><div class="m"><div class="t">00:37</div></div></div><div class="photo-card"><img src="photos/2026-04-12/20260412_005138.jpg" loading="lazy"><div class="m"><div class="t">00:51</div></div></div><div class="photo-card"><img src="photos/2026-04-12/20260412_005410.jpg" loading="lazy"><div class="m"><div class="t">00:54</div></div></div><div class="photo-card"><img src="photos/2026-04-12/20260412_022654.jpg" loading="lazy"><div class="m"><div class="t">02:26</div></div></div><div class="photo-card"><img src="photos/2026-04-12/20260412_022655(0).jpg" loading="lazy"><div class="m"><div class="t">02:26</div></div></div><div class="photo-card"><img src="photos/2026-04-12/20260412_022655.jpg" loading="lazy"><div class="m"><div class="t">02:26</div></div></div><div class="photo-card"><img src="photos/2026-04-12/20260412_023122.jpg" loading="lazy"><div class="m"><div class="t">02:31</div></div></div><div class="photo-card"><img src="photos/2026-04-12/20260412_023124.jpg" loading="lazy"><div class="m"><div class="t">02:31</div></div></div><div class="photo-card"><img src="photos/2026-04-12/20260412_023607.jpg" loading="lazy"><div class="m"><div class="t">02:36</div></div></div><div class="photo-card"><img src="photos/2026-04-12/20260412_023613.jpg" loading="lazy"><div class="m"><div class="t">02:36</div></div></div><div class="photo-card"><img src="photos/2026-04-12/20260412_103845.jpg" loading="lazy"><div class="m"><div class="t">10:38</div></div></div><div class="photo-card"><img src="photos/2026-04-12/20260412_103846.jpg" loading="lazy"><div class="m"><div class="t">10:38</div></div></div><div class="photo-card"><img src="photos/2026-04-12/20260412_124022.jpg" loading="lazy"><div class="m"><div class="t">12:40</div></div></div><div class="photo-card"><img src="photos/2026-04-12/20260412_133515.jpg" loading="lazy"><div class="m"><div class="t">13:35</div></div></div><div class="photo-card"><img src="photos/2026-04-12/20260412_133519.jpg" loading="lazy"><div class="m"><div class="t">13:35</div></div></div><div class="photo-card"><img src="photos/2026-04-12/20260412_133520.jpg" loading="lazy"><div class="m"><div class="t">13:35</div></div></div><div class="photo-card"><img src="photos/2026-04-12/20260412_133523.jpg" loading="lazy"><div class="m"><div class="t">13:35</div></div></div><div class="photo-card"><img src="photos/2026-04-12/20260412_145255.jpg" loading="lazy"><div class="m"><div class="t">14:52</div></div></div><div class="photo-card"><img src="photos/2026-04-12/20260412_145303.jpg" loading="lazy"><div class="m"><div class="t">14:53</div></div></div><div class="photo-card"><img src="photos/2026-04-12/20260412_150538.jpg" loading="lazy"><div class="m"><div class="t">15:05</div></div></div><div class="photo-card"><img src="photos/2026-04-12/20260412_150539.jpg" loading="lazy"><div class="m"><div class="t">15:05</div></div></div><div class="photo-card"><img src="photos/2026-04-12/20260412_150540.jpg" loading="lazy"><div class="m"><div class="t">15:05</div></div></div><div class="photo-card"><img src="photos/2026-04-12/20260412_150541.jpg" loading="lazy"><div class="m"><div class="t">15:05</div></div></div><div class="photo-card"><img src="photos/2026-04-12/20260412_150542.jpg" loading="lazy"><div class="m"><div class="t">15:05</div></div></div><div class="photo-card"><img src="photos/2026-04-12/20260412_150543.jpg" loading="lazy"><div class="m"><div class="t">15:05</div></div></div><div class="photo-card"><img src="photos/2026-04-12/20260412_150736.jpg" loading="lazy"><div class="m"><div class="t">15:07</div></div></div><div class="photo-card"><img src="photos/2026-04-12/20260412_150737(0).jpg" loading="lazy"><div class="m"><div class="t">15:07</div></div></div><div class="photo-card"><img src="photos/2026-04-12/20260412_150737.jpg" loading="lazy"><div class="m"><div class="t">15:07</div></div></div><div class="photo-card"><img src="photos/2026-04-12/20260412_180858.jpg" loading="lazy"><div class="m"><div class="t">18:08</div></div></div><div class="photo-card"><img src="photos/2026-04-12/20260412_180859.jpg" loading="lazy"><div class="m"><div class="t">18:08</div></div></div><div class="photo-card"><img src="photos/2026-04-12/20260412_213407.jpg" loading="lazy"><div class="m"><div class="t">21:34</div></div></div><div class="photo-card"><img src="photos/2026-04-12/20260412_213409(0).jpg" loading="lazy"><div class="m"><div class="t">21:34</div></div></div><div class="photo-card"><img src="photos/2026-04-12/20260412_213409.jpg" loading="lazy"><div class="m"><div class="t">21:34</div></div></div><div class="photo-card"><img src="photos/2026-04-12/20260412_225853.jpg" loading="lazy"><div class="m"><div class="t">22:58</div></div></div><div class="photo-card"><img src="photos/2026-04-12/20260412_225855.jpg" loading="lazy"><div class="m"><div class="t">22:58</div></div></div></div><hr class="dv">
+<div class="dh" id="d-2026-04-13"><h2>🎂 Clio's 7th Birthday!</h2><div class="s">Sunday 13 April 2026</div><div class="s">Harry Potter party — Νατσκούλη's</div><div class="c">51 photos</div></div>
+<div class="g"><div class="photo-card"><img src="photos/2026-04-13/20260413_083520.jpg" loading="lazy"><div class="m"><div class="t">08:35</div></div></div><div class="photo-card"><img src="photos/2026-04-13/20260413_101323.jpg" loading="lazy"><div class="m"><div class="t">10:13</div></div></div><div class="photo-card"><img src="photos/2026-04-13/20260413_101326.jpg" loading="lazy"><div class="m"><div class="t">10:13</div></div></div><div class="photo-card"><img src="photos/2026-04-13/20260413_113546.jpg" loading="lazy"><div class="m"><div class="t">11:35</div></div></div><div class="photo-card"><img src="photos/2026-04-13/20260413_113547.jpg" loading="lazy"><div class="m"><div class="t">11:35</div></div></div><div class="photo-card"><img src="photos/2026-04-13/20260413_113642.jpg" loading="lazy"><div class="m"><div class="t">11:36</div></div></div><div class="photo-card"><img src="photos/2026-04-13/20260413_113649.jpg" loading="lazy"><div class="m"><div class="t">11:36</div></div></div><div class="photo-card"><img src="photos/2026-04-13/20260413_113713.jpg" loading="lazy"><div class="m"><div class="t">11:37</div></div></div><div class="photo-card"><img src="photos/2026-04-13/20260413_113714.jpg" loading="lazy"><div class="m"><div class="t">11:37</div></div></div><div class="photo-card"><img src="photos/2026-04-13/20260413_114153.jpg" loading="lazy"><div class="m"><div class="t">11:41</div></div></div><div class="photo-card"><img src="photos/2026-04-13/20260413_115008.jpg" loading="lazy"><div class="m"><div class="t">11:50</div></div></div><div class="photo-card"><img src="photos/2026-04-13/20260413_115009(0).jpg" loading="lazy"><div class="m"><div class="t">11:50</div></div></div><div class="photo-card"><img src="photos/2026-04-13/20260413_115009.jpg" loading="lazy"><div class="m"><div class="t">11:50</div></div></div><div class="photo-card"><img src="photos/2026-04-13/20260413_115013(0).jpg" loading="lazy"><div class="m"><div class="t">11:50</div></div></div><div class="photo-card"><img src="photos/2026-04-13/20260413_115013.jpg" loading="lazy"><div class="m"><div class="t">11:50</div></div></div><div class="photo-card"><img src="photos/2026-04-13/20260413_115556.jpg" loading="lazy"><div class="m"><div class="t">11:55</div></div></div><div class="photo-card"><img src="photos/2026-04-13/20260413_115557.jpg" loading="lazy"><div class="m"><div class="t">11:55</div></div></div><div class="photo-card"><img src="photos/2026-04-13/20260413_115600.jpg" loading="lazy"><div class="m"><div class="t">11:56</div></div></div><div class="photo-card"><img src="photos/2026-04-13/20260413_115820.jpg" loading="lazy"><div class="m"><div class="t">11:58</div></div></div><div class="photo-card"><img src="photos/2026-04-13/20260413_115842.jpg" loading="lazy"><div class="m"><div class="t">11:58</div></div></div><div class="photo-card"><img src="photos/2026-04-13/20260413_115858.jpg" loading="lazy"><div class="m"><div class="t">11:58</div></div></div><div class="photo-card"><img src="photos/2026-04-13/20260413_120224.jpg" loading="lazy"><div class="m"><div class="t">12:02</div></div></div><div class="photo-card"><img src="photos/2026-04-13/20260413_121247.jpg" loading="lazy"><div class="m"><div class="t">12:12</div></div></div><div class="photo-card"><img src="photos/2026-04-13/20260413_122540.jpg" loading="lazy"><div class="m"><div class="t">12:25</div></div></div><div class="photo-card"><img src="photos/2026-04-13/20260413_122541.jpg" loading="lazy"><div class="m"><div class="t">12:25</div></div></div><div class="photo-card"><img src="photos/2026-04-13/20260413_122643(0).jpg" loading="lazy"><div class="m"><div class="t">12:26</div></div></div><div class="photo-card"><img src="photos/2026-04-13/20260413_122643.jpg" loading="lazy"><div class="m"><div class="t">12:26</div></div></div><div class="photo-card"><img src="photos/2026-04-13/20260413_122644.jpg" loading="lazy"><div class="m"><div class="t">12:26</div></div></div><div class="photo-card"><img src="photos/2026-04-13/20260413_122645(0).jpg" loading="lazy"><div class="m"><div class="t">12:26</div></div></div><div class="photo-card"><img src="photos/2026-04-13/20260413_122645.jpg" loading="lazy"><div class="m"><div class="t">12:26</div></div></div><div class="photo-card"><img src="photos/2026-04-13/20260413_123602.jpg" loading="lazy"><div class="m"><div class="t">12:36</div></div></div><div class="photo-card"><img src="photos/2026-04-13/20260413_125418.jpg" loading="lazy"><div class="m"><div class="t">12:54</div></div></div><div class="photo-card"><img src="photos/2026-04-13/20260413_125545.jpg" loading="lazy"><div class="m"><div class="t">12:55</div></div></div><div class="photo-card"><img src="photos/2026-04-13/20260413_131949.jpg" loading="lazy"><div class="m"><div class="t">13:19</div></div></div><div class="photo-card"><img src="photos/2026-04-13/20260413_131950(0).jpg" loading="lazy"><div class="m"><div class="t">13:19</div></div></div><div class="photo-card"><img src="photos/2026-04-13/20260413_131950.jpg" loading="lazy"><div class="m"><div class="t">13:19</div></div></div><div class="photo-card"><img src="photos/2026-04-13/20260413_132111.jpg" loading="lazy"><div class="m"><div class="t">13:21</div></div></div><div class="photo-card"><img src="photos/2026-04-13/20260413_132851.jpg" loading="lazy"><div class="m"><div class="t">13:28</div></div></div><div class="photo-card"><img src="photos/2026-04-13/20260413_132856.jpg" loading="lazy"><div class="m"><div class="t">13:28</div></div></div><div class="photo-card"><img src="photos/2026-04-13/20260413_143646.jpg" loading="lazy"><div class="m"><div class="t">14:36</div></div></div><div class="photo-card"><img src="photos/2026-04-13/20260413_144109.jpg" loading="lazy"><div class="m"><div class="t">14:41</div></div></div><div class="photo-card"><img src="photos/2026-04-13/20260413_144110(0).jpg" loading="lazy"><div class="m"><div class="t">14:41</div></div></div><div class="photo-card"><img src="photos/2026-04-13/20260413_144110.jpg" loading="lazy"><div class="m"><div class="t">14:41</div></div></div><div class="photo-card"><img src="photos/2026-04-13/20260413_144111.jpg" loading="lazy"><div class="m"><div class="t">14:41</div></div></div><div class="photo-card"><img src="photos/2026-04-13/20260413_152157.jpg" loading="lazy"><div class="m"><div class="t">15:21</div></div></div><div class="photo-card"><img src="photos/2026-04-13/20260413_152158.jpg" loading="lazy"><div class="m"><div class="t">15:21</div></div></div><div class="photo-card"><img src="photos/2026-04-13/20260413_152159.jpg" loading="lazy"><div class="m"><div class="t">15:21</div></div></div><div class="photo-card"><img src="photos/2026-04-13/20260413_185710.jpg" loading="lazy"><div class="m"><div class="t">18:57</div></div></div><div class="photo-card"><img src="photos/2026-04-13/20260413_185943.jpg" loading="lazy"><div class="m"><div class="t">18:59</div></div></div><div class="photo-card"><img src="photos/2026-04-13/20260413_190236.jpg" loading="lazy"><div class="m"><div class="t">19:02</div></div></div><div class="photo-card"><img src="photos/2026-04-13/20260413_190239.jpg" loading="lazy"><div class="m"><div class="t">19:02</div></div></div></div><hr class="dv">
+
+
+<!-- Lightbox -->
+<div class="lb" id="lb">
+  <div class="lb-toolbar">
+    <a class="lb-btn dl-main" id="lb-dl" href="#" download title="Download photo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Download
+    </a>
+    <button class="lb-btn" onclick="resetZoom()" title="Reset zoom (0)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="8" y1="11" x2="14" y2="11"/><line x1="11" y1="8" x2="11" y2="14"/></svg>
+      Fit
+    </button>
+  </div>
+  <span class="x" onclick="closeLB()">&times;</span>
+  <span class="n p" onclick="event.stopPropagation();prev()">&#8249;</span>
+  <div class="lb-img-wrap" id="lb-wrap">
+    <img id="li" src="" draggable="false">
+  </div>
+  <span class="n nx" onclick="event.stopPropagation();next()">&#8250;</span>
+  <div class="ct" id="lc"></div>
+  <div class="lb-label" id="ll"></div>
+  <div class="zoom-ind" id="zoom-ind">1.0x</div>
+</div>
+
+<script>
+// ===== CONFIG =====
+const PASS_HASH = "ef49107904ad373ef669ecb90a66b64e8de43ec3ec95e210bd9150d765ac2b53"; // SHA-256 hash. Empty = public (no gate).
+
+// ===== DATA =====
+const P=["photos/2026-04-07/20260407_131349.jpg","photos/2026-04-07/20260407_131350.jpg","photos/2026-04-07/20260407_131351.jpg","photos/2026-04-07/20260407_150245.jpg","photos/2026-04-07/20260407_163509.jpg","photos/2026-04-07/20260407_163510.jpg","photos/2026-04-07/20260407_163511.jpg","photos/2026-04-07/20260407_170009(0).jpg","photos/2026-04-07/20260407_170009.jpg","photos/2026-04-07/20260407_170301.jpg","photos/2026-04-07/20260407_170304.jpg","photos/2026-04-07/20260407_170309.jpg","photos/2026-04-07/20260407_170811.jpg","photos/2026-04-07/20260407_173313.jpg","photos/2026-04-07/20260407_173315.jpg","photos/2026-04-07/20260407_174045(0).jpg","photos/2026-04-07/20260407_174045.jpg","photos/2026-04-07/20260407_201553.jpg","photos/2026-04-07/20260407_215226.jpg","photos/2026-04-07/20260407_215227.jpg","photos/2026-04-07/20260407_232255.jpg","photos/2026-04-08/20260408_080548.jpg","photos/2026-04-08/20260408_080551.jpg","photos/2026-04-08/20260408_080555.jpg","photos/2026-04-08/20260408_080558.jpg","photos/2026-04-08/20260408_094345.jpg","photos/2026-04-08/20260408_100820.jpg","photos/2026-04-08/20260408_122751(0).jpg","photos/2026-04-08/20260408_122751.jpg","photos/2026-04-08/20260408_124842.jpg","photos/2026-04-08/20260408_132845.jpg","photos/2026-04-08/20260408_132849.jpg","photos/2026-04-08/20260408_145556.jpg","photos/2026-04-08/20260408_145942(0).jpg","photos/2026-04-08/20260408_145942.jpg","photos/2026-04-08/20260408_145954.jpg","photos/2026-04-08/20260408_145957.jpg","photos/2026-04-08/20260408_150038.jpg","photos/2026-04-08/20260408_150039.jpg","photos/2026-04-08/20260408_151301.jpg","photos/2026-04-08/20260408_151303.jpg","photos/2026-04-08/20260408_151305.jpg","photos/2026-04-08/20260408_151308.jpg","photos/2026-04-08/20260408_152204.jpg","photos/2026-04-08/20260408_152206.jpg","photos/2026-04-08/20260408_152207.jpg","photos/2026-04-09/20260409_123739.jpg","photos/2026-04-09/20260409_123742.jpg","photos/2026-04-09/20260409_131843.jpg","photos/2026-04-09/20260409_161601.jpg","photos/2026-04-09/20260409_183455.jpg","photos/2026-04-09/20260409_191035.jpg","photos/2026-04-09/20260409_201139.jpg","photos/2026-04-09/20260409_201141.jpg","photos/2026-04-09/20260409_204205.jpg","photos/2026-04-09/20260409_204206.jpg","photos/2026-04-09/20260409_212431.jpg","photos/2026-04-09/20260409_212433.jpg","photos/2026-04-09/20260409_215246.jpg","photos/2026-04-09/20260409_215252(0).jpg","photos/2026-04-09/20260409_215252.jpg","photos/2026-04-09/20260409_222615.jpg","photos/2026-04-09/20260409_222619(0).jpg","photos/2026-04-09/20260409_222619.jpg","photos/2026-04-09/20260409_231358.jpg","photos/2026-04-09/20260409_231400.jpg","photos/2026-04-09/20260409_231404.jpg","photos/2026-04-09/20260409_231408.jpg","photos/2026-04-10/20260410_103359.jpg","photos/2026-04-10/20260410_103955.jpg","photos/2026-04-10/20260410_104012.jpg","photos/2026-04-10/20260410_121127.jpg","photos/2026-04-10/20260410_121133.jpg","photos/2026-04-10/20260410_121134.jpg","photos/2026-04-10/20260410_121137.jpg","photos/2026-04-10/20260410_131308.jpg","photos/2026-04-10/20260410_131309(0).jpg","photos/2026-04-10/20260410_131309.jpg","photos/2026-04-10/20260410_131313.jpg","photos/2026-04-10/20260410_152642.jpg","photos/2026-04-10/20260410_160618.jpg","photos/2026-04-10/20260410_163629.jpg","photos/2026-04-10/20260410_173140.jpg","photos/2026-04-10/20260410_173147.jpg","photos/2026-04-10/20260410_201743.jpg","photos/2026-04-10/20260410_204701.jpg","photos/2026-04-10/20260410_204702.jpg","photos/2026-04-10/20260410_210412.jpg","photos/2026-04-10/20260410_210414.jpg","photos/2026-04-10/20260410_213108.jpg","photos/2026-04-10/20260410_213111.jpg","photos/2026-04-10/20260410_230132.jpg","photos/2026-04-10/20260410_232757.jpg","photos/2026-04-10/20260410_232759.jpg","photos/2026-04-10/20260410_232801.jpg","photos/2026-04-10/20260410_232805.jpg","photos/2026-04-10/20260410_234530.jpg","photos/2026-04-10/20260410_234533.jpg","photos/2026-04-10/20260410_234536.jpg","photos/2026-04-11/20260411_000039.jpg","photos/2026-04-11/20260411_092346.jpg","photos/2026-04-11/20260411_092348.jpg","photos/2026-04-11/20260411_115409.jpg","photos/2026-04-11/20260411_115415.jpg","photos/2026-04-11/20260411_115700.jpg","photos/2026-04-11/20260411_115712.jpg","photos/2026-04-11/20260411_115801.jpg","photos/2026-04-11/20260411_120604.jpg","photos/2026-04-11/20260411_144600.jpg","photos/2026-04-11/20260411_144605.jpg","photos/2026-04-11/20260411_144607.jpg","photos/2026-04-11/20260411_144608.jpg","photos/2026-04-11/20260411_162401.jpg","photos/2026-04-11/20260411_180743.jpg","photos/2026-04-11/20260411_180744.jpg","photos/2026-04-11/20260411_180745.jpg","photos/2026-04-11/20260411_180923.jpg","photos/2026-04-11/20260411_185409.jpg","photos/2026-04-11/20260411_185411.jpg","photos/2026-04-11/20260411_185414.jpg","photos/2026-04-11/20260411_185422.jpg","photos/2026-04-11/20260411_185423.jpg","photos/2026-04-11/20260411_185425.jpg","photos/2026-04-11/20260411_233146.jpg","photos/2026-04-11/20260411_233147.jpg","photos/2026-04-11/20260411_233148.jpg","photos/2026-04-11/20260411_233149.jpg","photos/2026-04-12/20260412_000525.jpg","photos/2026-04-12/20260412_000527.jpg","photos/2026-04-12/20260412_000528.jpg","photos/2026-04-12/20260412_001914(0).jpg","photos/2026-04-12/20260412_001914.jpg","photos/2026-04-12/20260412_002920.jpg","photos/2026-04-12/20260412_002926.jpg","photos/2026-04-12/20260412_002938.jpg","photos/2026-04-12/20260412_002940.jpg","photos/2026-04-12/20260412_002941.jpg","photos/2026-04-12/20260412_002946.jpg","photos/2026-04-12/20260412_002947.jpg","photos/2026-04-12/20260412_003705.jpg","photos/2026-04-12/20260412_003707.jpg","photos/2026-04-12/20260412_003709.jpg","photos/2026-04-12/20260412_003714.jpg","photos/2026-04-12/20260412_005138.jpg","photos/2026-04-12/20260412_005410.jpg","photos/2026-04-12/20260412_022654.jpg","photos/2026-04-12/20260412_022655(0).jpg","photos/2026-04-12/20260412_022655.jpg","photos/2026-04-12/20260412_023122.jpg","photos/2026-04-12/20260412_023124.jpg","photos/2026-04-12/20260412_023607.jpg","photos/2026-04-12/20260412_023613.jpg","photos/2026-04-12/20260412_103845.jpg","photos/2026-04-12/20260412_103846.jpg","photos/2026-04-12/20260412_124022.jpg","photos/2026-04-12/20260412_133515.jpg","photos/2026-04-12/20260412_133519.jpg","photos/2026-04-12/20260412_133520.jpg","photos/2026-04-12/20260412_133523.jpg","photos/2026-04-12/20260412_145255.jpg","photos/2026-04-12/20260412_145303.jpg","photos/2026-04-12/20260412_150538.jpg","photos/2026-04-12/20260412_150539.jpg","photos/2026-04-12/20260412_150540.jpg","photos/2026-04-12/20260412_150541.jpg","photos/2026-04-12/20260412_150542.jpg","photos/2026-04-12/20260412_150543.jpg","photos/2026-04-12/20260412_150736.jpg","photos/2026-04-12/20260412_150737(0).jpg","photos/2026-04-12/20260412_150737.jpg","photos/2026-04-12/20260412_180858.jpg","photos/2026-04-12/20260412_180859.jpg","photos/2026-04-12/20260412_213407.jpg","photos/2026-04-12/20260412_213409(0).jpg","photos/2026-04-12/20260412_213409.jpg","photos/2026-04-12/20260412_225853.jpg","photos/2026-04-12/20260412_225855.jpg","photos/2026-04-13/20260413_083520.jpg","photos/2026-04-13/20260413_101323.jpg","photos/2026-04-13/20260413_101326.jpg","photos/2026-04-13/20260413_113546.jpg","photos/2026-04-13/20260413_113547.jpg","photos/2026-04-13/20260413_113642.jpg","photos/2026-04-13/20260413_113649.jpg","photos/2026-04-13/20260413_113713.jpg","photos/2026-04-13/20260413_113714.jpg","photos/2026-04-13/20260413_114153.jpg","photos/2026-04-13/20260413_115008.jpg","photos/2026-04-13/20260413_115009(0).jpg","photos/2026-04-13/20260413_115009.jpg","photos/2026-04-13/20260413_115013(0).jpg","photos/2026-04-13/20260413_115013.jpg","photos/2026-04-13/20260413_115556.jpg","photos/2026-04-13/20260413_115557.jpg","photos/2026-04-13/20260413_115600.jpg","photos/2026-04-13/20260413_115820.jpg","photos/2026-04-13/20260413_115842.jpg","photos/2026-04-13/20260413_115858.jpg","photos/2026-04-13/20260413_120224.jpg","photos/2026-04-13/20260413_121247.jpg","photos/2026-04-13/20260413_122540.jpg","photos/2026-04-13/20260413_122541.jpg","photos/2026-04-13/20260413_122643(0).jpg","photos/2026-04-13/20260413_122643.jpg","photos/2026-04-13/20260413_122644.jpg","photos/2026-04-13/20260413_122645(0).jpg","photos/2026-04-13/20260413_122645.jpg","photos/2026-04-13/20260413_123602.jpg","photos/2026-04-13/20260413_125418.jpg","photos/2026-04-13/20260413_125545.jpg","photos/2026-04-13/20260413_131949.jpg","photos/2026-04-13/20260413_131950(0).jpg","photos/2026-04-13/20260413_131950.jpg","photos/2026-04-13/20260413_132111.jpg","photos/2026-04-13/20260413_132851.jpg","photos/2026-04-13/20260413_132856.jpg","photos/2026-04-13/20260413_143646.jpg","photos/2026-04-13/20260413_144109.jpg","photos/2026-04-13/20260413_144110(0).jpg","photos/2026-04-13/20260413_144110.jpg","photos/2026-04-13/20260413_144111.jpg","photos/2026-04-13/20260413_152157.jpg","photos/2026-04-13/20260413_152158.jpg","photos/2026-04-13/20260413_152159.jpg","photos/2026-04-13/20260413_185710.jpg","photos/2026-04-13/20260413_185943.jpg","photos/2026-04-13/20260413_190236.jpg","photos/2026-04-13/20260413_190239.jpg"];
+const L=["🚗 Road Trip: Delphi → Itea → Galaxidi","🚗 Road Trip: Delphi → Itea → Galaxidi","🚗 Road Trip: Delphi → Itea → Galaxidi","🚗 Road Trip: Delphi → Itea → Galaxidi","🚗 Road Trip: Delphi → Itea → Galaxidi","🚗 Road Trip: Delphi → Itea → Galaxidi","🚗 Road Trip: Delphi → Itea → Galaxidi","🚗 Road Trip: Delphi → Itea → Galaxidi","🚗 Road Trip: Delphi → Itea → Galaxidi","🚗 Road Trip: Delphi → Itea → Galaxidi","🚗 Road Trip: Delphi → Itea → Galaxidi","🚗 Road Trip: Delphi → Itea → Galaxidi","🚗 Road Trip: Delphi → Itea → Galaxidi","🚗 Road Trip: Delphi → Itea → Galaxidi","🚗 Road Trip: Delphi → Itea → Galaxidi","🚗 Road Trip: Delphi → Itea → Galaxidi","🚗 Road Trip: Delphi → Itea → Galaxidi","🚗 Road Trip: Delphi → Itea → Galaxidi","🚗 Road Trip: Delphi → Itea → Galaxidi","🚗 Road Trip: Delphi → Itea → Galaxidi","🚗 Road Trip: Delphi → Itea → Galaxidi","🌊 First Full Day in Galaxidi","🌊 First Full Day in Galaxidi","🌊 First Full Day in Galaxidi","🌊 First Full Day in Galaxidi","🌊 First Full Day in Galaxidi","🌊 First Full Day in Galaxidi","🌊 First Full Day in Galaxidi","🌊 First Full Day in Galaxidi","🌊 First Full Day in Galaxidi","🌊 First Full Day in Galaxidi","🌊 First Full Day in Galaxidi","🌊 First Full Day in Galaxidi","🌊 First Full Day in Galaxidi","🌊 First Full Day in Galaxidi","🌊 First Full Day in Galaxidi","🌊 First Full Day in Galaxidi","🌊 First Full Day in Galaxidi","🌊 First Full Day in Galaxidi","🌊 First Full Day in Galaxidi","🌊 First Full Day in Galaxidi","🌊 First Full Day in Galaxidi","🌊 First Full Day in Galaxidi","🌊 First Full Day in Galaxidi","🌊 First Full Day in Galaxidi","🌊 First Full Day in Galaxidi","⛪ Holy Wednesday","⛪ Holy Wednesday","⛪ Holy Wednesday","⛪ Holy Wednesday","⛪ Holy Wednesday","⛪ Holy Wednesday","⛪ Holy Wednesday","⛪ Holy Wednesday","⛪ Holy Wednesday","⛪ Holy Wednesday","⛪ Holy Wednesday","⛪ Holy Wednesday","⛪ Holy Wednesday","⛪ Holy Wednesday","⛪ Holy Wednesday","⛪ Holy Wednesday","⛪ Holy Wednesday","⛪ Holy Wednesday","⛪ Holy Wednesday","⛪ Holy Wednesday","⛪ Holy Wednesday","⛪ Holy Wednesday","✝️ Good Friday","✝️ Good Friday","✝️ Good Friday","✝️ Good Friday","✝️ Good Friday","✝️ Good Friday","✝️ Good Friday","✝️ Good Friday","✝️ Good Friday","✝️ Good Friday","✝️ Good Friday","✝️ Good Friday","✝️ Good Friday","✝️ Good Friday","✝️ Good Friday","✝️ Good Friday","✝️ Good Friday","✝️ Good Friday","✝️ Good Friday","✝️ Good Friday","✝️ Good Friday","✝️ Good Friday","✝️ Good Friday","✝️ Good Friday","✝️ Good Friday","✝️ Good Friday","✝️ Good Friday","✝️ Good Friday","✝️ Good Friday","✝️ Good Friday","✝️ Good Friday","🕯️ Holy Saturday","🕯️ Holy Saturday","🕯️ Holy Saturday","🕯️ Holy Saturday","🕯️ Holy Saturday","🕯️ Holy Saturday","🕯️ Holy Saturday","🕯️ Holy Saturday","🕯️ Holy Saturday","🕯️ Holy Saturday","🕯️ Holy Saturday","🕯️ Holy Saturday","🕯️ Holy Saturday","🕯️ Holy Saturday","🕯️ Holy Saturday","🕯️ Holy Saturday","🕯️ Holy Saturday","🕯️ Holy Saturday","🕯️ Holy Saturday","🕯️ Holy Saturday","🕯️ Holy Saturday","🕯️ Holy Saturday","🕯️ Holy Saturday","🕯️ Holy Saturday","🕯️ Holy Saturday","🕯️ Holy Saturday","🕯️ Holy Saturday","🕯️ Holy Saturday","🐣 ΠΑΣΧΑ!","🐣 ΠΑΣΧΑ!","🐣 ΠΑΣΧΑ!","🐣 ΠΑΣΧΑ!","🐣 ΠΑΣΧΑ!","🐣 ΠΑΣΧΑ!","🐣 ΠΑΣΧΑ!","🐣 ΠΑΣΧΑ!","🐣 ΠΑΣΧΑ!","🐣 ΠΑΣΧΑ!","🐣 ΠΑΣΧΑ!","🐣 ΠΑΣΧΑ!","🐣 ΠΑΣΧΑ!","🐣 ΠΑΣΧΑ!","🐣 ΠΑΣΧΑ!","🐣 ΠΑΣΧΑ!","🐣 ΠΑΣΧΑ!","🐣 ΠΑΣΧΑ!","🐣 ΠΑΣΧΑ!","🐣 ΠΑΣΧΑ!","🐣 ΠΑΣΧΑ!","🐣 ΠΑΣΧΑ!","🐣 ΠΑΣΧΑ!","🐣 ΠΑΣΧΑ!","🐣 ΠΑΣΧΑ!","🐣 ΠΑΣΧΑ!","🐣 ΠΑΣΧΑ!","🐣 ΠΑΣΧΑ!","🐣 ΠΑΣΧΑ!","🐣 ΠΑΣΧΑ!","🐣 ΠΑΣΧΑ!","🐣 ΠΑΣΧΑ!","🐣 ΠΑΣΧΑ!","🐣 ΠΑΣΧΑ!","🐣 ΠΑΣΧΑ!","🐣 ΠΑΣΧΑ!","🐣 ΠΑΣΧΑ!","🐣 ΠΑΣΧΑ!","🐣 ΠΑΣΧΑ!","🐣 ΠΑΣΧΑ!","🐣 ΠΑΣΧΑ!","🐣 ΠΑΣΧΑ!","🐣 ΠΑΣΧΑ!","🐣 ΠΑΣΧΑ!","🐣 ΠΑΣΧΑ!","🐣 ΠΑΣΧΑ!","🐣 ΠΑΣΧΑ!","🐣 ΠΑΣΧΑ!","🐣 ΠΑΣΧΑ!","🐣 ΠΑΣΧΑ!","🎂 Clio&#x27;s 7th Birthday!","🎂 Clio&#x27;s 7th Birthday!","🎂 Clio&#x27;s 7th Birthday!","🎂 Clio&#x27;s 7th Birthday!","🎂 Clio&#x27;s 7th Birthday!","🎂 Clio&#x27;s 7th Birthday!","🎂 Clio&#x27;s 7th Birthday!","🎂 Clio&#x27;s 7th Birthday!","🎂 Clio&#x27;s 7th Birthday!","🎂 Clio&#x27;s 7th Birthday!","🎂 Clio&#x27;s 7th Birthday!","🎂 Clio&#x27;s 7th Birthday!","🎂 Clio&#x27;s 7th Birthday!","🎂 Clio&#x27;s 7th Birthday!","🎂 Clio&#x27;s 7th Birthday!","🎂 Clio&#x27;s 7th Birthday!","🎂 Clio&#x27;s 7th Birthday!","🎂 Clio&#x27;s 7th Birthday!","🎂 Clio&#x27;s 7th Birthday!","🎂 Clio&#x27;s 7th Birthday!","🎂 Clio&#x27;s 7th Birthday!","🎂 Clio&#x27;s 7th Birthday!","🎂 Clio&#x27;s 7th Birthday!","🎂 Clio&#x27;s 7th Birthday!","🎂 Clio&#x27;s 7th Birthday!","🎂 Clio&#x27;s 7th Birthday!","🎂 Clio&#x27;s 7th Birthday!","🎂 Clio&#x27;s 7th Birthday!","🎂 Clio&#x27;s 7th Birthday!","🎂 Clio&#x27;s 7th Birthday!","🎂 Clio&#x27;s 7th Birthday!","🎂 Clio&#x27;s 7th Birthday!","🎂 Clio&#x27;s 7th Birthday!","🎂 Clio&#x27;s 7th Birthday!","🎂 Clio&#x27;s 7th Birthday!","🎂 Clio&#x27;s 7th Birthday!","🎂 Clio&#x27;s 7th Birthday!","🎂 Clio&#x27;s 7th Birthday!","🎂 Clio&#x27;s 7th Birthday!","🎂 Clio&#x27;s 7th Birthday!","🎂 Clio&#x27;s 7th Birthday!","🎂 Clio&#x27;s 7th Birthday!","🎂 Clio&#x27;s 7th Birthday!","🎂 Clio&#x27;s 7th Birthday!","🎂 Clio&#x27;s 7th Birthday!","🎂 Clio&#x27;s 7th Birthday!","🎂 Clio&#x27;s 7th Birthday!","🎂 Clio&#x27;s 7th Birthday!","🎂 Clio&#x27;s 7th Birthday!","🎂 Clio&#x27;s 7th Birthday!","🎂 Clio&#x27;s 7th Birthday!"];
+
+
+// ===== PASSWORD GATE (runs first) =====
+(function() {
+  if (PASS_HASH && sessionStorage.getItem("gallery_auth") !== "1") {
+    document.getElementById("gate").classList.remove("hidden");
+  }
+  document.getElementById("gate-pw").addEventListener("keydown", function(e) {
+    if (e.key === "Enter") checkPass();
+  });
+})();
+
+async function sha256(str) {
+  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(str));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, "0")).join("");
+}
+
+async function checkPass() {
+  const pw = document.getElementById("gate-pw").value;
+  const hash = await sha256(pw);
+  if (hash === PASS_HASH) {
+    sessionStorage.setItem("gallery_auth", "1");
+    document.getElementById("gate").classList.add("hidden");
+  } else {
+    document.getElementById("gate-err").textContent = "Wrong password";
+    document.getElementById("gate-pw").value = "";
+    document.getElementById("gate-pw").focus();
+  }
+}
+
+// ===== LIGHTBOX =====
+let ci = 0, zoom = 1, panX = 0, panY = 0;
+let isDragging = false, dragStartX, dragStartY, dragPanX, dragPanY;
+
+function openLB(i) {
+  ci = i; zoom = 1; panX = 0; panY = 0;
+  document.getElementById("li").src = P[i];
+  applyTransform();
+  document.getElementById("lc").textContent = (i + 1) + " / " + P.length;
+  document.getElementById("ll").textContent = L[i];
+  updateDL();
+  document.getElementById("lb").classList.add("a");
+  document.body.style.overflow = "hidden";
+}
+
+function closeLB() {
+  document.getElementById("lb").classList.remove("a");
+  document.body.style.overflow = "";
+}
+
+function prev() { ci = (ci - 1 + P.length) % P.length; loadCurrent(); }
+function next() { ci = (ci + 1) % P.length; loadCurrent(); }
+
+function loadCurrent() {
+  zoom = 1; panX = 0; panY = 0;
+  wrapEl.classList.remove("zoomed");
+  document.getElementById("li").src = P[ci];
+  applyTransform();
+  document.getElementById("lc").textContent = (ci + 1) + " / " + P.length;
+  document.getElementById("ll").textContent = L[ci];
+  updateDL();
+}
+
+function updateDL() {
+  var dl = document.getElementById("lb-dl");
+  dl.href = P[ci];
+  dl.download = P[ci].split("/").pop();
+}
+
+// ===== ZOOM & PAN =====
+function applyTransform() {
+  document.getElementById("li").style.transform = "scale(" + zoom + ") translate(" + (panX / zoom) + "px, " + (panY / zoom) + "px)";
+  var zi = document.getElementById("zoom-ind");
+  zi.textContent = zoom.toFixed(1) + "x";
+  zi.classList.toggle("show", zoom > 1.05);
+}
+
+function resetZoom() { zoom = 1; panX = 0; panY = 0; wrapEl.classList.remove("zoomed"); applyTransform(); }
+
+function doZoom(delta) {
+  zoom = Math.min(5, Math.max(1, zoom * (1 + delta)));
+  if (zoom <= 1) { zoom = 1; panX = 0; panY = 0; }
+  wrapEl.classList.toggle("zoomed", zoom > 1.05);
+  applyTransform();
+}
+
+// Mouse wheel zoom
+document.addEventListener("wheel", function(e) {
+  if (!document.getElementById("lb").classList.contains("a")) return;
+  if (e.target.closest(".lb-toolbar")) return;
+  e.preventDefault();
+  doZoom(e.deltaY > 0 ? -0.12 : 0.12);
+}, { passive: false });
+
+// Pan via drag
+var wrapEl = document.getElementById("lb-wrap");
+wrapEl.addEventListener("mousedown", function(e) {
+  if (zoom <= 1 || e.target.closest(".n,.x,.lb-toolbar,.lb-btn")) return;
+  isDragging = true; dragStartX = e.clientX; dragStartY = e.clientY;
+  dragPanX = panX; dragPanY = panY;
+  this.classList.add("dragging");
+  e.preventDefault();
+});
+document.addEventListener("mousemove", function(e) {
+  if (!isDragging) return;
+  panX = dragPanX + (e.clientX - dragStartX);
+  panY = dragPanY + (e.clientY - dragStartY);
+  applyTransform();
+});
+document.addEventListener("mouseup", function() {
+  if (isDragging) { isDragging = false; wrapEl.classList.remove("dragging"); }
+});
+
+// Single click: toggle zoom (1x <-> 2.5x). Double-click: reset to 1x.
+var clickTimer = null;
+wrapEl.addEventListener("click", function(e) {
+  if (e.target.closest(".n,.x,.lb-toolbar,.lb-btn")) return;
+  if (isDragging) return;
+  if (clickTimer) { clearTimeout(clickTimer); clickTimer = null; resetZoom(); return; }
+  clickTimer = setTimeout(function() {
+    clickTimer = null;
+    if (zoom <= 1.05) {
+      zoom = 2.5; panX = 0; panY = 0;
+      wrapEl.classList.add("zoomed");
+    } else {
+      zoom = 1; panX = 0; panY = 0;
+      wrapEl.classList.remove("zoomed");
+    }
+    applyTransform();
+  }, 250);
+});
+
+// Touch pinch-to-zoom + pan
+var lastDist = 0;
+wrapEl.addEventListener("touchstart", function(e) {
+  if (e.touches.length === 2) {
+    lastDist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
+    e.preventDefault();
+  }
+}, { passive: false });
+
+wrapEl.addEventListener("touchmove", function(e) {
+  if (e.touches.length === 2) {
+    var dist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
+    doZoom((dist - lastDist) * 0.005);
+    lastDist = dist;
+    e.preventDefault();
+  } else if (e.touches.length === 1 && zoom > 1) {
+    if (!isDragging) { isDragging = true; dragStartX = e.touches[0].clientX; dragStartY = e.touches[0].clientY; dragPanX = panX; dragPanY = panY; }
+    panX = dragPanX + (e.touches[0].clientX - dragStartX);
+    panY = dragPanY + (e.touches[0].clientY - dragStartY);
+    applyTransform();
+    e.preventDefault();
+  }
+}, { passive: false });
+wrapEl.addEventListener("touchend", function() { isDragging = false; });
+
+// Grid download buttons
+document.querySelectorAll(".dl-grid").forEach(function(btn, i) {
+  btn.addEventListener("click", function(e) {
+    e.stopPropagation();
+    var a = document.createElement("a");
+    a.href = P[i]; a.download = P[i].split("/").pop();
+    a.click();
+  });
+});
+
+// Grid card click
+document.querySelectorAll(".photo-card").forEach(function(card, i) {
+  card.onclick = function() { openLB(i); };
+});
+
+// Keyboard
+document.addEventListener("keydown", function(e) {
+  if (!document.getElementById("lb").classList.contains("a")) return;
+  if (e.key === "Escape") closeLB();
+  if (e.key === "ArrowLeft") prev();
+  if (e.key === "ArrowRight") next();
+  if (e.key === "+" || e.key === "=") doZoom(0.15);
+  if (e.key === "-") doZoom(-0.15);
+  if (e.key === "0") resetZoom();
+});
+
+// Close lightbox on background click (only when not zoomed)
+document.getElementById("lb").addEventListener("click", function(e) {
+  if (e.target === this && zoom <= 1) closeLB();
+});
+</script>
+</body></html>
