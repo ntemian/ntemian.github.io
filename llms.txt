@@ -1,0 +1,29 @@
+# Ntemis Latsoudis
+
+> Trial lawyer (Latsoudis + Associates, Athens), founder of personalintelligence.ai, author of the Grand Synthesis, and builder of LOSC (Life Operating System, Caduceus). Writing at the intersection of law, technology, theology, and preparedness.
+
+Ntemis practices litigation, corporate, and distribution-law in Greece. Notable wins include the Lafarge recovery at ICAP/Caduceus (€3.77M collected, beat Ince & Co). Outside the courtroom he builds agentic software for personal intelligence, writes civilization-scale strategy (Grand Synthesis), and ships tooling for Claude Code. Values: connection with God, Kingdom of Heaven on Earth, truth, gratitude, virtues, family.
+
+## Public writings
+
+- [Grand Synthesis](https://ntemian.github.io/grand-synthesis/): Civilization-scale strategic framework covering macro geopolitics, energy & monetary architecture (PetroBitcoin thesis), the six-pillar life model, and Kingdom-of-Heaven-on-Earth ethics. Primary public artifact. Versioned; the site carries the current published version, in-progress drafts live in LOSC.
+
+## Projects
+
+- [Ajax's Movie Universe](https://ntemian.github.io/ajax-movies/): Interactive movie and series tracker built for my son — playful frontend, no backend, kid-friendly.
+- personalintelligence.ai: AI consultancy focused on agentic workflows, Claude Code plugins, and LOSC-style personal intelligence systems. Pre-revenue; inbound-only.
+- LOSC (Life Operating System, Caduceus): private personal OS — 400+ MCP tools, knowledge graph, six-pillar life tracking. Not publicly hosted; referenced frequently in Grand Synthesis.
+
+## Professional
+
+- Latsoudis + Associates (L+A): Greek law firm. Litigation, corporate, distribution / contracts. Team of 56 lawyers. Proprietary LDC product for legal data collection across 397 areas.
+- Prior: ICAP / Caduceus, OBOR-SinoBridge.
+
+## Contact
+
+- Email: elatsoudis@latsoudislaw.com
+- GitHub: [ntemian](https://github.com/ntemian)
+
+## Optional
+
+- [Claude Code plugins by ntemian](https://github.com/ntemian?tab=repositories): Open-source Claude Code tooling, skills, and dotfiles.
