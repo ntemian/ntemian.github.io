@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ntemis Latsoudis</title>
+<meta name="description" content="Essays and writing by Ntemis Latsoudis.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #f4ecd8;
+    --ink: #1a1a1a;
+    --ink-soft: #3a342b;
+    --muted: #7a6f5c;
+    --rule: #c9b893;
+    --accent: #8b3a2b;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 18px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 96px 32px 160px;
+  }
+  header.masthead {
+    text-align: center;
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 48px;
+    margin-bottom: 64px;
+  }
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 20px;
+  }
+  h1 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-weight: 700;
+    font-size: clamp(48px, 8vw, 72px);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    margin: 0 0 16px;
+  }
+  .tagline {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 20px;
+    color: var(--ink-soft);
+    margin: 0;
+  }
+  section h2 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 64px 0 24px;
+  }
+  ul.essays {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  ul.essays li {
+    padding: 24px 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  ul.essays li:first-child { padding-top: 0; }
+  ul.essays a {
+    color: var(--ink);
+    text-decoration: none;
+    display: block;
+  }
+  ul.essays a:hover .title { color: var(--accent); }
+  .title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 28px;
+    font-weight: 500;
+    line-height: 1.2;
+    margin: 0 0 8px;
+    transition: color 0.15s;
+  }
+  .meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+  .desc {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-style: italic;
+    font-size: 17px;
+    color: var(--ink-soft);
+    margin: 0;
+  }
+  p.about {
+    color: var(--ink-soft);
+    margin: 0 0 22px;
+  }
+  footer {
+    margin-top: 120px;
+    padding-top: 32px;
+    border-top: 1px solid var(--rule);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    text-align: center;
+  }
+  @media (max-width: 600px) {
+    .wrap { padding: 64px 24px 96px; }
+    .title { font-size: 24px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="masthead">
+  <div class="eyebrow">Ntemis Latsoudis · Athens</div>
+  <h1>Essays</h1>
+  <p class="tagline">Writing from a lawyer, operator, and father.</p>
+</header>
+
+<section>
+  <h2>— Recent</h2>
+  <ul class="essays">
+    <li>
+      <a href="/essays/clauding/">
+        <div class="meta">19 April 2026</div>
+        <div class="title">Clauding</div>
+        <p class="desc">An essay on the ritual, the practice, the pattern, and the substrate — and why the vibe deviation is the work.</p>
+      </a>
+    </li>
+  </ul>
+</section>
+
+<footer>
+  ntemian.github.io · Alimos · Ἓν τὸ πᾶν
+</footer>
+
+</div>
+</body>
+</html>
