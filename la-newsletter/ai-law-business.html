@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Τεχνητή Νοημοσύνη, Δίκαιο και Επιχειρείν · Σύγχρονη επισκόπηση από την L+A</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#faf8f5;
+    --surface:#f3efe8;
+    --surface-2:#ede7dc;
+    --ink:#1a1a1a;
+    --muted:#6b655d;
+    --rule:#d9d1c3;
+    --navy:#1a2332;
+    --gold:#b8935f;
+    --terra:#a8543e;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:'Inter',system-ui,sans-serif;font-size:16.5px;line-height:1.75;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:720px;margin:0 auto;padding:48px 32px 120px}
+
+  /* Reading progress */
+  .progress{position:fixed;top:0;left:0;height:2px;background:var(--gold);width:0;z-index:50;transition:width 0.1s linear}
+
+  /* Top nav + masthead */
+  .topnav{display:flex;justify-content:space-between;align-items:center;padding-bottom:22px;border-bottom:1.5px solid var(--navy);margin-bottom:56px;gap:24px}
+  .logo-img{width:160px;height:auto;display:block}
+  .backlink{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);text-decoration:none;border-bottom:1px solid var(--rule);padding-bottom:2px}
+  .backlink:hover{color:var(--navy);border-bottom-color:var(--navy)}
+
+  /* Hero */
+  .hero-kicker{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:var(--terra);margin-bottom:14px}
+  h1.hero{font-family:'Playfair Display',serif;font-size:48px;font-weight:700;line-height:1.1;margin:0 0 18px;color:var(--navy);letter-spacing:-0.8px}
+  h1.hero em{font-style:italic;font-weight:400;color:var(--muted)}
+  .hero-sub{font-family:'Playfair Display',serif;font-size:22px;font-weight:400;font-style:italic;color:var(--muted);margin:0 0 28px;line-height:1.45;max-width:620px}
+  .hero-meta{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--muted);text-transform:uppercase;padding:14px 0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);display:flex;gap:28px;flex-wrap:wrap;margin-bottom:48px}
+  .hero-meta span strong{color:var(--navy)}
+
+  /* Table of contents */
+  .toc{background:var(--surface);padding:28px 32px;margin:0 0 56px;border-left:3px solid var(--navy)}
+  .toc-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:14px}
+  .toc ol{list-style:none;padding:0;margin:0;counter-reset:section}
+  .toc li{counter-increment:section;padding:6px 0;border-bottom:1px dotted var(--rule);display:flex;gap:14px;align-items:baseline}
+  .toc li:last-child{border-bottom:0}
+  .toc li::before{content:counter(section,upper-roman)".";font-family:'Playfair Display',serif;font-size:15px;color:var(--gold);min-width:36px;font-weight:600}
+  .toc a{color:var(--navy);text-decoration:none;font-size:15.5px;font-family:'Inter',sans-serif;font-weight:500}
+  .toc a:hover{color:var(--gold)}
+
+  /* Body */
+  p{margin:0 0 22px;font-size:16.5px;line-height:1.75}
+  p.lead{font-family:'Playfair Display',serif;font-size:20px;line-height:1.55;color:var(--navy);margin-bottom:28px}
+  p.dropcap::first-letter{font-family:'Playfair Display',serif;font-size:76px;float:left;line-height:0.82;padding:6px 12px 0 0;font-weight:700;color:var(--navy)}
+
+  h2.part{font-family:'Playfair Display',serif;font-size:36px;font-weight:700;color:var(--navy);margin:80px 0 12px;letter-spacing:-0.5px;line-height:1.2;scroll-margin-top:20px}
+  h2.part .num{display:block;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:3px;color:var(--gold);font-weight:500;margin-bottom:10px;text-transform:uppercase}
+  .part-intro{font-family:'Playfair Display',serif;font-size:19px;font-style:italic;color:var(--muted);margin:0 0 40px;line-height:1.5;padding-bottom:24px;border-bottom:1px solid var(--rule)}
+
+  h3{font-family:'Playfair Display',serif;font-size:24px;font-weight:600;color:var(--navy);margin:48px 0 14px;letter-spacing:-0.2px;line-height:1.3}
+  h4{font-family:'Inter',sans-serif;font-size:13px;font-weight:600;color:var(--navy);text-transform:uppercase;letter-spacing:1.5px;margin:32px 0 10px}
+
+  blockquote{border-left:3px solid var(--gold);padding:6px 0 6px 22px;margin:24px 0;font-family:'Playfair Display',serif;font-style:italic;font-size:19px;color:var(--muted);line-height:1.5}
+
+  /* Callout box */
+  .callout{background:var(--surface);padding:24px 28px;margin:28px 0;border-left:3px solid var(--navy);font-size:15.5px}
+  .callout-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+  .callout-title{font-family:'Playfair Display',serif;font-size:19px;font-weight:600;color:var(--navy);margin:0 0 10px}
+
+  /* Before/after use case */
+  .usecase{background:var(--bg);border:1px solid var(--rule);padding:28px 32px;margin:32px 0;border-radius:2px}
+  .usecase-num{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:2.5px;color:var(--gold);text-transform:uppercase;margin-bottom:8px;font-weight:600}
+  .usecase-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:600;color:var(--navy);margin:0 0 18px;line-height:1.3}
+  .usecase-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:16px}
+  .usecase-before,.usecase-after{padding:18px;background:var(--surface);border-radius:2px}
+  .usecase-after{background:var(--surface-2);border-left:3px solid var(--gold)}
+  .usecase-kicker{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+  .usecase-after .usecase-kicker{color:var(--terra)}
+  .usecase p{font-size:14.5px;margin:0;line-height:1.6}
+
+  /* Separator */
+  .rule{border:0;border-top:1px solid var(--rule);margin:64px 0}
+  .rule-ornament{border:0;text-align:center;margin:56px 0;color:var(--gold);font-size:18px;letter-spacing:20px}
+  .rule-ornament::before{content:"◆  ◆  ◆"}
+
+  /* Editor's note */
+  .editors-note{font-style:italic;color:var(--muted);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);padding:28px 0;margin:64px 0;font-family:'Playfair Display',serif;font-size:18px;line-height:1.55}
+  .editors-note .signoff{font-family:'Inter',sans-serif;font-style:normal;font-size:13px;color:var(--navy);margin-top:16px;letter-spacing:0.3px}
+
+  /* Call to action (formal, not salesy) */
+  .cta{background:var(--navy);color:var(--bg);padding:40px;margin:56px 0 0;border-radius:2px}
+  .cta h3{color:var(--bg);font-family:'Playfair Display',serif;font-size:26px;margin:0 0 14px;font-weight:600}
+  .cta p{color:rgba(250,248,245,0.85);margin-bottom:12px;font-size:16px}
+  .cta a{color:var(--gold);text-decoration:none;border-bottom:1px solid var(--gold)}
+
+  /* Footer */
+  .foot{border-top:1.5px solid var(--navy);margin-top:80px;padding-top:28px;font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:1px;color:var(--muted);line-height:1.8;display:flex;justify-content:space-between;align-items:flex-start;gap:24px;flex-wrap:wrap}
+  .foot a{color:var(--navy);text-decoration:none;border-bottom:1px solid var(--navy)}
+  .foot-legal500{display:flex;flex-direction:column;align-items:flex-end;gap:6px;font-size:9px;letter-spacing:1.5px}
+  .foot-legal500 img{width:48px;height:auto}
+  .foot-seal{font-family:'Playfair Display',serif;font-style:italic;font-size:13px;color:var(--gold);letter-spacing:0.5px;display:block;margin-bottom:8px}
+
+  @media (max-width:600px){
+    .wrap{padding:32px 20px 72px}
+    h1.hero{font-size:36px}
+    h2.part{font-size:28px}
+    .usecase-grid{grid-template-columns:1fr}
+    .foot{flex-direction:column;align-items:flex-start}
+    .foot-legal500{align-items:flex-start}
+  }
+</style>
+</head>
+<body>
+<div class="progress" id="progress"></div>
+<div class="wrap">
+
+  <!-- NAV + MASTHEAD -->
+  <nav class="topnav">
+    <img class="logo-img" src="logo-original.png" alt="Latsoudis + Associates">
+    <a class="backlink" href="index.html">&larr; Επιστροφή στο Δελτίο</a>
+  </nav>
+
+  <!-- HERO -->
+  <header>
+    <div class="hero-kicker">Σύγχρονη Επισκόπηση &middot; Έκδοση από την L+A</div>
+    <h1 class="hero">Τεχνητή Νοημοσύνη, Δίκαιο και Επιχειρείν.<br><em>Πώς η σύγκλιση των τριών αλλάζει τη νομική υπηρεσία.</em></h1>
+    <p class="hero-sub">Μια σύγχρονη επισκόπηση των εξελίξεων στην τεχνητή νοημοσύνη, των ανακατατάξεων στη νομική πρακτική, των επιπτώσεων στη διοίκηση επιχειρήσεων, και του τρόπου με τον οποίο η ιδιόκτητη πλατφόρμα της Δικηγορικής μας Εταιρείας μεταφράζει όλα τα παραπάνω σε πρακτικό όφελος για τους εντολείς μας.</p>
+    <div class="hero-meta">
+      <span><strong>Εκδίδεται:</strong> Άνοιξη 2026</span>
+      <span><strong>Έκταση:</strong> ~18' ανάγνωσης</span>
+      <span><strong>Συνοδεύει:</strong> Τεύχος №1</span>
+    </div>
+  </header>
+
+  <!-- TOC -->
+  <aside class="toc">
+    <div class="toc-label">Περιεχόμενα</div>
+    <ol>
+      <li><a href="#part-1">Τεχνητή Νοημοσύνη &mdash; πού βρισκόμαστε σήμερα</a></li>
+      <li><a href="#part-2">Δίκαιο &mdash; τι αλλάζει στη νομική πρακτική</a></li>
+      <li><a href="#part-3">Επιχειρείν &mdash; οι επιπτώσεις για τη Διοίκηση</a></li>
+      <li><a href="#part-4">Η πλατφόρμα της L+A &mdash; πώς σας βοηθάει στην πράξη</a></li>
+      <li><a href="#epilogos">Επίλογος και επόμενα βήματα</a></li>
+    </ol>
+  </aside>
+
+  <!-- PROLOGUE -->
+  <p class="lead">Από το 1926, η L+A παρακολουθεί συστηματικά τις μεταβολές στο εμπορικό περιβάλλον της χώρας και τις μεταφράζει σε νομική υπηρεσία. Το παρόν κείμενο τοποθετεί τη μεγαλύτερη τεχνολογική μεταβολή της εποχής μας &mdash; την εμφάνιση γενικής χρήσης τεχνητής νοημοσύνης &mdash; στο πλαίσιο που μας αφορά: τι σημαίνει για τη νομική πρακτική, τι σημαίνει για τη Διοίκηση των επιχειρήσεων-εντολέων μας, και πώς η ιδιόκτητη πλατφόρμα της Εταιρείας μας χρησιμοποιεί τις δυνατότητες αυτές για να παρέχει ποιοτικά ανώτερη νομική υπηρεσία.</p>
+
+  <p class="dropcap">Η επισκόπηση που ακολουθεί γράφεται με συγκεκριμένο κοινό κατά νου: τις διοικητικές ομάδες των εντολέων μας. Δεν είναι τεχνικό εγχειρίδιο, ούτε διαφημιστικό έντυπο. Είναι προσπάθεια να εξηγηθούν, σε γλώσσα κατάλληλη για ανώτερα στελέχη μη-τεχνολογικού υπόβαθρου, οι εξελίξεις που πρόκειται να επηρεάσουν τον τρόπο με τον οποίο γίνεται η νομική εργασία την επόμενη διετία, καθώς και ο τρόπος με τον οποίο η Εταιρεία μας έχει ήδη ενσωματώσει τις εξελίξεις αυτές στην υποδομή της. Ο στόχος δεν είναι η εντύπωση, αλλά η κατανόηση &mdash; ώστε όταν συναντηθούμε για να συζητήσουμε την εφαρμογή της νέας μας πλατφόρμας στον δικό σας φάκελο, να ξεκινήσουμε από κοινό σημείο αναφοράς.</p>
+
+  <!-- ═══════════════ PART I ═══════════════ -->
+  <h2 class="part" id="part-1"><span class="num">Μέρος Α&acute;</span>Τεχνητή Νοημοσύνη &mdash; πού βρισκόμαστε σήμερα</h2>
+  <p class="part-intro">Τέσσερις εξελίξεις της τελευταίας διετίας, απαραίτητο υπόβαθρο για όσα ακολουθούν.</p>
+
+  <h3>Α.1 &mdash; Η τρίτη γενεά μεγάλων γλωσσικών μοντέλων</h3>
+  <p>Από τα τέλη του 2022, όταν έγιναν ευρέως διαθέσιμα τα πρώτα μεγάλα γλωσσικά μοντέλα (Large Language Models, LLMs), έως σήμερα, έχουν μεσολαβήσει τρεις διακριτές γενιές. Η πρώτη γενιά απαντούσε σε ερωτήσεις. Η δεύτερη μάθαινε να εκτελεί εργαλεία και να ακολουθεί οδηγίες πολλαπλών βημάτων. Η τρίτη γενιά &mdash; διαθέσιμη από το 2025 &mdash; συνδυάζει βαθύτερη λογική ανάλυση, μακρύτερο περιβάλλον μνήμης (συχνά εκατοντάδες χιλιάδες έως εκατομμύρια tokens, δηλαδή εκατοντάδες σελίδες κειμένου ταυτόχρονα προσβάσιμες), και αξιοπιστία επαρκή για επαγγελματική χρήση σε πολλούς τομείς.</p>
+  <p>Για τον νομικό κλάδο, τρεις είναι οι πρακτικές συνέπειες: η ικανότητα αφομοίωσης και σύνοψης όγκου υλικού που προηγουμένως απαιτούσε ώρες ή ημέρες, η ικανότητα εντοπισμού αντιφάσεων ή κενών μεταξύ πολλαπλών εγγράφων, και η ικανότητα παραγωγής προσχεδίων σε τυποποιημένη μορφή. Τα μοντέλα δεν αντικαθιστούν τη νομική κρίση &mdash; ούτε πρόκειται σύντομα &mdash; αλλά εξοικονομούν το 60 με 80 τοις εκατό του χρόνου που αφιερωνόταν στη συλλογή και την οργάνωση του υλικού που προηγείται της κρίσης αυτής.</p>
+
+  <h3>Α.2 &mdash; Agentic AI: τι σημαίνει «πρακτόρας»</h3>
+  <p>Η πλέον πρόσφατη εξέλιξη αφορά τα λεγόμενα <em>agentic</em> ή πρακτορικά συστήματα. Πρόκειται για συνδυασμούς γλωσσικού μοντέλου με εργαλεία εξωτερικής δράσης: πρόσβαση σε βάσεις δεδομένων, εκτέλεση αναζητήσεων, αποστολή αιτημάτων, παραγωγή αρχείων. Αντί να απαντά απλώς σε ερώτηση, το σύστημα αναλαμβάνει εργασία πολλαπλών βημάτων και την ολοκληρώνει.</p>
+  <p>Για το νομικό γραφείο, πρακτορικά συστήματα μπορούν &mdash; με τη σωστή αρχιτεκτονική και τους κατάλληλους περιορισμούς &mdash; να εκτελούν εργασίες όπως: αυτοματοποιημένη έρευνα σε Υποθηκοφυλακείο ή Κτηματολόγιο, συλλογή και οργάνωση δικογραφιών, παρακολούθηση κανονιστικών εξελίξεων ανά εντολέα, και παραγωγή ενημερωμένων πινάκων ελέγχου. Ωστόσο, η αυτονομία τους πρέπει να είναι αυστηρά οριοθετημένη: πρακτορικά συστήματα σε επαγγελματικό περιβάλλον λειτουργούν υπό ανθρώπινη επίβλεψη, με καταγραφή κάθε τους ενέργειας, και χωρίς πρόσβαση σε αποφασιστικές εξωτερικές ενέργειες χωρίς ρητή έγκριση.</p>
+
+  <h3>Α.3 &mdash; Το ζήτημα της κυριαρχίας δεδομένων</h3>
+  <p>Η πλειονότητα των διαθέσιμων μοντέλων τεχνητής νοημοσύνης παρέχεται μέσω υποδομών cloud τρίτων κατασκευαστών, κυρίως στις Ηνωμένες Πολιτείες. Για τη νομική πρακτική, αυτό εγείρει ζητήματα τα οποία προ ετών δεν υπήρχαν: διαβίβαση εμπιστευτικών στοιχείων εντολέα σε υπηρεσίες εκτός ευρωπαϊκού οικονομικού χώρου, υπαγωγή σε νομοθεσίες εκτός ΕΕ (π.χ. CLOUD Act), έλλειψη ελέγχου επί του χρόνου διατήρησης των στοιχείων, και πιθανή χρήση τους για εκπαίδευση μελλοντικών μοντέλων.</p>
+  <p>Η Εταιρεία μας αντιμετωπίζει το ζήτημα αυτό με δύο τρόπους. Πρώτον, με τη λειτουργία τοπικής υποδομής &mdash; ιδιόκτητοι διακομιστές εντός των εγκαταστάσεών μας, όπου εκτελούνται όσες εργασίες αφορούν ευαίσθητα στοιχεία εντολέων μας. Δεύτερον, με την προσεκτική επιλογή εξωτερικών υπηρεσιών όπου αυτές είναι απαραίτητες (π.χ. για χρήση εξαιρετικά ισχυρών μοντέλων που δεν μπορούν να λειτουργήσουν τοπικά), βάσει συμβάσεων που διασφαλίζουν τη μη χρήση των δεδομένων για εκπαίδευση και τη συμμόρφωση με τον Γενικό Κανονισμό Προστασίας Δεδομένων.</p>
+
+  <h3>Α.4 &mdash; Ο Κανονισμός (ΕΕ) 2024/1689 (AI Act)</h3>
+  <p>Ο Ευρωπαϊκός Κανονισμός για την Τεχνητή Νοημοσύνη τέθηκε σε ισχύ τον Αύγουστο του 2024, με σταδιακή εφαρμογή έως το 2027. Διακρίνει συστήματα τεχνητής νοημοσύνης σε τέσσερις κατηγορίες κινδύνου: απαγορευμένες πρακτικές (π.χ. social scoring), υψηλού κινδύνου (ιδίως σε τομείς όπως υγεία, παιδεία, εργασία, ποινικό δίκαιο, διαχείριση υποδομών), περιορισμένου κινδύνου (υποχρεώσεις διαφάνειας), και ελάχιστου κινδύνου.</p>
+  <p>Οι υποχρεώσεις για συστήματα υψηλού κινδύνου είναι ουσιαστικές: τεκμηρίωση τεχνικού σχεδιασμού, διαχείριση κινδύνου, ποιότητα δεδομένων εκπαίδευσης, ανθρώπινη εποπτεία, διαφάνεια προς χρήστες, καταγραφή συμβάντων. Πολλοί εντολείς μας &mdash; ιδίως σε κλάδους χρηματοοικονομικών υπηρεσιών, υγείας, ανθρώπινου δυναμικού, και δημοσίων συμβάσεων &mdash; βρίσκονται ήδη εντός πεδίου εφαρμογής και δεν το γνωρίζουν. Η L+A έχει ετοιμάσει προτυποποιημένο κατάλογο ελέγχου συμμόρφωσης, προσαρμοσμένο στις ελληνικές συνθήκες και στις πρακτικές των εποπτικών αρχών.</p>
+
+  <hr class="rule-ornament">
+
+  <!-- ═══════════════ PART II ═══════════════ -->
+  <h2 class="part" id="part-2"><span class="num">Μέρος Β&acute;</span>Δίκαιο &mdash; τι αλλάζει στη νομική πρακτική</h2>
+  <p class="part-intro">Πέντε πραγματικές μεταβολές στη δουλειά του δικηγόρου, όπως τις ζούμε στο γραφείο μας σήμερα.</p>
+
+  <h3>Β.1 &mdash; Νομική έρευνα: από ώρες σε δευτερόλεπτα</h3>
+  <p>Η έρευνα νομολογίας και θεωρίας αποτελούσε πάντοτε θεμέλιο της νομικής δουλειάς. Ο χρόνος που απαιτούσε ήταν συνήθως το 20 με 30 τοις εκατό του χρόνου μιας υπόθεσης. Σήμερα, με κατάλληλη αρχιτεκτονική αναζήτησης σε τοπικές βάσεις νομολογίας και θεωρίας, ο χρόνος αυτός μειώνεται δραστικά. Ένα ερώτημα που προ διετίας απαιτούσε 3-4 ώρες σε βιβλιοθήκη ή σε επαγγελματικές βάσεις, σήμερα απαντάται σε λίγα λεπτά, με παραπομπές σε συγκεκριμένες αποφάσεις και σελίδες.</p>
+  <p>Η ποιοτική διαφορά δεν είναι μόνο η ταχύτητα. Είναι η δυνατότητα εξάντλησης της νομολογίας &mdash; η δυνατότητα να ελέγξουμε όχι μόνο τις «προφανείς» αποφάσεις, αλλά και τις πρόσφατες αποφάσεις κατώτερων δικαστηρίων ή μειοψηφικές θέσεις, οι οποίες μπορεί να αλλάζουν τη στρατηγική. Ο δικηγόρος δεν αντικαθίσταται &mdash; απλώς παύει να περιορίζεται από τον χρόνο που διαθέτει για έρευνα.</p>
+
+  <h3>Β.2 &mdash; Ποσοτική αξιολόγηση κινδύνου</h3>
+  <p>Η νομική κρίση είναι, εξ ορισμού, κρίση υπό αβεβαιότητα. Παραδοσιακά, εκφραζόταν με λεκτικούς όρους: «πιθανή επιτυχία», «σημαντικός κίνδυνος», «ευνοϊκή έκβαση». Οι λεκτικοί όροι, ωστόσο, ερμηνεύονται διαφορετικά από κάθε αναγνώστη. «Πιθανή επιτυχία» μπορεί να σημαίνει 55% ή 80%, ανάλογα με τον δικηγόρο και τη διάθεσή του.</p>
+  <p>Η νέα υποδομή μας επιτρέπει να μεταφράζουμε, όπου αυτό είναι δυνατό και νομίμως προσήκον, τη νομική κρίση σε ποσοτικοποιημένα σενάρια με συγκεκριμένη πιθανολόγηση. Όπως παρουσιάστηκε στο συνοδευτικό Δελτίο, σε πρόσφατη υπόθεση διασυνοριακής διανομής η Διοίκηση της εντολέως μας έλαβε τέσσερα σενάρια με αντίστοιχες πιθανότητες (Καθαρή Έξοδος 65%, Αξίωση Αποζημίωσης 20%, Αποδεκτοί Όροι 10%, Σωστή Απομάκρυνση 5%) &mdash; και μπόρεσε να λάβει εμπορική απόφαση με τεκμηρίωση, αντί για διαίσθηση. Η μέθοδος αυτή αρμόζει κυρίως σε υποθέσεις εμπορικής διαπραγμάτευσης, αναγκαστικής εκτέλεσης, και προ-δικαστικής εκτίμησης.</p>
+
+  <h3>Β.3 &mdash; Αυτοματοποίηση τεκμηρίωσης</h3>
+  <p>Η παραγωγή τεκμηριωμένων εκθέσεων &mdash; συνόψεις, γνωμοδοτήσεις, εκθέσεις δέουσας επιμέλειας &mdash; ήταν ανέκαθεν χρονοβόρα. Η νέα υποδομή αυτοματοποιεί σημαντικό μέρος της εργασίας πρώτου σχεδίου: συλλογή υλικού, διάρθρωση κεφαλαίων, πρόχειρη σύνοψη. Ο δικηγόρος εξοικονομεί χρόνο και αφιερώνει τον χρόνο αυτό εκεί που χρειάζεται κρίση &mdash; στη στρατηγική επιλογή, στις νομικές λεπτομέρειες, στην αντιμετώπιση των ιδιαίτερων παραμέτρων του εντολέα.</p>
+  <p>Στην πράξη, εκθέσεις που προ διετίας απαιτούσαν 5 με 7 ημέρες εργασίας, σήμερα ολοκληρώνονται σε 1 με 2. Η ποιότητα δεν θυσιάζεται &mdash; αντίθετα, βελτιώνεται, διότι ο δικηγόρος έχει περισσότερο χρόνο να σκεφθεί, λιγότερο να συντάξει.</p>
+
+  <h3>Β.4 &mdash; Κανονιστική παρακολούθηση ως συνεχής υπηρεσία</h3>
+  <p>Παραδοσιακά, ο εντολέας ενημερωνόταν για κανονιστικές εξελίξεις όταν ο δικηγόρος του θυμόταν να τον ενημερώσει, ή όταν η εξέλιξη αφορούσε άμεσα την τρέχουσα υπόθεση. Πολλές φορές, σημαντικές αλλαγές νομοθεσίας (AI Act, DSA, NIS2, Corporate Sustainability Due Diligence Directive) περνούσαν απαρατήρητες μέχρι να γίνουν κρίσιμες.</p>
+  <p>Η πλατφόρμα μας επιτρέπει τη συνεχή, αυτοματοποιημένη παρακολούθηση κανονιστικών εξελίξεων που αφορούν τον κάθε εντολέα μας ατομικά, με βάση τον κλάδο, τη δραστηριότητα, τη γεωγραφική εμβέλεια. Αντί για ετήσια ή τριμηνιαία ανασκόπηση, ο εντολέας λαμβάνει ενημέρωση μέσα σε ημέρες από τη δημοσίευση κάθε σχετικής εξέλιξης, με εκτίμηση για το εάν τον αφορά και τι πρέπει να κάνει.</p>
+
+  <h3>Β.5 &mdash; Τα όρια &mdash; τι δεν αλλάζει</h3>
+  <p>Δύο στοιχεία της νομικής πρακτικής δεν πρόκειται να αλλάξουν στο προβλέψιμο μέλλον, και είναι σημαντικό να το αναφέρουμε ρητά. Πρώτον, η νομική κρίση επί σύνθετων ή πρωτότυπων ζητημάτων &mdash; ιδίως εκεί όπου απαιτείται δημιουργική ερμηνεία ή στρατηγική επιλογή &mdash; παραμένει ανθρώπινη ευθύνη. Τα μοντέλα εξυπηρετούν, δεν αποφασίζουν.</p>
+  <p>Δεύτερον, η σχέση εμπιστοσύνης με τον εντολέα, η πρόσωπο-με-πρόσωπο διαβούλευση όταν η υπόθεση το απαιτεί, η εκπροσώπηση ενώπιον δικαστηρίων &mdash; παραμένουν αποκλειστικά ανθρώπινες υπηρεσίες. Η τεχνολογία απελευθερώνει τον χρόνο του δικηγόρου για να τα κάνει καλύτερα. Δεν τα αντικαθιστά.</p>
+
+  <hr class="rule-ornament">
+
+  <!-- ═══════════════ PART III ═══════════════ -->
+  <h2 class="part" id="part-3"><span class="num">Μέρος Γ&acute;</span>Επιχειρείν &mdash; οι επιπτώσεις για τη Διοίκηση</h2>
+  <p class="part-intro">Τέσσερις παρατηρήσεις για τη διοίκηση των εντολέων μας &mdash; όχι περί τεχνολογίας, αλλά περί οργάνωσης.</p>
+
+  <h3>Γ.1 &mdash; Το νέο μοντέλο υπηρεσιών: «Οι υπηρεσίες γίνονται λογισμικό»</h3>
+  <p>Μία από τις πλέον σημαντικές παρατηρήσεις της τελευταίας διετίας &mdash; και έχει ήδη επισημανθεί από φορείς όπως η Sequoia Capital στο μνημειώδες σημείωμά της «Services is the New Software» (2026) &mdash; είναι ότι η τεχνητή νοημοσύνη επιτρέπει την παραγωγή υπηρεσιών που προηγουμένως απαιτούσαν μεγάλες ομάδες ανθρώπων, από μικρές ομάδες που αξιοποιούν λογισμικό. Αυτό αλλάζει τη δομή κόστους των επαγγελματικών υπηρεσιών.</p>
+  <p>Για τη νομική αγορά της Ελλάδας συγκεκριμένα, η σημασία είναι διπλή. Αφενός, γραφεία μικρότερου μεγέθους μπορούν πλέον να παρέχουν υπηρεσίες ποιότητας που προηγουμένως ήταν αποκλειστικά κτήμα των μεγαλύτερων διεθνών δικτύων. Αφετέρου, οι εντολείς που παραδοσιακά έστρεφαν την περίπλοκη εργασία τους εκτός Ελλάδας &mdash; συνήθως σε Λονδίνο, Φρανκφούρτη ή Παρίσι &mdash; για λόγους χωρητικότητας και εξοπλισμού, έχουν σήμερα τη δυνατότητα να την διατηρήσουν εντός, σε γραφεία που διαθέτουν ανάλογη υποδομή.</p>
+
+  <h3>Γ.2 &mdash; Ανθρώπινο δυναμικό: μεταβολές, όχι καταργήσεις</h3>
+  <p>Η τεχνητή νοημοσύνη δεν αντικαθιστά τους δικηγόρους &mdash; αντικαθιστά συγκεκριμένες εργασίες. Η διάκριση είναι ουσιώδης. Σε ένα γραφείο που αξιοποιεί σωστά την τεχνολογία, οι νεότεροι συνεργάτες ανέρχονται πιο γρήγορα σε εργασία κρίσης, διότι απαλλάσσονται από τη μηχανική φιλολογία της νομικής έρευνας και τεκμηρίωσης. Οι παλαιότεροι εταίροι διαθέτουν περισσότερο χρόνο για στρατηγική συμβουλευτική. Η διοικητική υποστήριξη αναβαθμίζεται: από απλή γραμματεία, σε διαχείριση δεδομένων και παρακολούθηση ροής υποθέσεων.</p>
+  <p>Για τους εντολείς μας που αντιμετωπίζουν το ίδιο ερώτημα εντός των δικών τους οργανώσεων &mdash; «τι σημαίνει η τεχνητή νοημοσύνη για το δικό μας ανθρώπινο δυναμικό;» &mdash; το πρότυπο της νομικής μας πρακτικής παρέχει ενδιαφέρον παράδειγμα: σωστή ενσωμάτωση σημαίνει ανάβαση στην κλίμακα προστιθέμενης αξίας, όχι μείωση μεγέθους.</p>
+
+  <h3>Γ.3 &mdash; Ευφυΐα αποφάσεων στο επίπεδο της Διοίκησης</h3>
+  <p>Οι Διοικήσεις των εντολέων μας χρειάζονται δύο πράγματα τα οποία η παραδοσιακή νομική υπηρεσία δεν παρείχε εύκολα: πλήρη εικόνα της νομικής κατάστασης της εταιρείας σε οποιαδήποτε στιγμή, και δυνατότητα προσομοίωσης εναλλακτικών εμπορικών αποφάσεων ως προς τις νομικές τους συνέπειες. Τα δύο αυτά αιτήματα βρίσκονται εντός πλέον των δυνατοτήτων της νέας υποδομής μας.</p>
+  <p>Ο εντολέας λαμβάνει πίνακα ελέγχου (dashboard) που καλύπτει τις ενεργές του υποθέσεις, τους κανονιστικούς του κινδύνους, τα προσεχή του βήματα. Για στρατηγικές αποφάσεις, η Εταιρεία μας μπορεί να παρέχει ποσοτικοποιημένα σενάρια, όπως προαναφέρθηκε, ώστε το Διοικητικό Συμβούλιο να εγκρίνει με επίγνωση.</p>
+
+  <h3>Γ.4 &mdash; Διασυνοριακές υποθέσεις: τα γλωσσικά μοντέλα ως γέφυρα</h3>
+  <p>Για την πλειονότητα των ελληνικών επιχειρήσεων, οι διασυνοριακές υποθέσεις &mdash; διεθνείς συμβάσεις, αρμόδιο δικαστήριο σε άλλη χώρα, πολυεθνικοί αντισυμβαλλόμενοι &mdash; αποτελούν πάντοτε πρόκληση λόγω της γλωσσικής και πολιτισμικής απόστασης. Τα σύγχρονα γλωσσικά μοντέλα λειτουργούν με εξαιρετική αξιοπιστία μεταξύ ελληνικών, αγγλικών, γερμανικών, γαλλικών, ιταλικών, και άλλων γλωσσών. Η L+A έχει αξιοποιήσει αυτή τη δυνατότητα ήδη σε πολλές πρόσφατες υποθέσεις &mdash; συμπεριλαμβανομένης της υπόθεσης αγρο-διατροφικής αποκλειστικής διανομής που αναφέρθηκε στο συνοδευτικό Δελτίο.</p>
+  <p>Η πρακτική σημασία: συμβάσεις σε ξένη γλώσσα αναλύονται με ταχύτητα, έγγραφα αντισυμβαλλομένων κατανοούνται πλήρως, και η διαπραγμάτευση γίνεται υπό ισότιμους όρους. Ο εντολέας μας, στην Ελλάδα, αντιμετωπίζει με αυτοπεποίθηση αντισυμβαλλόμενο που παλαιότερα θα είχε προτέρημα απλώς και μόνο επειδή λειτουργούσε στη δική του γλώσσα και νομοθεσία.</p>
+
+  <hr class="rule-ornament">
+
+  <!-- ═══════════════ PART IV ═══════════════ -->
+  <h2 class="part" id="part-4"><span class="num">Μέρος Δ&acute;</span>Η πλατφόρμα της L+A &mdash; πώς σας βοηθάει στην πράξη</h2>
+  <p class="part-intro">Επτά συγκεκριμένες περιπτώσεις χρήσης, με περιγραφή «πριν» και «μετά». Όσες είναι ήδη σε λειτουργία, σημειώνονται ως τέτοιες.</p>
+
+  <div class="usecase">
+    <div class="usecase-num">Περίπτωση 1</div>
+    <div class="usecase-title">Διαχείριση νέας εμπορικής υπόθεσης</div>
+    <p>Νέα υπόθεση εμπορικής φύσης αναλαμβάνεται από την Εταιρεία μας &mdash; π.χ. διαφωνία με προμηθευτή, διαπραγμάτευση συμβάσεως, ή εκτέλεση απαίτησης.</p>
+    <div class="usecase-grid">
+      <div class="usecase-before">
+        <div class="usecase-kicker">Πριν</div>
+        <p>Πρώτη συνάντηση με δικηγόρο. Συλλογή στοιχείων σε διάφορες αποστολές email. Δικηγόρος μελετά τον φάκελο επί δύο ή τρεις ημέρες. Πρόχειρη στρατηγική γνωμοδότηση την επόμενη εβδομάδα.</p>
+      </div>
+      <div class="usecase-after">
+        <div class="usecase-kicker">Μετά</div>
+        <p>Τα στοιχεία εντάσσονται στην πλατφόρμα σε δομημένη μορφή εντός ωρών. Αυτοματοποιημένη εντόπιση σχετικής νομολογίας και προηγούμενων υποθέσεων της εταιρείας σας. Στρατηγική γνωμοδότηση με τρία σενάρια και τιμές πιθανότητας εντός 48 ωρών.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="usecase">
+    <div class="usecase-num">Περίπτωση 2</div>
+    <div class="usecase-title">GDPR συμμόρφωση &mdash; συνεχής παρακολούθηση αντί για ετήσιος έλεγχος</div>
+    <p>Εταιρεία εντολέα μας έχει υποχρεώσεις ως προς τον Γενικό Κανονισμό Προστασίας Δεδομένων.</p>
+    <div class="usecase-grid">
+      <div class="usecase-before">
+        <div class="usecase-kicker">Πριν</div>
+        <p>Ετήσιος έλεγχος συμμόρφωσης. Αρχείο δραστηριοτήτων επεξεργασίας ενημερώνεται μία φορά. Αλλαγές στη νομοθεσία ενδέχεται να παραμείνουν απαρατήρητες έως την επόμενη ετήσια επαφή.</p>
+      </div>
+      <div class="usecase-after">
+        <div class="usecase-kicker">Μετά</div>
+        <p>Αυτοματοποιημένη παρακολούθηση των αποφάσεων της Αρχής Προστασίας Δεδομένων Προσωπικού Χαρακτήρα, των γνωμοδοτήσεων της Επιτροπής Κανονισμού, και των κανονιστικών εξελίξεων σε ΕΕ και ΗΠΑ. Άμεση ειδοποίηση για όσες αλλαγές αφορούν τον συγκεκριμένο εντολέα.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="usecase">
+    <div class="usecase-num">Περίπτωση 3</div>
+    <div class="usecase-title">Διασυνοριακή σύμβαση &mdash; μεταφραστική και δικαιική ανάλυση</div>
+    <p>Εντολέας μας πρόκειται να υπογράψει σύμβαση με ξένη εταιρεία, σε ξένη γλώσσα, με ρήτρα εφαρμοστέου δικαίου άλλης χώρας.</p>
+    <div class="usecase-grid">
+      <div class="usecase-before">
+        <div class="usecase-kicker">Πριν</div>
+        <p>Μετάφραση από εξωτερικό συνεργάτη. Μελέτη από δικηγόρο με εξειδίκευση στο ελληνικό δίκαιο. Συμβουλή από ξένο συνεργάτη για το αλλοδαπό δίκαιο, συχνά με ουσιώδες κόστος και χρόνο.</p>
+      </div>
+      <div class="usecase-after">
+        <div class="usecase-kicker">Μετά</div>
+        <p>Ταυτόχρονη αντιπαραβολή ελληνικού και αλλοδαπού κειμένου, με επισήμανση σημείων που ενδέχεται να ερμηνευθούν διαφορετικά στις δύο έννομες τάξεις. Πρωτογενής σύγκριση με διεθνή πρότυπα και με πρόσφατη νομολογία στη δικαιοδοσία της ρήτρας.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="usecase">
+    <div class="usecase-num">Περίπτωση 4</div>
+    <div class="usecase-title">Εταιρική διακυβέρνηση &mdash; πίνακας ελέγχου Διοίκησης</div>
+    <p>Διοικητικό Συμβούλιο εντολέα μας επιθυμεί πλήρη εικόνα της νομικής κατάστασης της εταιρείας σε τακτική βάση.</p>
+    <div class="usecase-grid">
+      <div class="usecase-before">
+        <div class="usecase-kicker">Πριν</div>
+        <p>Τριμηνιαία ή εξαμηνιαία έκθεση από τη νομική υπηρεσία. Ενδιάμεση ενημέρωση μόνο για κατεπείγοντα θέματα. Κενά πληροφόρησης μεταξύ εκθέσεων.</p>
+      </div>
+      <div class="usecase-after">
+        <div class="usecase-kicker">Μετά</div>
+        <p>Πίνακας ελέγχου σε πραγματικό χρόνο: ενεργές υποθέσεις, στάδιο εκάστης, εκτιμώμενος κίνδυνος, προσεχή βήματα, επερχόμενες κανονιστικές υποχρεώσεις. Ετοιμασμένη πληροφορία για τη συνεδρίαση του Διοικητικού Συμβουλίου χωρίς ad-hoc αιτήματα.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="usecase">
+    <div class="usecase-num">Περίπτωση 5</div>
+    <div class="usecase-title">Νομική έρευνα ακινήτου &mdash; από εβδομάδες σε ώρες</div>
+    <p>Εντολέας μας πρόκειται να αποκτήσει ή να χρηματοδοτήσει ακίνητο. Απαιτείται πλήρης νομικός έλεγχος τίτλων, βαρών, εκκρεμοδικιών.</p>
+    <div class="usecase-grid">
+      <div class="usecase-before">
+        <div class="usecase-kicker">Πριν</div>
+        <p>Μετάβαση δικηγόρου στο οικείο Υποθηκοφυλακείο ή Κτηματολόγιο. Χειρόγραφη αποσπασματική καταγραφή. Συνολικά 5-7 ημέρες για ολοκληρωμένη έκθεση.</p>
+      </div>
+      <div class="usecase-after">
+        <div class="usecase-kicker">Μετά</div>
+        <p>Η πλατφόρμα της L+A (Legal Data Collection) εκτείνεται σε 397 γεωγραφικές περιοχές και 732 νομικές υπηρεσίες, με δίκτυο 56 συνεργαζόμενων δικηγόρων. Ενοποιημένη ψηφιακή έκθεση με παραπομπές σε πράξεις και αποφάσεις εντός 24-48 ωρών.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="usecase">
+    <div class="usecase-num">Περίπτωση 6</div>
+    <div class="usecase-title">Κανονιστική ενημέρωση &mdash; προσωποποιημένη ροή</div>
+    <p>Εντολέας μας λειτουργεί σε κλάδο με τακτικές κανονιστικές αλλαγές (χρηματοοικονομικά, υγεία, τηλεπικοινωνίες, ενέργεια).</p>
+    <div class="usecase-grid">
+      <div class="usecase-before">
+        <div class="usecase-kicker">Πριν</div>
+        <p>Γενική ενημέρωση μέσω ετήσιου ή τριμηνιαίου νομικού δελτίου. Κίνδυνος σημαντικές αλλαγές να περάσουν απαρατήρητες.</p>
+      </div>
+      <div class="usecase-after">
+        <div class="usecase-kicker">Μετά</div>
+        <p>Προσωποποιημένη ροή κανονιστικής ενημέρωσης βάσει προφίλ του εντολέα. Εντοπισμός, σύνοψη, και εκτίμηση επιπτώσεων εντός ημερών από κάθε δημοσίευση. Επιλογή να συζητηθεί άμεσα, εφόσον κριθεί ουσιαστική.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="usecase">
+    <div class="usecase-num">Περίπτωση 7</div>
+    <div class="usecase-title">Στρατηγικές αποφάσεις &mdash; ποσοτικοποιημένα σενάρια</div>
+    <p>Εντολέας μας πρέπει να λάβει σημαντική εμπορική απόφαση με νομικές διαστάσεις: τερματισμός συμβάσεως, έναρξη αγωγής, διακανονισμός, συγχώνευση.</p>
+    <div class="usecase-grid">
+      <div class="usecase-before">
+        <div class="usecase-kicker">Πριν</div>
+        <p>Λεκτική γνωμοδότηση με ποιοτικούς χαρακτηρισμούς («ευνοϊκή έκβαση», «σημαντικός κίνδυνος»). Ο εντολέας αποφασίζει με βάση διαίσθηση περί του τι σημαίνουν αυτοί οι όροι.</p>
+      </div>
+      <div class="usecase-after">
+        <div class="usecase-kicker">Μετά</div>
+        <p>Τρία ή τέσσερα διακριτά σενάρια, με ποσοτικοποιημένη πιθανότητα καθενός και αναλυτική τεκμηρίωση. Ο εντολέας λαμβάνει εμπορική απόφαση επί τεκμηριωμένης βάσης &mdash; όπως στην υπόθεση της διανομής που αναφέρθηκε στο συνοδευτικό Δελτίο.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- CALLOUT: SOVEREIGNTY -->
+  <div class="callout">
+    <div class="callout-label">Σημαντικό σημείο</div>
+    <div class="callout-title">Η ιδιότητα της εμπιστευτικότητας</div>
+    <p>Σε όλες τις παραπάνω περιπτώσεις χρήσης, τα στοιχεία των εντολέων μας παραμένουν υπό τον πλήρη έλεγχο της Δικηγορικής μας Εταιρείας. Η βασική επεξεργασία γίνεται σε ιδιόκτητη τοπική υποδομή, στις εγκαταστάσεις μας. Τα στοιχεία δεν διαβιβάζονται σε τρίτες υπηρεσίες cloud, δεν χρησιμοποιούνται για εκπαίδευση εξωτερικών μοντέλων, και καλύπτονται στο σύνολό τους από το δικηγορικό απόρρητο. Όπου απαιτείται επικοινωνία με εξωτερικά εξαιρετικά ισχυρά μοντέλα, αυτή γίνεται υπό συμβατικούς όρους που αποκλείουν την εκπαίδευση και διασφαλίζουν τη συμμόρφωση με το GDPR.</p>
+  </div>
+
+  <!-- EDITOR'S NOTE -->
+  <div class="editors-note">
+    &laquo;Τα εκατό χρόνια της L+A ήταν χρόνια συνέχειας. Η επόμενη δεκαετία θα είναι δεκαετία συνέχειας με αναβάθμιση. Κρατάμε την ίδια δέσμευση στους εντολείς μας &mdash; απλώς με πολύ καλύτερα εργαλεία πίσω από τις λέξεις μας.&raquo;
+    <div class="signoff">&mdash; Ευθύμιος (Ντέμης) &amp; Απόλλων Γ. Λατσούδης &middot; Latsoudis + Associates</div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta" id="epilogos">
+    <h3>Προσωπική παρουσίαση &mdash; Β&acute; τρίμηνο 2026</h3>
+    <p>Κατά τη διάρκεια του δεύτερου τριμήνου του 2026, σας προσκαλούμε σε προσωπική συνάντηση στα γραφεία μας στον Πειραιά, όπου θα δείτε στην πράξη τη νέα υποδομή και τον τρόπο εφαρμογής της στον δικό σας φάκελο. Η συνάντηση είναι χωρίς οικονομική επιβάρυνση και χωρίς δέσμευση.</p>
+    <p>Για να κλειστεί, επικοινωνήστε με την Εταιρεία μας στο <a href="mailto:business@latsoudislaw.com">business@latsoudislaw.com</a> ή απαντήστε στο συνοδευτικό Δελτίο.</p>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="foot">
+    <div>
+      <span class="foot-seal">Serving businesses since 1926</span>
+      <strong>LATSOUDIS + ASSOCIATES LAW FIRM</strong><br>
+      3 Ακτή Μιαούλη, Πειραιάς 185 35<br>
+      <a href="mailto:business@latsoudislaw.com">business@latsoudislaw.com</a><br>
+      <a href="https://www.latsoudislaw.com">latsoudislaw.com</a> &middot; 24/7 Business Helpdesk
+    </div>
+    <div class="foot-legal500">
+      <img src="legal-500-color.png" alt="Legal 500">
+      <img src="cicero-placeholder.png" alt="Cicero (pending)" onerror="this.style.display='none'">
+      LEGAL&nbsp;500&nbsp;LISTED
+    </div>
+  </footer>
+
+</div>
+
+<script>
+  // Reading progress bar
+  const progress = document.getElementById('progress');
+  window.addEventListener('scroll', () => {
+    const h = document.documentElement;
+    const total = h.scrollHeight - h.clientHeight;
+    const scrolled = h.scrollTop / total;
+    progress.style.width = (scrolled * 100) + '%';
+  });
+</script>
+</body>
+</html>

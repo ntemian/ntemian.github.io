@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>L+A · 100 Χρόνια Επέτειος και Επανεκκίνηση · Τεύχος №1 · 1926–2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#faf8f5;
+    --surface:#f3efe8;
+    --ink:#1a1a1a;
+    --muted:#6b655d;
+    --rule:#d9d1c3;
+    --navy:#1a2332;
+    --gold:#b8935f;
+    --terra:#a8543e;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:'Inter',system-ui,sans-serif;font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:680px;margin:0 auto;padding:48px 32px 96px}
+
+  /* Masthead — real L+A logo, inverted for cream background */
+  .masthead{border-bottom:1.5px solid var(--navy);padding-bottom:22px;margin-bottom:40px;display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap}
+  .masthead-left{display:flex;flex-direction:column;gap:8px}
+  .logo-img{width:180px;height:auto;display:block}
+  .logo-sub{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-top:2px}
+  .issue-meta{text-align:right;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);line-height:1.8}
+  .issue-meta strong{color:var(--navy);display:block;font-size:13px;letter-spacing:1.5px}
+
+  /* Centennial banner — white logo fits natively on navy */
+  .centennial{background:var(--navy);color:var(--bg);padding:28px 32px;margin:0 0 48px;display:flex;align-items:center;gap:28px;border-radius:2px}
+  .centennial-mark{font-family:'Playfair Display',serif;font-size:64px;font-weight:700;color:var(--gold);line-height:1;flex-shrink:0}
+  .centennial-text{font-family:'Inter',sans-serif;font-size:14.5px;letter-spacing:0.3px;line-height:1.55}
+  .centennial-text strong{display:block;font-family:'Playfair Display',serif;font-size:19px;font-weight:600;color:var(--bg);margin-bottom:6px;letter-spacing:0}
+
+  /* Lead */
+  .lead-kicker{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--terra);margin-bottom:10px}
+  .lead-title{font-family:'Playfair Display',serif;font-size:38px;font-weight:700;line-height:1.18;margin:0 0 14px;color:var(--navy);letter-spacing:-0.3px}
+  .lead-subtitle{font-family:'Playfair Display',serif;font-size:19px;font-weight:400;font-style:italic;color:var(--muted);margin:0 0 32px;line-height:1.45}
+  .byline{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--muted);text-transform:uppercase;margin-bottom:24px}
+  .byline span{color:var(--navy)}
+
+  /* Body */
+  p{margin:0 0 18px}
+  p.dropcap::first-letter{font-family:'Playfair Display',serif;font-size:68px;float:left;line-height:0.85;padding:6px 10px 0 0;font-weight:700;color:var(--navy)}
+  h2{font-family:'Playfair Display',serif;font-size:26px;font-weight:600;color:var(--navy);margin:48px 0 16px;letter-spacing:-0.3px;line-height:1.28}
+  h3{font-family:'Inter',sans-serif;font-size:14px;font-weight:600;color:var(--navy);text-transform:uppercase;letter-spacing:1.5px;margin:28px 0 10px}
+  .section-rule{border:0;border-top:1px solid var(--rule);margin:56px 0 40px}
+
+  /* Pillar block — factual declaration cards, no-bazaar style */
+  .pillar{background:var(--surface);padding:28px 32px;margin:28px 0;border-left:3px solid var(--navy)}
+  .pillar-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+  .pillar-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:600;color:var(--navy);margin:0 0 14px;line-height:1.3}
+  .pillar p{margin-bottom:10px}
+
+  /* Case study */
+  .case{background:var(--surface);padding:32px;margin:32px 0;border-left:3px solid var(--gold)}
+  .case-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--terra);margin-bottom:12px}
+  .case-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:600;color:var(--navy);margin:0 0 16px;line-height:1.3}
+  .case-matrix{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:20px 0;font-family:'JetBrains Mono',monospace;font-size:12px}
+  .case-matrix div{padding:10px 14px;background:var(--bg);border:1px solid var(--rule)}
+  .case-matrix .pct{color:var(--gold);font-weight:600;display:block;font-size:18px;margin-bottom:2px;font-family:'Playfair Display',serif}
+
+  /* Partnerships */
+  .partners-list{list-style:none;padding:0;margin:18px 0 0;font-family:'Inter',sans-serif;font-size:15px;line-height:2}
+  .partners-list li{border-bottom:1px dotted var(--rule);padding:6px 0;color:var(--navy)}
+  .partners-list li:last-child{border-bottom:0}
+  .partners-list .placeholder{color:var(--muted);font-style:italic;font-size:13px;letter-spacing:0.3px}
+
+  /* Editor's note */
+  .editors-note{font-style:italic;color:var(--muted);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);padding:24px 0;margin:48px 0;font-family:'Playfair Display',serif;font-size:17px;line-height:1.55}
+  .editors-note .signoff{font-family:'Inter',sans-serif;font-style:normal;font-size:13px;color:var(--navy);margin-top:14px;letter-spacing:0.3px}
+
+  /* Footer */
+  .foot{border-top:1.5px solid var(--navy);margin-top:80px;padding-top:24px;font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:1px;color:var(--muted);line-height:1.7;display:flex;justify-content:space-between;align-items:flex-start;gap:24px;flex-wrap:wrap}
+  .foot a{color:var(--navy);text-decoration:none;border-bottom:1px solid var(--navy)}
+  .foot-legal500{display:flex;flex-direction:column;align-items:flex-end;gap:6px;font-size:9px;letter-spacing:1.5px}
+  .foot-legal500 img{width:48px;height:auto}
+  .foot-seal{font-family:'Playfair Display',serif;font-style:italic;font-size:13px;color:var(--gold);letter-spacing:0.5px;display:block;margin-bottom:8px}
+  .unsubscribe{display:block;margin-top:14px;color:var(--muted);font-size:10px;max-width:440px}
+
+  @media (max-width:520px){
+    .wrap{padding:32px 20px 64px}
+    .lead-title{font-size:30px}
+    .centennial{flex-direction:column;align-items:flex-start}
+    .case-matrix{grid-template-columns:1fr}
+    .foot{flex-direction:column;align-items:flex-start}
+    .foot-legal500{align-items:flex-start}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- MASTHEAD -->
+  <header class="masthead">
+    <div class="masthead-left">
+      <img class="logo-img" src="logo-original.png" alt="Latsoudis + Associates">
+      <div class="logo-sub">Δικηγορική Εταιρεία &middot; Πειραιάς &middot; Από το 1926</div>
+    </div>
+    <div class="issue-meta">
+      <strong>Τεύχος №&nbsp;1</strong>
+      Άνοιξη 2026<br>
+      Επέτειος &amp; Επανεκκίνηση
+    </div>
+  </header>
+
+  <!-- CENTENNIAL BANNER -->
+  <div class="centennial">
+    <div class="centennial-mark">100</div>
+    <div class="centennial-text">
+      <strong>100 Χρόνια Επέτειος και Επανεκκίνηση &middot; 1926–2026</strong>
+      Εκατό χρόνια συνεχούς άσκησης του εμπορικού δικαίου στην Ελλάδα
+      &mdash; και τα εργαλεία της επόμενης δεκαετίας.
+    </div>
+  </div>
+
+  <!-- LEAD -->
+  <article>
+    <div class="lead-kicker">Σημείωμα της Διοίκησης</div>
+    <h1 class="lead-title">Εκατό χρόνια. Και η επόμενη δεκαετία ξεκινά τώρα.</h1>
+    <p class="lead-subtitle">Ανακοίνωση ιδιόκτητης πλατφόρμας νομικής και επιχειρηματικής ευφυΐας, στρατηγικών συνεργασιών και ουσιαστικής αναβάθμισης των παρεχόμενων υπηρεσιών.</p>
+    <div class="byline">L+A &middot; <span>Ενημέρωση προς τους εντολείς μας</span> &middot; Άνοιξη 2026</div>
+
+    <p class="dropcap">Με αφορμή τη συμπλήρωση εκατό ετών συνεχούς άσκησης του εμπορικού δικαίου στην Ελλάδα, η δικηγορική μας εταιρεία ανακοινώνει την έναρξη λειτουργίας ιδιόκτητης πλατφόρμας νομικής και επιχειρηματικής ευφυΐας. Η πλατφόρμα σχεδιάστηκε και αναπτύχθηκε εσωτερικά, με γνώμονα τη σύγκλιση τρίων τομέων που έως σήμερα εξελίσσονταν παράλληλα: τεχνητή νοημοσύνη, δίκαιο και επιχειρείν.</p>
+
+    <p>Παράλληλα, ολοκληρώσαμε την υπογραφή σημαντικών στρατηγικών συνεργασιών οι οποίες υποστηρίζουν τη λειτουργία της πλατφόρμας και διασφαλίζουν τη συνεχή ανανέωση των δεδομένων και των δυνατοτήτων της.</p>
+
+    <p>Στόχος όλων των παραπάνω είναι ένας και συγκεκριμένος: η ουσιαστική αναβάθμιση των υπηρεσιών που προσφέρουμε στους εντολείς μας &mdash; σε ταχύτητα, σε βάθος ανάλυσης, και σε ποιότητα στρατηγικής σύμβουλευσης. Τα στοιχεία που ακολουθούν στο παρόν τεύχος συνιστούν την πρώτη ορατή εφαρμογή της νέας μας υποδομής.</p>
+  </article>
+
+  <!-- PLATFORM PILLAR -->
+  <div class="pillar">
+    <div class="pillar-label">Η Πλατφόρμα μας</div>
+    <div class="pillar-title">Ιδιόκτητη υποδομή νομικής και επιχειρηματικής ευφυΐας</div>
+    <p>Η πλατφόρμα της L+A συγκεντρώνει σε ενιαίο περιβάλλον: (α) συστηματική συλλογή νομικών δεδομένων από Υποθηκοφυλακεία, Κτηματολόγια, Πρωτοδικεία και Ειρηνοδικεία, (β) επιχειρηματική πληροφόρηση από θεσμικές πηγές, (γ) στρωματοποιημένη ανάλυση μέσω συστημάτων τεχνητής νοημοσύνης, και (δ) παράδοση σε πίνακες ελέγχου και τεκμηριωμένες εκθέσεις προσαρμοσμένες ανά εντολέα.</p>
+    <p>Η υποδομή φιλοξενείται κατά κύριο λόγο σε ιδιόκτητο εξοπλισμό, ώστε τα εμπιστευτικά δεδομένα των εντολέων να παραμένουν υπό τον πλήρη έλεγχο της εταιρείας μας, χωρίς εξάρτηση από τρίτες υπηρεσίες cloud.</p>
+  </div>
+
+  <!-- PARTNERSHIPS PILLAR -->
+  <div class="pillar">
+    <div class="pillar-label">Στρατηγικές Συνεργασίες</div>
+    <div class="pillar-title">Υπογεγραμμένες συμφωνίες που υποστηρίζουν την πλατφόρμα</div>
+    <p>Έχουν συναφθεί συμφωνίες με κορυφαίους φορείς στους τομείς της τεχνολογίας, των δεδομένων και της κανονιστικής συμμόρφωσης. Οι εν λόγω συνεργασίες διασφαλίζουν τη διαρκή ενημέρωση της πλατφόρμας, την ποιότητα των δεδομένων, και την τήρηση των υψηλότερων δυνατών προτύπων ασφάλειας και προστασίας προσωπικών δεδομένων.</p>
+    <ul class="partners-list">
+      <li>Στρατηγικός συνεργάτης επιχειρηματικής πληροφόρησης</li>
+      <li>Στρατηγικός συνεργάτης τεχνολογικής υποδομής</li>
+      <li>Στρατηγικός συνεργάτης ανάπτυξης συστημάτων γνώσης</li>
+      <li class="placeholder">[ονόματα προς οριστικοποίηση πριν τη δημοσίευση]</li>
+    </ul>
+  </div>
+
+  <!-- CLIENT UPGRADE PILLAR -->
+  <div class="pillar">
+    <div class="pillar-label">Για τους Εντολείς μας</div>
+    <div class="pillar-title">Τι σημαίνει πρακτικά η αναβάθμιση</div>
+    <p>Η νέα υποδομή μεταφράζεται σε συγκεκριμένες βελτιώσεις στις παρεχόμενες υπηρεσίες, ιδίως σε υποθέσεις εμπορικού δικαίου, κανονιστικής συμμόρφωσης, διασυνοριακών συμβάσεων και διαχείρισης νομικής πληροφορίας. Ενδεικτικά:</p>
+    <p>&mdash; Ταχύτερη παραγωγή τεκμηριωμένων εκθέσεων, συχνά εντός ωρών αντί ημερών.<br>
+    &mdash; Ποσοτικοποίηση νομικών σεναρίων με σαφή πιθανολόγηση, όπου η φύση της υπόθεσης το επιτρέπει.<br>
+    &mdash; Συνεχής παρακολούθηση κανονιστικών εξελίξεων που αφορούν τον κάθε εντολέα ατομικά.<br>
+    &mdash; Άμεση πρόσβαση σε ιστορικό και συνάφειες μέσω ενοποιημένων πινάκων ελέγχου.</p>
+    <p>Κατά τη διάρκεια του δευτέρου τριμήνου 2026 θα κληθείτε σε προσωπικές παρουσιάσεις για την εξοικείωσή σας με τη νέα πλατφόρμα και τον τρόπο που θα εφαρμοστεί στον φάκελό σας.</p>
+  </div>
+
+  <hr class="section-rule">
+
+  <!-- CASE STUDY -->
+  <section>
+    <h2>Από το γραφείο μας: πρόσφατη υπόθεση διασυνοριακής διανομής</h2>
+    <p>Μία από τις πιο αντιπροσωπευτικές υποθέσεις του πρώτου τετραμήνου του 2026 αφορά ελληνική Ανώνυμη Εταιρεία του αγρο-διατροφικού κλάδου, η οποία αντιμετώπισε μονομερή τερματισμό συμφωνίας αποκλειστικής διανομής εκ μέρους Γερμανού διανομέα. Η υπόθεση παρουσιάζεται σε ανωνυμοποιημένη μορφή, ενόψει των συνεχιζόμενων διαπραγματεύσεων.</p>
+
+    <div class="case">
+      <div class="case-label">Υπόθεση γραφείου &middot; Ανωνυμοποιημένη</div>
+      <div class="case-title">Ελληνική Α.Ε. αγρο-διατροφικού κλάδου κατά Γερμανού διανομέα &mdash; αποκλειστική διανομή, μονομερής καταγγελία, ρήτρα διαιτησίας στη Γερμανία.</div>
+      <p>Η προσέγγισή μας επικεντρώθηκε στη μεθοδική μετάφραση της νομικής αβεβαιότητας σε <em>τέσσερα ποσοτικοποιημένα σενάρια</em>, προκειμένου η Διοίκηση της εντολέως μας να λάβει εμπορική απόφαση με πλήρη επίγνωση της πιθανολόγησης:</p>
+
+      <div class="case-matrix">
+        <div><span class="pct">65%</span>Καθαρή Έξοδος</div>
+        <div><span class="pct">20%</span>Αξίωση Αποζημίωσης</div>
+        <div><span class="pct">10%</span>Αποδεκτοί Όροι</div>
+        <div><span class="pct">5%</span>Σωστή Απομάκρυνση</div>
+      </div>
+
+      <p>Για κάθε σενάριο αναλύθηκαν: (α) το εφαρμοστέο δίκαιο, ελληνικό ή γερμανικό, (β) το forum διαιτησίας ή τακτικής δικαιοσύνης, (γ) το ύψος πιθανής αποζημίωσης με βάση τα άρθρα 179/2013 ΑΚ και §899 RGB, (δ) ο εμπορικός αντίκτυπος στα μελλοντικά κανάλια διανομής στη γερμανική αγορά. Η εντολέας μας έλαβε τη στρατηγική της απόφαση με τεκμηριωμένη γνώση των εναλλακτικών.</p>
+
+      <p style="margin-top:20px;font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--muted);letter-spacing:0.5px">
+        L+A Ref: 5014/14.04.2026 &middot; επικεφαλής εταίρος: Απόλλων Γ. Λατσούδης.
+      </p>
+    </div>
+  </section>
+
+  <hr class="section-rule">
+
+  <!-- COMMENTARY -->
+  <section>
+    <h2>Σύντομα σχόλια κανονιστικής επικαιρότητας</h2>
+
+    <h3>Κανονισμός (ΕΕ) 2024/1689 (AI Act)</h3>
+    <p>Οι υποχρεώσεις για συστήματα τεχνητής νοημοσύνης υψηλού κινδύνου εισέρχονται σε σταδιακή εφαρμογή. Η L+A διαθέτει κατάλογο ελέγχου συμμόρφωσης προσαρμοσμένο σε ελληνικές επιχειρήσεις χρηματοοικονομικών, υγείας, ανθρώπινων πόρων και δημοσίων συμβάσεων &mdash; διαθέσιμο κατόπιν σχετικού αιτήματος.</p>
+
+    <h3>Digital Services Act (DSA)</h3>
+    <p>Οι υποχρεώσεις εσωτερικής τεκμηρίωσης για διαδικτυακές πλατφόρμες επεκτάθηκαν τον Φεβρουάριο. Επιχειρήσεις που δεν θεωρούν εαυτές &laquo;πλατφόρμες&raquo; ενδέχεται να εμπίπτουν στο πεδίο εφαρμογής &mdash; ιδίως marketplaces B2B.</p>
+
+    <h3>Εταιρική Διακυβέρνηση μη εισηγμένων εταιρειών</h3>
+    <p>Το σχέδιο νόμου βρίσκεται σε δημόσια διαβούλευση. Αναμένεται ψήφιση εντός του δευτέρου τριμήνου.</p>
+  </section>
+
+  <!-- EDITORS NOTE -->
+  <div class="editors-note">
+    &laquo;Εκατό χρόνια σημαίνει θεσμική μνήμη. Τα επόμενα εκατό, σημαίνει θεσμική μνήμη συν τα εργαλεία της εποχής μας. Θα σας κρατάμε ενήμερους βήμα-βήμα.&raquo;
+    <div class="signoff">&mdash; Ευθύμιος (Ντέμης) &amp; Απόλλων Γ. Λατσούδης &middot; Latsoudis + Associates</div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="foot">
+    <div class="foot-main">
+      <span class="foot-seal">Serving businesses since 1926</span>
+      <strong>LATSOUDIS + ASSOCIATES LAW FIRM</strong><br>
+      3 Ακτή Μιαούλη, Πειραιάς 185 35<br>
+      <a href="mailto:business@latsoudislaw.com">business@latsoudislaw.com</a><br>
+      <a href="https://www.latsoudislaw.com">latsoudislaw.com</a> &nbsp;·&nbsp; 24/7 Business Helpdesk
+      <span class="unsubscribe">Λαμβάνετε το παρόν ενημερωτικό δελτίο επειδή έχετε δηλώσει τη συναίνεσή σας σύμφωνα με τον Γενικό Κανονισμό Προστασίας Δεδομένων (GDPR). Για να σταματήσετε τη λήψη, απαντήστε με τη λέξη &laquo;UNSUBSCRIBE&raquo;.</span>
+    </div>
+    <div class="foot-legal500">
+      <img src="legal-500-color.png" alt="Legal 500">
+      <img src="cicero-placeholder.png" alt="Cicero (awaiting upload)" onerror="this.style.display='none'">
+      LEGAL&nbsp;500&nbsp;LISTED
+    </div>
+  </footer>
+
+</div>
+</body>
+</html>
