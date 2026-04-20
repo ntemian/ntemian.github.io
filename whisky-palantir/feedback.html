@@ -79,10 +79,6 @@ button:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
       <label for="reviewer">Όνομα</label>
       <input id="reviewer" type="text" value="Γιώργος Κοϊβάρης" required>
     </div>
-    <div class="field">
-      <label for="contact">Viber / email (προαιρετικό)</label>
-      <input id="contact" type="text" placeholder="πχ. +30 694…">
-    </div>
 
     <h2>1 · Διορθώσεις</h2>
     <p class="subtitle">Ό,τι ξέρεις ότι είναι λάθος — τιμές, ονόματα, βαθμοί, πηγές.</p>
@@ -284,7 +280,6 @@ document.getElementById("feedback-form").addEventListener("submit", async (e) =>
 
   const payload = {
     reviewer_name: document.getElementById("reviewer").value.trim() || "Γιώργος Κοϊβάρης",
-    reviewer_contact: document.getElementById("contact").value.trim() || null,
     corrections: document.getElementById("corrections").value.trim() || null,
     additions: document.getElementById("additions").value.trim() || null,
     general_comments: document.getElementById("general").value.trim() || null,
