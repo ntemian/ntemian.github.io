@@ -198,8 +198,10 @@ footer a:hover{border-bottom-style:solid}
 
 <script>
 // All rendering via DOM APIs — no innerHTML with API data.
+// Persistent Tailscale Funnel — survives reboots, automatic HTTPS,
+// no DNS jank. Override with ?api=http://localhost:8000 for local dev.
 const LOSC_URL = (new URLSearchParams(location.search).get("api"))
-  || "https://residential-oils-steps-apparently.trycloudflare.com";
+  || "https://ntemiss-macbook-pro-1.tailddb317.ts.net";
 document.getElementById("meta-api").textContent = LOSC_URL;
 
 // ─── helpers ───────────────────────────────────────────

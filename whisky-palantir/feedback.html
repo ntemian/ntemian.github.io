@@ -125,11 +125,10 @@ button:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
 // Same cloudflared tunnel the PI.ai feedback form uses — one URL fronts all
 // LOSC public endpoints (pipeline + whisky + future Palantirs). Override
 // with ?api=http://localhost:8000 for local dev / when the tunnel is down.
-// Baked Whisky-Palantir tunnel URL — fronts the LOSC API for George.
-// Override with ?api=http://localhost:8000 for local dev, or a new
-// tunnel URL if this one rotates.
+// Persistent Tailscale Funnel — survives reboots, automatic HTTPS.
+// Override with ?api=http://localhost:8000 for local dev.
 const LOSC_URL = (new URLSearchParams(location.search).get("api"))
-  || "https://residential-oils-steps-apparently.trycloudflare.com";
+  || "https://ntemiss-macbook-pro-1.tailddb317.ts.net";
 
 function el(tag, opts){
   const n = document.createElement(tag);
