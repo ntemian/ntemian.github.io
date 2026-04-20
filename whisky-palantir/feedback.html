@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Whisky Palantir — Παρατηρήσεις · Γιώργος Κοϊβάρης</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#f5efe1; --cream-2:#ebe2ce; --ink:#2b1e12; --ink-2:#5a4a3a;
+  --accent:#8b4513; --accent-soft:#c88c5b22; --border:#c9b99a;
+  --danger:#8b1a1a; --green:#1a5d3a;
+  --serif:'Cormorant Garamond',Georgia,serif;
+  --sans:'Inter',-apple-system,system-ui,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{background:var(--cream);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased}
+body{padding:3rem 1.2rem;max-width:760px;margin:0 auto;line-height:1.55}
+h1,h2,h3{font-family:var(--serif);font-weight:700;letter-spacing:-.01em}
+h1{font-size:2.3rem;color:var(--accent);margin-bottom:.3rem}
+.subtitle{color:var(--ink-2);font-size:.95rem;margin-bottom:2.5rem}
+h2{font-size:1.4rem;color:var(--ink);margin:2.3rem 0 .6rem;padding-bottom:.3rem;border-bottom:1px solid var(--border)}
+h3{font-size:1.05rem;color:var(--accent);margin:1.2rem 0 .4rem}
+p{margin-bottom:.8rem}
+.intro{background:var(--cream-2);border-left:4px solid var(--accent);padding:1rem 1.2rem;margin-bottom:2rem;border-radius:4px}
+.intro strong{color:var(--accent)}
+.field{margin-bottom:1rem}
+label{display:block;font-size:.78rem;font-weight:600;color:var(--ink-2);text-transform:uppercase;letter-spacing:.04em;margin-bottom:.35rem}
+input[type=text],input[type=email],textarea{
+  width:100%;background:#fff;border:1px solid var(--border);border-radius:6px;
+  padding:.65rem .85rem;font-family:var(--sans);font-size:.92rem;color:var(--ink);
+  outline:none;transition:border-color .15s
+}
+input:focus,textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+textarea{min-height:90px;resize:vertical;line-height:1.5}
+.section{background:#fff;border:1px solid var(--border);border-radius:8px;padding:1.1rem 1.3rem;margin-bottom:1rem}
+.section-header{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:.6rem}
+.section-title{font-family:var(--serif);font-weight:700;font-size:1.1rem;color:var(--ink)}
+.observed{font-size:.86rem;color:var(--ink-2);margin-bottom:.7rem;line-height:1.6}
+.observed code{background:var(--cream-2);padding:.1em .35em;border-radius:3px;font-size:.92em}
+.pills{display:flex;flex-wrap:wrap;gap:.4rem;margin:.4rem 0 .6rem}
+.pill{background:var(--cream-2);padding:.25rem .6rem;border-radius:999px;font-size:.78rem;color:var(--ink-2);border:1px solid var(--border)}
+.pill.strike{background:#fff3d6;border-color:#c88c5b;color:var(--accent);font-weight:500}
+.pill.high{background:#ffebe0}
+.pill.critical{background:#ffd6d6;color:var(--danger);font-weight:600}
+.observed ul{margin:.3rem 0 .3rem 1.2rem;font-size:.9rem;line-height:1.7}
+button{
+  width:100%;background:var(--accent);color:var(--cream);border:0;border-radius:8px;
+  padding:.95rem;font-family:var(--sans);font-size:1rem;font-weight:600;cursor:pointer;
+  transition:all .2s;margin-top:1.5rem;letter-spacing:.02em
+}
+button:hover{background:#6b2e0a;transform:translateY(-1px);box-shadow:0 4px 14px #00000020}
+button:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
+.thanks{display:none;text-align:center;padding:3rem 1.5rem;background:#fff;border-radius:12px;margin:2rem 0}
+.thanks h2{font-size:2rem;color:var(--green);border:none;margin-bottom:.5rem}
+.thanks p{color:var(--ink-2)}
+.status{text-align:center;margin-top:.8rem;font-size:.88rem;display:none}
+.status.error{color:var(--danger)}
+.status.ok{color:var(--green)}
+.meta{font-size:.78rem;color:var(--ink-2);margin-top:2.5rem;border-top:1px solid var(--border);padding-top:1rem}
+.meta code{background:var(--cream-2);padding:.05em .3em;border-radius:3px}
+@media(max-width:520px){body{padding:1.5rem 1rem}h1{font-size:1.7rem}}
+</style>
+</head>
+<body>
+
+<div id="form-view">
+  <h1>Whisky Palantir</h1>
+  <p class="subtitle">Παρατηρήσεις & διορθώσεις για τον Ντέμη — 20 Απριλίου 2026</p>
+
+  <div class="intro">
+    <p>Γιώργο,</p>
+    <p>Αυτή είναι η τρέχουσα κατάσταση του Whisky Palantir μετά τις πληροφορίες που μας έδωσες. <strong>Διόρθωσε ό,τι είναι λάθος, πρόσθεσε ό,τι λείπει.</strong> Οτιδήποτε γράψεις έρχεται απευθείας στον Ντέμη.</p>
+  </div>
+
+  <form id="feedback-form">
+    <div class="field">
+      <label for="reviewer">Όνομα</label>
+      <input id="reviewer" type="text" value="Γιώργος Κοϊβάρης" required>
+    </div>
+    <div class="field">
+      <label for="contact">Viber / email (προαιρετικό)</label>
+      <input id="contact" type="text" placeholder="πχ. +30 694…">
+    </div>
+
+    <h2>1 · Διορθώσεις</h2>
+    <p class="subtitle">Ό,τι ξέρεις ότι είναι λάθος — τιμές, ονόματα, βαθμοί, πηγές.</p>
+    <div class="field">
+      <textarea id="corrections" placeholder="πχ. η Yoichi 10 δεν είναι πάντα διαθέσιμη στο Kylix, βάλε και το Rum Cask…"></textarea>
+    </div>
+
+    <h2>2 · Προσθήκες</h2>
+    <p class="subtitle">Τι λείπει; Καινούργια φιάλη στο watchlist, άγνωστη πηγή, νέα αγορά από εσένα που θα κάνουμε follow.</p>
+    <div class="field">
+      <textarea id="additions" placeholder="πχ. Hazelburn 15yo 2022 release, Ardbeg Committee bottlings, καινούργιο broker στην Γερμανία…"></textarea>
+    </div>
+
+    <h2>3 · Ανά τομέα</h2>
+    <p class="subtitle">Σχόλια στα συγκεκριμένα στοιχεία που βλέπει ο Palantir αυτή τη στιγμή.</p>
+
+    <div id="sections-container">
+      <p style="color:var(--ink-2);font-size:.88rem;">Φόρτωση τρέχουσας κατάστασης…</p>
+    </div>
+
+    <h2>4 · Γενικά</h2>
+    <div class="field">
+      <textarea id="general" placeholder="Ιδέες, πλαίσιο αγοράς, τι να παρακολουθούμε φέτος…"></textarea>
+    </div>
+
+    <button type="submit" id="submit-btn">Αποστολή στον Ντέμη</button>
+    <div class="status" id="status"></div>
+  </form>
+
+  <div class="meta">
+    <p>Τα σχόλια σου αρχειοθετούνται ως LOSC thought και αποστέλλονται με email στο <code>elatsoudis@latsoudislaw.com</code>. Μόνο αυτός τα βλέπει.</p>
+  </div>
+</div>
+
+<div class="thanks" id="thanks">
+  <h2>Εφχαριστώ Γιώργο!</h2>
+  <p>Τα σχόλια σου έφτασαν στον Ντέμη και αρχειοθετήθηκαν.<br>
+  Στο επόμενο Δελτίο θα φαίνονται οι αλλαγές που πρότεινες.</p>
+</div>
+
+<script>
+// All autofill content is rendered via DOM APIs (createElement + textContent)
+// — no innerHTML with server data, so payload cannot inject markup.
+// Same cloudflared tunnel the PI.ai feedback form uses — one URL fronts all
+// LOSC public endpoints (pipeline + whisky + future Palantirs). Override
+// with ?api=http://localhost:8000 for local dev / when the tunnel is down.
+// Baked Whisky-Palantir tunnel URL — fronts the LOSC API for George.
+// Override with ?api=http://localhost:8000 for local dev, or a new
+// tunnel URL if this one rotates.
+const LOSC_URL = (new URLSearchParams(location.search).get("api"))
+  || "https://residential-oils-steps-apparently.trycloudflare.com";
+
+function el(tag, opts){
+  const n = document.createElement(tag);
+  if(opts){
+    if(opts.text !== undefined) n.textContent = opts.text;
+    if(opts.cls) n.className = opts.cls;
+    if(opts.attrs) for(const k in opts.attrs) n.setAttribute(k, opts.attrs[k]);
+  }
+  return n;
+}
+function pill(text, cls){
+  const p = el("span", {cls: "pill" + (cls ? " " + cls : ""), text: String(text)});
+  return p;
+}
+
+function renderWatchlist(container, data){
+  const wl = (data.watchlist || []);
+  const body = el("div");
+  if(!wl.length){ body.textContent = "κενό"; return addSection(container, "watchlist", "Watchlist", body); }
+  body.appendChild(el("span", {text: `${wl.length} ενεργές φιάλες · `}));
+  wl.slice(0, 8).forEach(w => {
+    const label = `${w.distillery} ${w.expression}` + (w.max_price_eur ? ` ≤€${w.max_price_eur}` : "");
+    body.appendChild(pill(label, w.priority));
+    body.appendChild(document.createTextNode(" "));
+  });
+  if(wl.length > 8){
+    body.appendChild(el("em", {text: ` + ${wl.length - 8} ακόμα`}));
+  }
+  addSection(container, "watchlist", "Watchlist", body);
+}
+
+function renderBottles(container, data){
+  const bottles = (data.bottles || []);
+  const japanese = bottles.filter(b => b.country === "Japan");
+  const karuizawa = bottles.filter(b => b.distillery === "Karuizawa");
+  const body = el("div");
+  body.appendChild(el("span", {
+    text: `Σύνολο ${bottles.length} · Ιαπωνικές ${japanese.length} · Karuizawa ${karuizawa.length}. Διόρθωσε αν κάποια δεν υπάρχει πραγματικά, ή αν κάποια «σωστή» λείπει.`
+  }));
+  if(japanese.length){
+    body.appendChild(el("br"));
+    body.appendChild(el("br"));
+    body.appendChild(el("em", {text: "Ιαπωνικές τώρα: "}));
+    japanese.slice(0, 10).forEach(b => {
+      body.appendChild(pill(`${b.distillery} ${b.expression}`));
+      body.appendChild(document.createTextNode(" "));
+    });
+  }
+  addSection(container, "bottles", "Φιάλες στον κατάλογο", body);
+}
+
+function renderSources(container, data){
+  const sources = (data.sources || []);
+  const body = el("div");
+  body.appendChild(el("span", {text: `${sources.length} εγγεγραμμένες · `}));
+  sources.forEach(s => {
+    body.appendChild(pill(`${s.name} (${s.country || "?"}) · trust ${s.trust_score}`));
+    body.appendChild(document.createTextNode(" "));
+  });
+  addSection(container, "sources", "Πηγές / Retailers", body);
+}
+
+function renderPrices(container, data){
+  const prices = (data.recent_prices || []);
+  const body = el("div");
+  if(!prices.length){
+    body.textContent = "καμία παρατήρηση τελευταίες 7 μέρες";
+    addSection(container, "prices", "Πρόσφατες τιμές (7 μέρες)", body);
+    return;
+  }
+  const ul = el("ul");
+  prices.slice(0, 12).forEach(p => {
+    const li = el("li");
+    li.appendChild(document.createTextNode(`${p.distillery} ${p.expression} — `));
+    li.appendChild(el("strong", {text: `€${p.price}`}));
+    li.appendChild(document.createTextNode(` στο ${p.source} (${(p.sold_at || "").slice(0,16)})`));
+    ul.appendChild(li);
+  });
+  body.appendChild(ul);
+  addSection(container, "prices", "Πρόσφατες τιμές (7 μέρες)", body);
+}
+
+function addSection(container, id, title, observedBody){
+  const wrap = el("div", {cls: "section"});
+  const header = el("div", {cls: "section-header"});
+  header.appendChild(el("span", {cls: "section-title", text: title}));
+  wrap.appendChild(header);
+  const observed = el("div", {cls: "observed"});
+  observed.appendChild(observedBody);
+  wrap.appendChild(observed);
+
+  const field = el("div", {cls: "field"});
+  const lbl = el("label", {text: "Τι αλλάζεις;", attrs: {for: `cmt-${id}`}});
+  field.appendChild(lbl);
+  const ta = el("textarea", {
+    attrs: {
+      id: `cmt-${id}`,
+      "data-section-id": id,
+      "data-section-label": title,
+      "data-section-observed": `${title} snapshot ${new Date().toISOString().slice(0,10)}`,
+      placeholder: "Άφησε κενό αν δεν έχεις κάτι για αυτό το τομέα…",
+    },
+  });
+  field.appendChild(ta);
+  wrap.appendChild(field);
+  container.appendChild(wrap);
+}
+
+async function loadAutofill(){
+  const container = document.getElementById("sections-container");
+  try{
+    const resp = await fetch(`${LOSC_URL}/whisky/feedback/autofill`, {method: "GET"});
+    if(!resp.ok) throw new Error("autofill http " + resp.status);
+    const data = await resp.json();
+    container.textContent = "";
+    renderWatchlist(container, data);
+    renderBottles(container, data);
+    renderSources(container, data);
+    renderPrices(container, data);
+  }catch(err){
+    container.textContent = "";
+    const p = el("p", {
+      text: `Δεν μπορούμε να φορτώσουμε την τρέχουσα κατάσταση (${err.message}). Γράψε ελεύθερα στα πεδία παραπάνω.`,
+    });
+    p.style.color = "var(--danger)";
+    container.appendChild(p);
+  }
+}
+loadAutofill();
+
+document.getElementById("feedback-form").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const btn = document.getElementById("submit-btn");
+  const status = document.getElementById("status");
+  btn.disabled = true; btn.textContent = "Αποστολή…";
+
+  const sections = [];
+  document.querySelectorAll("[data-section-id]").forEach(t => {
+    if((t.value || "").trim()){
+      sections.push({
+        id: t.dataset.sectionId,
+        label: t.dataset.sectionLabel,
+        observed: t.dataset.sectionObserved,
+        comment: t.value.trim(),
+      });
+    }
+  });
+
+  const payload = {
+    reviewer_name: document.getElementById("reviewer").value.trim() || "Γιώργος Κοϊβάρης",
+    reviewer_contact: document.getElementById("contact").value.trim() || null,
+    corrections: document.getElementById("corrections").value.trim() || null,
+    additions: document.getElementById("additions").value.trim() || null,
+    general_comments: document.getElementById("general").value.trim() || null,
+    sections,
+  };
+
+  try{
+    const resp = await fetch(`${LOSC_URL}/whisky/feedback`, {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify(payload),
+    });
+    if(resp.ok){
+      document.getElementById("form-view").style.display = "none";
+      document.getElementById("thanks").style.display = "block";
+    }else{
+      let msg = "HTTP " + resp.status;
+      try{ const data = await resp.json(); msg = data.error || msg; }catch{}
+      status.textContent = msg;
+      status.className = "status error";
+      status.style.display = "block";
+      btn.disabled = false; btn.textContent = "Αποστολή στον Ντέμη";
+    }
+  }catch(err){
+    status.textContent = "Πρόβλημα δικτύου. Δοκίμασε ξανά.";
+    status.className = "status error";
+    status.style.display = "block";
+    btn.disabled = false; btn.textContent = "Αποστολή στον Ντέμη";
+  }
+});
+</script>
+</body>
+</html>

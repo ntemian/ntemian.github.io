@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Whisky Palantir — Dashboard · 20 Απριλίου 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#f5efe1; --cream-2:#ebe2ce; --cream-3:#dfd1b0;
+  --ink:#2b1e12; --ink-2:#5a4a3a; --ink-3:#8a7560;
+  --accent:#8b4513; --accent-soft:#c88c5b22; --accent-deep:#5d3a1a;
+  --border:#c9b99a; --border-soft:#e1d4b1;
+  --danger:#8b1a1a; --green:#1a5d3a; --gold:#b8860b;
+  --serif:'Cormorant Garamond',Georgia,serif;
+  --sans:'Inter',-apple-system,system-ui,sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,monospace;
+  --shadow:0 2px 12px #0000001a;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{background:var(--cream);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased}
+body{padding:2.5rem 1.5rem;max-width:1200px;margin:0 auto;line-height:1.55}
+
+/* Hero */
+.hero{margin-bottom:2.5rem;padding-bottom:2rem;border-bottom:2px solid var(--border)}
+.hero-label{font-family:var(--mono);font-size:.72rem;color:var(--accent);letter-spacing:.18em;text-transform:uppercase;margin-bottom:.4rem}
+.hero h1{font-family:var(--serif);font-size:3.2rem;font-weight:700;line-height:1;color:var(--ink);letter-spacing:-.02em;margin-bottom:.6rem}
+.hero h1 em{font-style:italic;color:var(--accent);font-weight:500}
+.hero .subtitle{color:var(--ink-2);font-size:1rem;max-width:60ch}
+.hero-meta{display:flex;gap:1.5rem;flex-wrap:wrap;margin-top:1.2rem;font-family:var(--mono);font-size:.78rem;color:var(--ink-3)}
+.hero-meta strong{color:var(--ink)}
+.hero-cta{display:flex;align-items:center;gap:1rem;flex-wrap:wrap;margin-top:1.6rem;padding:1rem 1.2rem;background:var(--cream-2);border-left:4px solid var(--accent);border-radius:6px}
+.cta-primary{display:inline-block;background:var(--accent);color:var(--cream);padding:.65rem 1.3rem;border-radius:6px;text-decoration:none;font-weight:600;font-size:.92rem;letter-spacing:.02em;transition:background .15s,transform .15s}
+.cta-primary:hover{background:var(--accent-deep);transform:translateY(-1px)}
+.cta-note{font-size:.88rem;color:var(--ink-2);font-style:italic;font-family:var(--serif);flex:1;min-width:200px}
+
+/* Status counters */
+.counters{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1rem;margin-bottom:2.5rem}
+.counter{background:#fff;border:1px solid var(--border);border-radius:10px;padding:1.1rem 1.3rem;position:relative;overflow:hidden}
+.counter::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%;background:var(--accent);opacity:.25}
+.counter.strike::before{background:var(--gold);opacity:1}
+.counter.watch::before{background:var(--accent);opacity:.5}
+.counter .lbl{font-family:var(--mono);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin-bottom:.35rem}
+.counter .val{font-family:var(--serif);font-size:2.1rem;font-weight:600;color:var(--ink);line-height:1}
+.counter.strike .val{color:var(--gold)}
+.counter .sub{font-size:.78rem;color:var(--ink-2);margin-top:.3rem}
+
+/* Sections */
+section{margin-bottom:2.8rem}
+h2{font-family:var(--serif);font-size:1.8rem;font-weight:600;color:var(--ink);margin-bottom:.3rem;letter-spacing:-.01em}
+h2 .count{font-family:var(--mono);font-size:.82rem;color:var(--accent);margin-left:.7rem;font-weight:500}
+.section-sub{color:var(--ink-2);font-size:.9rem;margin-bottom:1.2rem}
+
+/* Card / grid */
+.grid{display:grid;gap:.8rem}
+.grid-2{grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
+.grid-3{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:1.1rem 1.3rem;transition:transform .15s,box-shadow .15s}
+.card:hover{transform:translateY(-1px);box-shadow:var(--shadow)}
+.card.strike{border-color:var(--gold);background:#fffbe8}
+.card.strike::after{content:'🎯';position:absolute;top:.6rem;right:.8rem;font-size:1rem}
+.card{position:relative}
+.card-title{font-family:var(--serif);font-size:1.15rem;font-weight:600;line-height:1.25;margin-bottom:.25rem;padding-right:1.5rem}
+.card-sub{font-family:var(--mono);font-size:.72rem;color:var(--ink-3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:.6rem}
+.card-row{display:flex;justify-content:space-between;align-items:baseline;font-size:.88rem;margin:.25rem 0}
+.card-row .k{color:var(--ink-2);font-size:.82rem}
+.card-row .v{font-family:var(--mono);color:var(--ink);font-weight:500}
+.card-row .v.big{font-size:1.1rem;font-weight:600;color:var(--accent)}
+.card-row .v.up{color:var(--green)}
+.card-row .v.down{color:var(--danger)}
+.pill{display:inline-block;background:var(--cream-2);padding:.2rem .55rem;border-radius:999px;font-size:.72rem;color:var(--ink-2);border:1px solid var(--border);margin:.1rem .2rem .1rem 0;font-family:var(--mono);letter-spacing:.03em}
+.pill.critical{background:#ffd6d6;color:var(--danger);border-color:#e8a0a0;font-weight:600}
+.pill.high{background:#ffebd0;color:var(--accent)}
+.pill.normal{background:var(--cream-2)}
+.pill.low{background:#f5f5f0;color:var(--ink-3)}
+.pill.closed{background:#1a1a1a;color:var(--cream);border-color:#000}
+.pill.discontinued{background:#6b2e0a;color:var(--cream);border-color:#000}
+
+/* Tables */
+.table-wrap{background:#fff;border:1px solid var(--border);border-radius:10px;overflow:hidden}
+table{width:100%;border-collapse:collapse}
+th,td{padding:.7rem 1rem;text-align:left;font-size:.88rem;border-bottom:1px solid var(--border-soft)}
+th{background:var(--cream-2);font-family:var(--mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-2);font-weight:600}
+tr:last-child td{border-bottom:0}
+tr:hover td{background:#fdfbf4}
+td.num{font-family:var(--mono);text-align:right;font-variant-numeric:tabular-nums}
+td.strike{color:var(--gold);font-weight:600}
+
+/* Scan panel */
+.scan-panel{background:var(--cream-2);border:1px solid var(--border);border-radius:10px;padding:1.4rem 1.5rem;margin-bottom:2.5rem}
+.scan-panel h3{font-family:var(--serif);font-size:1.3rem;margin-bottom:.4rem;color:var(--ink)}
+.scan-row{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:.8rem}
+.scan-row input{flex:1;min-width:200px;background:#fff;border:1px solid var(--border);border-radius:6px;padding:.55rem .8rem;font-family:var(--sans);font-size:.88rem;color:var(--ink);outline:none}
+.scan-row input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.scan-row button{background:var(--accent);color:var(--cream);border:0;border-radius:6px;padding:.55rem 1.2rem;font-family:var(--sans);font-size:.88rem;font-weight:500;cursor:pointer;transition:background .15s}
+.scan-row button:hover{background:var(--accent-deep)}
+.scan-row button:disabled{opacity:.5;cursor:not-allowed}
+.scan-row button.ghost{background:transparent;color:var(--accent);border:1px solid var(--accent)}
+.scan-row button.ghost:hover{background:var(--accent-soft)}
+.scan-result{margin-top:1rem;padding:1rem;background:#fff;border:1px solid var(--border-soft);border-radius:6px;font-family:var(--mono);font-size:.82rem;color:var(--ink-2);white-space:pre-wrap;display:none;max-height:260px;overflow:auto}
+
+.loading{color:var(--ink-3);font-style:italic;padding:2rem 0;text-align:center}
+.error{color:var(--danger);padding:1rem;background:#fff;border:1px solid #e8a0a0;border-radius:6px}
+
+/* Footer */
+footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border);font-size:.78rem;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:1rem}
+footer a{color:var(--accent);text-decoration:none;border-bottom:1px dashed var(--accent-soft)}
+footer a:hover{border-bottom-style:solid}
+
+@media(max-width:640px){
+  body{padding:1.5rem 1rem}
+  .hero h1{font-size:2.2rem}
+  .counters{grid-template-columns:repeat(2,1fr)}
+  th,td{padding:.5rem .6rem;font-size:.78rem}
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-label">LOSC · Whisky Palantir</div>
+  <h1>Live <em>arbitrage</em> intelligence</h1>
+  <p class="subtitle">Φιάλες, πηγές, watchlist, πρόσφατες τιμές και ενεργά strikes — ζωντανό στιγμιότυπο από το LOSC API.</p>
+  <div class="hero-cta">
+    <a class="cta-primary" href="./feedback.html">Στείλε παρατηρήσεις →</a>
+    <span class="cta-note">Γιώργο, πάτα εδώ για να διορθώσεις ή προσθέσεις οτιδήποτε βλέπεις παρακάτω.</span>
+  </div>
+  <div class="hero-meta">
+    <span>Generated <strong id="meta-ts">—</strong></span>
+    <span>API <strong id="meta-api">—</strong></span>
+    <span>Engine <strong id="meta-engine">—</strong></span>
+  </div>
+</div>
+
+<div class="counters" id="counters">
+  <div class="counter"><div class="lbl">Bottles</div><div class="val" id="c-bottles">—</div><div class="sub">στον κατάλογο</div></div>
+  <div class="counter"><div class="lbl">Sources</div><div class="val" id="c-sources">—</div><div class="sub">retailers + auctions</div></div>
+  <div class="counter strike"><div class="lbl">Strikes</div><div class="val" id="c-strikes">—</div><div class="sub">actionable τώρα</div></div>
+  <div class="counter watch"><div class="lbl">Watchlist</div><div class="val" id="c-watchlist">—</div><div class="sub">ενεργές</div></div>
+  <div class="counter"><div class="lbl">Holdings</div><div class="val" id="c-holdings">—</div><div class="sub">στη συλλογή</div></div>
+  <div class="counter"><div class="lbl">Invested</div><div class="val" id="c-invested">€—</div><div class="sub">σε τρέχουσες θέσεις</div></div>
+</div>
+
+<section id="sec-scan">
+  <div class="scan-panel">
+    <h3>Live σκανάρισμα</h3>
+    <p class="section-sub">Kylix JSON API · έχει 390 World Whisky · match εναντίον watchlist · τιμές περνάνε στο fair-value engine.</p>
+    <div class="scan-row">
+      <input id="scan-query" type="text" placeholder="πχ. yoichi, yamazaki, karuizawa — ή άφησε κενό για όλη την κατηγορία World Whisky">
+      <button id="btn-scan">Scan Kylix</button>
+      <button id="btn-scan-world" class="ghost">Scan World Whisky (5 σελίδες)</button>
+    </div>
+    <div class="scan-result" id="scan-result"></div>
+  </div>
+</section>
+
+<section>
+  <h2>Strikes <span class="count" id="strikes-count"></span></h2>
+  <p class="section-sub">Ευκαιρίες σε score ≥14/20 — άμεση αξιολόγηση για αγορά.</p>
+  <div class="grid grid-3" id="strikes-grid"><div class="loading">Φόρτωση…</div></div>
+</section>
+
+<section>
+  <h2>Pipeline — Watches <span class="count" id="watches-count"></span></h2>
+  <p class="section-sub">Score 10–13/20 — παρακολούθηση τιμής, όχι ακόμα αγορά.</p>
+  <div class="table-wrap" id="watches-wrap"><div class="loading" style="padding:2rem">Φόρτωση…</div></div>
+</section>
+
+<section>
+  <h2>Watchlist by priority <span class="count" id="wl-count"></span></h2>
+  <p class="section-sub">Ενεργές φιάλες υπό παρατήρηση — critical + high + normal + low.</p>
+  <div class="grid grid-2" id="watchlist-grid"><div class="loading">Φόρτωση…</div></div>
+</section>
+
+<section>
+  <h2>Collection · P&amp;L <span class="count" id="coll-count"></span></h2>
+  <p class="section-sub">Φιάλες στη συλλογή — total invested, realised revenue, held vs sold.</p>
+  <div id="collection-area"><div class="loading">Φόρτωση…</div></div>
+</section>
+
+<section>
+  <h2>Recent prices (7 ημέρες) <span class="count" id="px-count"></span></h2>
+  <p class="section-sub">Πρόσφατες παρατηρήσεις τιμών από retailers + scanner observations.</p>
+  <div class="table-wrap" id="prices-wrap"><div class="loading" style="padding:2rem">Φόρτωση…</div></div>
+</section>
+
+<section>
+  <h2>Sources <span class="count" id="src-count"></span></h2>
+  <p class="section-sub">Trust-ranked retailers / auction houses.</p>
+  <div class="grid grid-3" id="sources-grid"><div class="loading">Φόρτωση…</div></div>
+</section>
+
+<footer>
+  <span>LOSC · Whisky Palantir · <span id="foot-ts">—</span></span>
+  <span><a href="./feedback.html" target="_blank">Feedback form για Γιώργο →</a></span>
+</footer>
+
+<script>
+// All rendering via DOM APIs — no innerHTML with API data.
+const LOSC_URL = (new URLSearchParams(location.search).get("api"))
+  || "https://residential-oils-steps-apparently.trycloudflare.com";
+document.getElementById("meta-api").textContent = LOSC_URL;
+
+// ─── helpers ───────────────────────────────────────────
+function el(tag, opts){
+  const n = document.createElement(tag);
+  if(opts){
+    if(opts.text !== undefined) n.textContent = opts.text;
+    if(opts.cls) n.className = opts.cls;
+    if(opts.attrs) for(const k in opts.attrs) n.setAttribute(k, opts.attrs[k]);
+  }
+  return n;
+}
+function clear(node){ while(node.firstChild) node.removeChild(node.firstChild); }
+function fmtEUR(v){ if(v == null) return "—"; return "€" + Number(v).toLocaleString("el-GR", {minimumFractionDigits:0, maximumFractionDigits:2}); }
+function fmtDate(s){ if(!s) return ""; return String(s).slice(0, 16).replace("T", " "); }
+async function getJSON(path){
+  const r = await fetch(LOSC_URL + path);
+  if(!r.ok) throw new Error(path + " → HTTP " + r.status);
+  return r.json();
+}
+async function postJSON(path){
+  const r = await fetch(LOSC_URL + path, {method:"POST"});
+  if(!r.ok) throw new Error(path + " → HTTP " + r.status);
+  return r.json();
+}
+
+// ─── Status + counters ─────────────────────────────────
+async function loadStatus(){
+  const s = await getJSON("/whisky/status");
+  document.getElementById("c-bottles").textContent = s.bottles;
+  document.getElementById("c-sources").textContent = s.sources;
+  document.getElementById("c-holdings").textContent = s.holdings;
+  document.getElementById("meta-engine").textContent = s.engine || "Whisky Palantir";
+}
+
+// ─── Pipeline ──────────────────────────────────────────
+async function loadPipeline(){
+  const p = await getJSON("/whisky/pipeline");
+  document.getElementById("c-strikes").textContent = p.strike_count || 0;
+  document.getElementById("strikes-count").textContent = `${p.strike_count || 0} active`;
+
+  // Strikes
+  const g = document.getElementById("strikes-grid"); clear(g);
+  if(!(p.strikes || []).length){
+    g.appendChild(el("p", {cls:"section-sub", text:"Καμία strike τώρα."}));
+  } else {
+    p.strikes.forEach(o => g.appendChild(strikeCard(o)));
+  }
+
+  // Watches
+  const w = document.getElementById("watches-wrap"); clear(w);
+  document.getElementById("watches-count").textContent = `${p.watch_count || 0} σε παρακολούθηση`;
+  if(!(p.watches || []).length){
+    const d = el("div", {cls:"section-sub", text:"Καμία watch."});
+    d.style.padding = "2rem";
+    w.appendChild(d);
+  } else {
+    const table = el("table");
+    const thead = el("thead");
+    const hr = el("tr");
+    ["Bottle","Region","Ask","Spread","Score","Source"].forEach(h => hr.appendChild(el("th", {text:h})));
+    thead.appendChild(hr); table.appendChild(thead);
+    const tbody = el("tbody");
+    p.watches.forEach(o => {
+      const tr = el("tr");
+      const t1 = el("td"); t1.appendChild(el("strong", {text:`${o.distillery} ${o.expression}`}));
+      tr.appendChild(t1);
+      tr.appendChild(el("td", {text:o.region || "—"}));
+      tr.appendChild(el("td", {cls:"num", text:fmtEUR(o.ask_price)}));
+      tr.appendChild(el("td", {cls:"num", text:o.spread_percent != null ? `${o.spread_percent}%` : "—"}));
+      tr.appendChild(el("td", {cls:"num", text:`${o.total_score}/20`}));
+      tr.appendChild(el("td", {text:o.source_name || "—"}));
+      tbody.appendChild(tr);
+    });
+    table.appendChild(tbody);
+    w.appendChild(table);
+  }
+}
+
+function strikeCard(o){
+  const c = el("div", {cls:"card strike"});
+  c.appendChild(el("div", {cls:"card-title", text:`${o.distillery} ${o.expression}`}));
+  c.appendChild(el("div", {cls:"card-sub", text:`${o.region || "—"}${o.age_statement ? " · " + o.age_statement + "yo":""}${o.closed_distillery ? " · closed":""}`}));
+  [["Ask", fmtEUR(o.ask_price), "big"],
+   ["Fair value", o.fair_value_low ? `${fmtEUR(o.fair_value_low)}–${fmtEUR(o.fair_value_high)}` : "—"],
+   ["Spread", o.spread_percent != null ? `${o.spread_percent}%` : "—"],
+   ["Score", `${o.total_score}/20`],
+   ["Source", o.source_name || "—"],
+  ].forEach(([k, v, big]) => {
+    const row = el("div", {cls:"card-row"});
+    row.appendChild(el("span", {cls:"k", text:k}));
+    row.appendChild(el("span", {cls:"v" + (big ? " big" : ""), text:v}));
+    c.appendChild(row);
+  });
+  return c;
+}
+
+// ─── Watchlist ─────────────────────────────────────────
+async function loadWatchlist(){
+  const r = await getJSON("/whisky/watchlist");
+  const items = r.watchlist || [];
+  document.getElementById("c-watchlist").textContent = items.length;
+  document.getElementById("wl-count").textContent = `${items.length} active`;
+  const g = document.getElementById("watchlist-grid"); clear(g);
+  if(!items.length){ g.appendChild(el("p", {text:"Κενό watchlist."})); return; }
+  items.forEach(w => g.appendChild(watchCard(w)));
+}
+function watchCard(w){
+  const c = el("div", {cls:"card"});
+  c.appendChild(el("div", {cls:"card-title", text:`${w.distillery} ${w.expression}`}));
+  const pills = el("div");
+  pills.appendChild(el("span", {cls:`pill ${w.priority || "normal"}`, text:w.priority || "normal"}));
+  if(w.max_price_eur != null) pills.appendChild(el("span", {cls:"pill", text:"≤ " + fmtEUR(w.max_price_eur)}));
+  c.appendChild(pills);
+  if(w.notes){
+    const notes = el("div", {cls:"card-sub", text:String(w.notes).slice(0, 140) + (w.notes.length > 140 ? "…" : "")});
+    notes.style.marginTop = ".5rem";
+    notes.style.lineHeight = "1.5";
+    notes.style.letterSpacing = "0";
+    notes.style.textTransform = "none";
+    notes.style.fontSize = ".8rem";
+    c.appendChild(notes);
+  }
+  return c;
+}
+
+// ─── Collection ────────────────────────────────────────
+async function loadCollection(){
+  const r = await getJSON("/whisky/collection");
+  const bottles = r.collection || r.bottles || [];
+  const area = document.getElementById("collection-area"); clear(area);
+  document.getElementById("coll-count").textContent = `${bottles.length} φιάλες`;
+
+  // Summary line (use summary if API returns one; else compute from rows)
+  const invested = r.total_invested != null ? r.total_invested :
+    bottles.reduce((s,b) => s + (b.purchase_price_eur || b.purchase_price || 0), 0);
+  const revenue = r.sold_revenue != null ? r.sold_revenue :
+    bottles.filter(b => b.status === "sold").reduce((s,b) => s + (b.sold_price || 0), 0);
+  const held = bottles.filter(b => b.status === "held").length;
+
+  document.getElementById("c-invested").textContent = fmtEUR(invested);
+
+  const summary = el("div", {cls:"card"});
+  summary.style.marginBottom = "1rem";
+  [["Held", held + " φιάλες"],
+   ["Invested", fmtEUR(invested)],
+   ["Sold revenue", fmtEUR(revenue)],
+   ["P&L", fmtEUR(r.pnl || (revenue - invested))],
+  ].forEach(([k,v]) => {
+    const row = el("div", {cls:"card-row"});
+    row.appendChild(el("span", {cls:"k", text:k}));
+    row.appendChild(el("span", {cls:"v", text:v}));
+    summary.appendChild(row);
+  });
+  area.appendChild(summary);
+
+  // Bottle grid
+  const grid = el("div", {cls:"grid grid-3"});
+  bottles.forEach(b => {
+    const c = el("div", {cls:"card"});
+    c.appendChild(el("div", {cls:"card-title", text:`${b.distillery} ${b.expression}`}));
+    const pills = el("div");
+    pills.appendChild(el("span", {cls:`pill ${b.status || ""}`, text:b.status || "—"}));
+    if(b.closed_distillery) pills.appendChild(el("span", {cls:"pill closed", text:"closed"}));
+    if(b.discontinued) pills.appendChild(el("span", {cls:"pill discontinued", text:"discontinued"}));
+    c.appendChild(pills);
+    const row = el("div", {cls:"card-row"});
+    row.style.marginTop = ".5rem";
+    row.appendChild(el("span", {cls:"k", text:"Purchase"}));
+    row.appendChild(el("span", {cls:"v", text:fmtEUR(b.purchase_price_eur || b.purchase_price)}));
+    c.appendChild(row);
+    grid.appendChild(c);
+  });
+  area.appendChild(grid);
+}
+
+// ─── Sources + recent prices from autofill endpoint ───
+async function loadAutofill(){
+  const a = await getJSON("/whisky/feedback/autofill");
+
+  // Sources
+  const sg = document.getElementById("sources-grid"); clear(sg);
+  document.getElementById("src-count").textContent = `${(a.sources||[]).length} πηγές`;
+  (a.sources || []).forEach(s => {
+    const c = el("div", {cls:"card"});
+    c.appendChild(el("div", {cls:"card-title", text:s.name}));
+    c.appendChild(el("div", {cls:"card-sub", text:`${s.country || "?"} · ${s.type || "—"}`}));
+    const row = el("div", {cls:"card-row"});
+    row.appendChild(el("span", {cls:"k", text:"Trust score"}));
+    row.appendChild(el("span", {cls:"v big", text:String(s.trust_score)}));
+    c.appendChild(row);
+    sg.appendChild(c);
+  });
+
+  // Recent prices
+  const prices = a.recent_prices || [];
+  document.getElementById("px-count").textContent = `${prices.length} παρατηρήσεις`;
+  const wrap = document.getElementById("prices-wrap"); clear(wrap);
+  if(!prices.length){
+    const d = el("div", {cls:"section-sub", text:"Καμία τιμή τις τελευταίες 7 μέρες. Κάνε scan!"});
+    d.style.padding = "2rem";
+    wrap.appendChild(d);
+  } else {
+    const table = el("table");
+    const thead = el("thead");
+    const hr = el("tr");
+    ["When","Bottle","Source","Price"].forEach(h => hr.appendChild(el("th", {text:h})));
+    thead.appendChild(hr); table.appendChild(thead);
+    const tbody = el("tbody");
+    prices.forEach(p => {
+      const tr = el("tr");
+      tr.appendChild(el("td", {text:fmtDate(p.sold_at)}));
+      const t2 = el("td"); t2.appendChild(el("strong", {text:`${p.distillery} ${p.expression}`})); tr.appendChild(t2);
+      tr.appendChild(el("td", {text:p.source || "—"}));
+      tr.appendChild(el("td", {cls:"num", text:fmtEUR(p.price)}));
+      tbody.appendChild(tr);
+    });
+    table.appendChild(tbody);
+    wrap.appendChild(table);
+  }
+}
+
+// ─── Scan panel ────────────────────────────────────────
+async function runScan(query, maxPages){
+  const box = document.getElementById("scan-result");
+  const btn1 = document.getElementById("btn-scan");
+  const btn2 = document.getElementById("btn-scan-world");
+  btn1.disabled = btn2.disabled = true;
+  box.style.display = "block";
+  box.textContent = query
+    ? `Σκανάρισμα Kylix για "${query}"…`
+    : `Σκανάρισμα Kylix World Whisky (${maxPages} σελίδες)…`;
+
+  try{
+    const qs = query
+      ? `?query=${encodeURIComponent(query)}&max_pages=1`
+      : `?category=${encodeURIComponent("World Whisky")}&max_pages=${maxPages}`;
+    const result = await postJSON(`/whisky/scan/kylix${qs}`);
+    const lines = [
+      `✓ Scan completed @ ${result.scanned_at}`,
+      `  total_results: ${result.total_results}`,
+      `  candidates:    ${result.candidate_count}`,
+      `  strikes:       ${result.strike_count}`,
+      `  prices_saved:  ${result.prices_inserted}`,
+      "",
+    ];
+    (result.candidates || []).slice(0, 20).forEach(c => {
+      const mark = c.under_ceiling ? "🎯" : "  ";
+      lines.push(`${mark} ${fmtEUR(c.price_eur).padEnd(10)} ${c.title.slice(0,46).padEnd(48)} ceiling=${c.watchlist_max_eur ? "€" + c.watchlist_max_eur : "—"}`);
+    });
+    box.textContent = lines.join("\n");
+    // Refresh dashboard to reflect new prices
+    loadAutofill();
+  }catch(err){
+    box.textContent = "❌ " + err.message;
+  }finally{
+    btn1.disabled = btn2.disabled = false;
+  }
+}
+document.getElementById("btn-scan").addEventListener("click", () => {
+  runScan(document.getElementById("scan-query").value.trim() || null, 1);
+});
+document.getElementById("btn-scan-world").addEventListener("click", () => runScan(null, 5));
+
+// ─── Boot ──────────────────────────────────────────────
+async function boot(){
+  const ts = new Date().toLocaleString("el-GR");
+  document.getElementById("meta-ts").textContent = ts;
+  document.getElementById("foot-ts").textContent = ts;
+  const tasks = [
+    loadStatus().catch(e => showErr("status", e)),
+    loadPipeline().catch(e => showErr("pipeline", e)),
+    loadWatchlist().catch(e => showErr("watchlist", e)),
+    loadCollection().catch(e => showErr("collection", e)),
+    loadAutofill().catch(e => showErr("autofill", e)),
+  ];
+  await Promise.all(tasks);
+}
+function showErr(section, e){
+  console.error(section, e);
+  const map = {status:"counters", pipeline:"strikes-grid", watchlist:"watchlist-grid",
+               collection:"collection-area", autofill:"sources-grid"};
+  const target = document.getElementById(map[section] || "strikes-grid");
+  if(target && target.firstChild){
+    clear(target);
+    target.appendChild(el("div", {cls:"error", text:`${section}: ${e.message}. Check ${LOSC_URL} is running.`}));
+  }
+}
+boot();
+</script>
+</body>
+</html>
